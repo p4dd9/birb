@@ -3,15 +3,10 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
 	appType: 'spa',
+	root: resolve(__dirname, './src'),
 	build: {
-		outDir: 'webroot',
-		emptyOutDir: false,
-		copyPublicDir: true,
+		outDir: resolve(__dirname, 'webroot'),
+		emptyOutDir: true,
 		sourcemap: true,
-		rollupOptions: {
-			input: {
-				index: resolve(__dirname, './src/index.html'),
-			},
-		},
 	},
 })

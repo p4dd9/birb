@@ -4,7 +4,7 @@ export async function addMenuItem(_: MenuItemOnPressEvent, context: Devvit.Conte
 	const { reddit, ui } = context
 	const subreddit = await reddit.getCurrentSubreddit()
 	await reddit.submitPost({
-		title: 'ReddiBirds with PhaserJS',
+		title: 'Untitled Game with PhaserJS',
 		subredditName: subreddit.name,
 		// The preview appears while the post loads
 		preview: (

@@ -14,13 +14,13 @@ See here a running example of this demo: [XXX]()
 
 Contains all the code for the Devvit app, built with Devvit blocks
 
-### `web-view-app/` folder
+### `game/` folder
 
 Contains all the typescript source code for the app that runs in the embedded Web View. All code here will be bundled into `webroot/index.js` which is what the web view is actually importing
 
 ### `shared/` folder
 
-Contains all types that are shared between the `web-view-app` and the `blocks-app`
+Contains all types that are shared between the `game` and the `blocks-app`
 
 ## Devvit CLI
 

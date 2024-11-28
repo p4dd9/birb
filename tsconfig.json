@@ -1,5 +1,5 @@
 {
 	// only build references.
 	"files": [],
-	"references": [{ "path": "src" }, { "path": "src/web-view-app" }]
+	"references": [{ "path": "src" }, { "path": "src/game" }]
 }

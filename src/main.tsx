@@ -1,7 +1,7 @@
 import { Devvit, useState } from '@devvit/public-api'
-import { WebviewContainer } from './blocks-app/webviewContainer'
 import { addMenuItem } from './blocks-app/addMenuItem'
 import { SplashScreen } from './blocks-app/splashScreen'
+import { WebviewContainer } from './blocks-app/webviewContainer'
 
 Devvit.configure({
 	redditAPI: true, // username
@@ -10,7 +10,7 @@ Devvit.configure({
 
 // Add a menu item to the subreddit menu for instantiating the new experience post
 Devvit.addMenuItem({
-	label: 'ReddiBirds with PhaserJS',
+	label: 'Untitled Game with PhaserJS',
 	location: 'subreddit',
 	forUserType: 'moderator',
 	onPress: addMenuItem,
@@ -18,7 +18,7 @@ Devvit.addMenuItem({
 
 // Add a post type definition
 Devvit.addCustomPostType({
-	name: 'ReddiBirds with PhaserJS',
+	name: 'Untitled Game with PhaserJS',
 	height: 'regular',
 	render: (context: Devvit.Context) => {
 		const [webviewVisible, setWebviewVisible] = useState(false)
