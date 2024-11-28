@@ -1,3 +1,4 @@
+import { PipePair } from './PipePair'
 import { Player } from './Player'
 
 export class Game extends Phaser.Scene {
@@ -21,8 +22,10 @@ export class Game extends Phaser.Scene {
 		this.addPipeRow = this.addPipeRow.bind(this)
 
 		this.player = new Player(this, 200, 200)
-		this.pipes = this.physics.add.group()
+		this.pipes = this.physics.add.group(undefined, { allowGravity: false, immovable: true })
 		this.physics.add.collider(this.player, this.pipes, this.hitPipe, undefined, this)
+
+		new PipePair(this, 200, 200)
 
 		this.input.on('pointerdown', this.flap)
 	}
