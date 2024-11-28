@@ -54,9 +54,7 @@ export class Game extends Phaser.Scene {
 	gameOver() {
 		this.physics.pause()
 		this.player.setTint(0xff0000)
-		this.add.text(400, 300, 'Game Over', { fontSize: '64px' }).setOrigin(0.5)
-		this.input.once('pointerdown', () => {
-			this.scene.restart()
-		})
+		this.scene.pause()
+		this.scene.run('GameOver')
 	}
 }
