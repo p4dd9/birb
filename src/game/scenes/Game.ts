@@ -10,22 +10,21 @@ export class Game extends Phaser.Scene {
 	}
 
 	preload() {
-		// load stuff
+		this.load.spritesheet('birds', 'path/to/birds.png', { frameWidth: 32, frameHeight: 32 })
+		this.load.image('pipes', 'path/to/pipes.png')
 	}
 
 	create() {
-		this.add.text(200, 200, 'This is Phaser within Reddit!', { color: 'red', fontSize: 72 })
-		this.add.text(200, 300, `It's HAMMER TIME!`, { color: 'white', fontSize: 72 })
-
 		this.flap = this.flap.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
 		this.addPipeRow = this.addPipeRow.bind(this)
 
-		this.player = new Player(this, 200, 200)
-		this.pipes = this.physics.add.group(undefined, { allowGravity: false, immovable: true })
-		this.physics.add.collider(this.player, this.pipes, this.hitPipe, undefined, this)
+		this.player = new Player(this, 200, 300)
+		this.pipes = this.physics.add.group()
 
-		new PipePair(this, 200, 200)
+		this.physics.add.overlap(this.player, this.pipes, this.hitPipe, undefined, this)
+
+		this.startPipeTimer()
 
 		this.input.on('pointerdown', this.flap)
 	}
@@ -43,7 +42,10 @@ export class Game extends Phaser.Scene {
 		})
 	}
 
-	addPipeRow() {}
+	addPipeRow() {
+		const pipeHeight = Phaser.Math.Between(100, 400)
+		new PipePair(this, this.cameras.main.width + 50, pipeHeight)
+	}
 
 	hitPipe() {
 		this.gameOver()
