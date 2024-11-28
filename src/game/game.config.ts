@@ -9,5 +9,13 @@ export const gameConfig: Types.Core.GameConfig = {
 	scale: {
 		mode: Phaser.Scale.EXPAND,
 	},
+	physics: {
+		default: 'arcade',
+		arcade: {
+			gravity: { y: 300, x: 0 },
+			debug: true,
+		},
+	},
+	transparent: true,
 	scene: [Boot, Preloader, Game],
 }

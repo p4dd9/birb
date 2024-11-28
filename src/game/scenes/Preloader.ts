@@ -4,7 +4,8 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	preload() {
-		// load stuff
+		this.load.atlas('bg', '../assets/bg.png', '../assets/bg.json')
+		this.load.spritesheet('birds', '../assets/birds.png', { frameWidth: 16, frameHeight: 16 })
 	}
 
 	create() {
