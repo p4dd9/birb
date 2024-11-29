@@ -14,7 +14,7 @@ export const gameConfig: Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 790, x: 0 },
-			debug: true,
+			debug: false,
 		},
 	},
 	transparent: true,

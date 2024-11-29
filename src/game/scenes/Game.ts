@@ -5,8 +5,8 @@ import { PrimaryText } from '../objects/PrimaryText'
 export class Game extends Phaser.Scene {
 	player!: Player
 	pipes!: Phaser.GameObjects.Group
-
 	score!: PrimaryText
+	currentScore: number = 0
 
 	constructor() {
 		super('Game')
@@ -42,6 +42,7 @@ export class Game extends Phaser.Scene {
 	resize() {
 		this.score.setX(this.scale.width / 2)
 	}
+
 	flap() {
 		this.player.setVelocityY(-300)
 	}
@@ -62,6 +63,16 @@ export class Game extends Phaser.Scene {
 
 	hitPipe() {
 		this.gameOver()
+	}
+
+	incrementScore() {
+		this.currentScore++
+		this.score.setText(this.currentScore.toString())
+	}
+
+	resetScore() {
+		this.currentScore = 0
+		this.score.setText(this.currentScore.toString())
 	}
 
 	gameOver() {
