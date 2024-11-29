@@ -4,24 +4,21 @@ import { Player } from '../objects/Player'
 import { PrimaryText } from '../objects/PrimaryText'
 
 export class Game extends Phaser.Scene {
-	player!: Player
-	pipes!: Phaser.GameObjects.Group
-	score!: PrimaryText
-	currentScore: number = 0
+	player: Player
+	pipes: Phaser.GameObjects.Group
+	score: PrimaryText
+	intro: Phaser.GameObjects.Image
 
-	intro!: Phaser.GameObjects.Image
+	currentScore: number = 0
 	isGameStarted: boolean = false
 
 	constructor() {
 		super('Game')
 	}
 
-	preload() {
-		this.load.spritesheet('birds', 'path/to/birds.png', { frameWidth: 32, frameHeight: 32 })
-		this.load.image('pipes', 'path/to/pipes.png')
-	}
-
 	create() {
+		this.isGameStarted = false
+
 		this.flap = this.flap.bind(this)
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
@@ -40,7 +37,8 @@ export class Game extends Phaser.Scene {
 			.setDepth(100)
 			.setOrigin(0.5, 0)
 
-		this.input.once('pointerdown', this.start)
+		this.input.on('pointerdown', this.start)
+
 		this.input.on('pointerdown', this.flap)
 		this.scale.on('resize', this.resize, this)
 
@@ -48,8 +46,10 @@ export class Game extends Phaser.Scene {
 	}
 
 	start() {
+		console.log('start')
+		console.log(this.isGameStarted)
 		if (this.isGameStarted) return
-
+		console.log(this.intro)
 		this.isGameStarted = true
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
 		this.startPipeTimer()
@@ -72,6 +72,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	flap() {
+		console.log('start')
 		if (this.isGameStarted) {
 			this.player.setVelocityY(-300)
 		}

@@ -1,14 +1,10 @@
 export class GameOver extends Phaser.Scene {
-	gameOverText!: Phaser.GameObjects.Text
-	replayButton!: Phaser.GameObjects.Image
-	replayButtonText!: Phaser.GameObjects.Text
+	gameOverText: Phaser.GameObjects.Text
+	replayButton: Phaser.GameObjects.Image
+	replayButtonText: Phaser.GameObjects.Text
 
 	constructor() {
 		super('GameOver')
-	}
-
-	preload() {
-		// load stuff
 	}
 
 	create() {

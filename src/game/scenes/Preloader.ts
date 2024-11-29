@@ -7,6 +7,7 @@ export class Preloader extends Phaser.Scene {
 		this.load.setPath('../assets/')
 
 		this.load.font('mago3', 'font/mago3.ttf', 'truetype')
+
 		this.load.image('UI_Flat_FrameSlot03b', 'gui/UI_Flat_FrameSlot03b.png')
 		this.load.image('UI_Flat_Frame03a', 'gui/UI_Flat_Frame03a.png')
 

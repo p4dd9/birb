@@ -25,6 +25,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				highscore: ev.data.personal.highscore,
 				gameRounds: currentPersonalStats.gameRounds + 1,
 			})
+			context.ui.webView.postMessage('game-webview', {})
 			context.ui.showToast({ text: `Saved new Highscore ${highscore}!`, appearance: 'success' })
 		}
 	}

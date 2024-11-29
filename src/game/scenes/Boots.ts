@@ -3,10 +3,6 @@ export class Boot extends Phaser.Scene {
 		super('Boot')
 	}
 
-	preload() {
-		// load stuff
-	}
-
 	create() {
 		this.scene.start('Preloader')
 	}
