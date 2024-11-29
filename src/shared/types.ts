@@ -1,4 +1,4 @@
 export type Stats = {
-    wins: number;
-    losses: number;
-};
+	highscore: number
+	gameRounds: number
+}

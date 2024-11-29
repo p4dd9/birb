@@ -14,8 +14,18 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const handleMessage = async (ev: SaveStatsMessage) => {
 		console.log('Received message', ev)
 		if (ev.type === 'saveStats') {
-			await redisService.saveStats({ wins: ev.data.wins, losses: ev.data.losses })
-			context.ui.showToast({ text: 'Stats saved to Redis!' })
+			const highscore = ev.data.personal.highscore
+			let currentPersonalStats = await redisService.getPersonalStats()
+
+			if (!currentPersonalStats) {
+				currentPersonalStats = { gameRounds: 0, highscore: 0 }
+			}
+
+			await redisService.savePersonalStats({
+				highscore: ev.data.personal.highscore,
+				gameRounds: currentPersonalStats.gameRounds + 1,
+			})
+			context.ui.showToast({ text: `Saved new Highscore ${highscore}!`, appearance: 'success' })
 		}
 	}
 

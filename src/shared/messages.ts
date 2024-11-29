@@ -1,15 +1,15 @@
+import type { Stats } from './types'
+
 export type SaveStatsMessage = {
 	type: 'saveStats'
 	data: {
-		wins: number
-		losses: number
+		personal: Pick<Stats, 'highscore'>
 	}
 }
 
 export type StartGameMessage = {
 	type: 'startGame'
 	data: {
-		wins: number
-		losses: number
+		personal: Stats
 	}
 }

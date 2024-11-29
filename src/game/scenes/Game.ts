@@ -1,3 +1,4 @@
+import type { SaveStatsMessage } from '../../shared/messages'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import { PrimaryText } from '../objects/PrimaryText'
@@ -42,6 +43,8 @@ export class Game extends Phaser.Scene {
 		this.input.once('pointerdown', this.start)
 		this.input.on('pointerdown', this.flap)
 		this.scale.on('resize', this.resize, this)
+
+		this.resetScore()
 	}
 
 	start() {
@@ -52,6 +55,16 @@ export class Game extends Phaser.Scene {
 		this.startPipeTimer()
 
 		this.intro.destroy()
+	}
+
+	saveStats() {
+		let message: SaveStatsMessage = {
+			type: 'saveStats',
+			data: {
+				personal: { highscore: this.currentScore },
+			},
+		}
+		window.parent?.postMessage(message, '*')
 	}
 
 	resize() {
@@ -98,6 +111,7 @@ export class Game extends Phaser.Scene {
 		this.physics.pause()
 		this.player.setTint(0xff0000)
 		this.scene.pause()
+		this.saveStats()
 		this.scene.run('GameOver')
 	}
 }

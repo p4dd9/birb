@@ -12,11 +12,14 @@ type SplashScreenProps = {
 export function SplashScreen(props: SplashScreenProps): JSX.Element {
 	const { context, webviewVisible, setWebviewVisible } = props
 	const redisService = createRedisService(props.context)
-	const [stats] = useState<Stats>(async () => await redisService.getStats())
+	const [stats] = useState<Stats | null>(async () => await redisService.getPersonalStats())
 
 	const onLaunchApp = () => {
 		setWebviewVisible(true)
-		const message: StartGameMessage = { type: 'startGame', data: stats }
+		const message: StartGameMessage = {
+			type: 'startGame',
+			data: !stats ? { personal: { highscore: 0, gameRounds: 0 } } : { personal: stats },
+		}
 		context.ui.webView.postMessage('game-webview', message)
 	}
 
