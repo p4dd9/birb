@@ -1,9 +1,12 @@
-import { PipePair } from './PipePair'
-import { Player } from './Player'
+import { PipePair } from '../objects/PipePair'
+import { Player } from '../objects/Player'
+import { PrimaryText } from '../objects/PrimaryText'
 
 export class Game extends Phaser.Scene {
 	player!: Player
 	pipes!: Phaser.GameObjects.Group
+
+	score!: PrimaryText
 
 	constructor() {
 		super('Game')
@@ -26,9 +29,19 @@ export class Game extends Phaser.Scene {
 
 		this.startPipeTimer()
 
+		this.score = new PrimaryText(this, this.scale.width / 2, -20, '0', {
+			fontSize: 121,
+		})
+			.setDepth(100)
+			.setOrigin(0.5, 0)
+
 		this.input.on('pointerdown', this.flap)
+		this.scale.on('resize', this.resize, this)
 	}
 
+	resize() {
+		this.score.setX(this.scale.width / 2)
+	}
 	flap() {
 		this.player.setVelocityY(-300)
 	}

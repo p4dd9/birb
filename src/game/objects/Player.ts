@@ -1,4 +1,4 @@
-import type { Game } from './Game'
+import type { Game } from '../scenes/Game'
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene: Game, x: number, y: number) {

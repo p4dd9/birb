@@ -1,4 +1,6 @@
-import type { Game } from './Game'
+import type { Game } from '../scenes/Game'
+
+const PIPE_WIDTH = 90
 
 export class PipePair extends Phaser.GameObjects.Container {
 	topPipe: Phaser.GameObjects.NineSlice
@@ -7,10 +9,12 @@ export class PipePair extends Phaser.GameObjects.Container {
 	constructor(scene: Game, x: number, gapY: number) {
 		super(scene, x, gapY)
 
-		this.topPipe = scene.add.nineslice(0, -75, 'pipes', 0, 40, 1500, undefined, undefined, 39, 39).setOrigin(0.5, 1)
+		this.topPipe = scene.add
+			.nineslice(0, -75, 'pipes', 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
+			.setOrigin(0.5, 1)
 
 		this.bottomPipe = scene.add
-			.nineslice(0, +75, 'pipes', 0, 40, 1500, undefined, undefined, 39, 39)
+			.nineslice(0, +75, 'pipes', 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
 			.setOrigin(0.5, 0)
 
 		this.add([this.topPipe, this.bottomPipe])
