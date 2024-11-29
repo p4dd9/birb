@@ -8,6 +8,9 @@ export class Game extends Phaser.Scene {
 	score!: PrimaryText
 	currentScore: number = 0
 
+	intro!: Phaser.GameObjects.Image
+	isGameStarted: boolean = false
+
 	constructor() {
 		super('Game')
 	}
@@ -19,6 +22,7 @@ export class Game extends Phaser.Scene {
 
 	create() {
 		this.flap = this.flap.bind(this)
+		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
 		this.addPipeRow = this.addPipeRow.bind(this)
 
@@ -26,17 +30,28 @@ export class Game extends Phaser.Scene {
 		this.pipes = this.physics.add.group()
 
 		this.physics.add.overlap(this.player, this.pipes, this.hitPipe, undefined, this)
+		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
-		this.startPipeTimer()
-
+		this.intro = this.add.image(this.player.x + 100, this.player.y + 100, 'Icon_Cursor_02a').setScale(3)
 		this.score = new PrimaryText(this, this.scale.width / 2, -20, '0', {
 			fontSize: 121,
 		})
 			.setDepth(100)
 			.setOrigin(0.5, 0)
 
+		this.input.once('pointerdown', this.start)
 		this.input.on('pointerdown', this.flap)
 		this.scale.on('resize', this.resize, this)
+	}
+
+	start() {
+		if (this.isGameStarted) return
+
+		this.isGameStarted = true
+		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
+		this.startPipeTimer()
+
+		this.intro.destroy()
 	}
 
 	resize() {
@@ -44,7 +59,9 @@ export class Game extends Phaser.Scene {
 	}
 
 	flap() {
-		this.player.setVelocityY(-300)
+		if (this.isGameStarted) {
+			this.player.setVelocityY(-300)
+		}
 	}
 
 	startPipeTimer() {
@@ -57,8 +74,10 @@ export class Game extends Phaser.Scene {
 	}
 
 	addPipeRow() {
-		const pipeHeight = Phaser.Math.Between(100, 400)
-		new PipePair(this, this.cameras.main.width + 50, pipeHeight)
+		if (this.isGameStarted) {
+			const pipeHeight = Phaser.Math.Between(100, 400)
+			new PipePair(this, this.cameras.main.width + 50, pipeHeight)
+		}
 	}
 
 	hitPipe() {
