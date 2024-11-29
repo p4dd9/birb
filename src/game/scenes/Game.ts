@@ -46,10 +46,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	start() {
-		console.log('start')
-		console.log(this.isGameStarted)
 		if (this.isGameStarted) return
-		console.log(this.intro)
 		this.isGameStarted = true
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
 		this.startPipeTimer()
@@ -72,7 +69,6 @@ export class Game extends Phaser.Scene {
 	}
 
 	flap() {
-		console.log('start')
 		if (this.isGameStarted) {
 			this.player.setVelocityY(-300)
 		}
