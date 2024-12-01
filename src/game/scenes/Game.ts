@@ -7,7 +7,9 @@ export class Game extends Phaser.Scene {
 	player: Player
 	pipes: Phaser.GameObjects.Group
 	score: PrimaryText
+
 	intro: Phaser.GameObjects.Image
+	introText: PrimaryText
 
 	currentScore: number = 0
 	isGameStarted: boolean = false
@@ -31,6 +33,11 @@ export class Game extends Phaser.Scene {
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
 		this.intro = this.add.image(this.player.x + 100, this.player.y + 100, 'Icon_Cursor_02a').setScale(3)
+		this.introText = new PrimaryText(this, this.player.x, this.player.y + 75, 'Tap', { fontSize: 72 }).setOrigin(
+			0.5,
+			0.5
+		)
+
 		this.score = new PrimaryText(this, this.scale.width / 2, -20, '0', {
 			fontSize: 121,
 		})
@@ -58,6 +65,7 @@ export class Game extends Phaser.Scene {
 		this.startPipeTimer()
 
 		this.intro.destroy()
+		this.introText.destroy()
 	}
 
 	saveStats() {
@@ -76,12 +84,14 @@ export class Game extends Phaser.Scene {
 		if (!this.isGameStarted) {
 			this.player.setPosition(200, this.scale.height / 2 - 100)
 			this.intro.setPosition(this.player.x + 100, this.player.y + 100)
+			this.introText.setPosition(this.player.x, this.player.y + 75)
 		}
 	}
 
 	flap() {
 		if (this.isGameStarted) {
 			this.player.setVelocityY(-300)
+			this.player.playFlapAnimation()
 		}
 	}
 

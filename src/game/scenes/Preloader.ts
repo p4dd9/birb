@@ -18,6 +18,12 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
+		this.anims.create({
+			key: 'flap',
+			frames: this.anims.generateFrameNumbers('birds', { start: 0, end: 3 }),
+			frameRate: 12,
+			repeat: 0,
+		})
 		this.scene.start('Game')
 	}
 }
