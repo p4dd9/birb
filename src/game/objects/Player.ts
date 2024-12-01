@@ -1,6 +1,10 @@
 import type { Game } from '../scenes/Game'
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
+	upRotation: number = -25
+	downRotation: number = 25
+	velocityThreshold: number = 0
+
 	constructor(scene: Game, x: number, y: number) {
 		super(scene, x, y, 'birds', 0)
 
@@ -16,5 +20,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 				scene.gameOver()
 			}
 		})
+	}
+
+	updateBird() {
+		const velocityY = (this.body as Phaser.Physics.Arcade.Body).velocity.y
+
+		if (velocityY < this.velocityThreshold) {
+			this.setAngle(this.upRotation)
+		} else {
+			this.setAngle(this.downRotation)
+		}
 	}
 }

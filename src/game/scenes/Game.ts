@@ -45,6 +45,12 @@ export class Game extends Phaser.Scene {
 		this.resetScore()
 	}
 
+	override update(_time: number, _delta: number) {
+		if (this.isGameStarted) {
+			this.player.updateBird()
+		}
+	}
+
 	start() {
 		if (this.isGameStarted) return
 		this.isGameStarted = true
