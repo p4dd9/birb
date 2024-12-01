@@ -24,7 +24,7 @@ export class Game extends Phaser.Scene {
 		this.hitPipe = this.hitPipe.bind(this)
 		this.addPipeRow = this.addPipeRow.bind(this)
 
-		this.player = new Player(this, 200, 300)
+		this.player = new Player(this, 200, this.scale.height / 2 - 100)
 		this.pipes = this.physics.add.group()
 
 		this.physics.add.overlap(this.player, this.pipes, this.hitPipe, undefined, this)
@@ -66,6 +66,11 @@ export class Game extends Phaser.Scene {
 
 	resize() {
 		this.score.setX(this.scale.width / 2)
+
+		if (!this.isGameStarted) {
+			this.player.setPosition(200, this.scale.height / 2 - 100)
+			this.intro.setPosition(this.player.x + 100, this.player.y + 100)
+		}
 	}
 
 	flap() {
@@ -107,7 +112,6 @@ export class Game extends Phaser.Scene {
 	gameOver() {
 		this.physics.pause()
 		this.player.setTint(0xff0000)
-		this.scene.pause()
 		this.saveStats()
 		this.scene.run('GameOver')
 	}
