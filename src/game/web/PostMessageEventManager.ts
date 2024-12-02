@@ -27,7 +27,12 @@ export class PostMessageEventManager {
 
 				switch (data.message.type) {
 					case 'gameOver': {
-						const gameOverData = data.message.data as { isNewHighscore: boolean; newScore: number }
+						const gameOverData = data.message.data as {
+							isNewHighScore: boolean
+							newScore: number
+							highscore: number
+							gameRounds: number
+						}
 						globalEventEmitter.emit('gameOver', gameOverData)
 					}
 					default: {

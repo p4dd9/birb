@@ -39,6 +39,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 						isNewHighScore,
 						newScore,
 						highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
+						gameRounds: currentPersonalStats.gameRounds + 1,
 					},
 				})
 				break
