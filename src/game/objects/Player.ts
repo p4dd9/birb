@@ -12,6 +12,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		super(scene, x, y, 'birds', 0)
 
 		this.setScale(4)
+		this.flap = this.flap.bind(this)
 
 		scene.add.existing(this)
 		scene.physics.add.existing(this)
@@ -24,6 +25,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 				scene.gameOver()
 				this.setCollideWorldBounds(false)
 			}
+		})
+	}
+
+	flap() {
+		console.log(this)
+		this.setVelocityY(-300)
+		this.playFlapAnimation()
+	}
+
+	die() {
+		;(this.body as Phaser.Physics.Arcade.Body).enable = false
+		this.setTint(0xff0000)
+
+		this.scene.tweens.add({
+			targets: this,
+			y: this.y - 50,
+			duration: 300,
+			ease: 'Power1',
+			onComplete: () => {
+				this.scene.tweens.add({
+					targets: this,
+					y: this.scene.scale.height + 500,
+					duration: 1200,
+					ease: 'Power1',
+					onComplete: () => {
+						this.destroy()
+					},
+				})
+			},
 		})
 	}
 

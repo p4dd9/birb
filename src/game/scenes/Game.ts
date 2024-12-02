@@ -21,7 +21,6 @@ export class Game extends Phaser.Scene {
 	create() {
 		this.isGameStarted = false
 
-		this.flap = this.flap.bind(this)
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
 		this.addPipeRow = this.addPipeRow.bind(this)
@@ -46,7 +45,7 @@ export class Game extends Phaser.Scene {
 
 		this.input.on('pointerdown', this.start)
 
-		this.input.on('pointerdown', this.flap)
+		this.input.on('pointerdown', this.player.flap)
 		this.scale.on('resize', this.resize, this)
 
 		this.input.keyboard?.createCombo('bird', {
@@ -87,13 +86,6 @@ export class Game extends Phaser.Scene {
 		}
 	}
 
-	flap() {
-		if (this.isGameStarted && this.player.body) {
-			this.player.setVelocityY(-300)
-			this.player.playFlapAnimation()
-		}
-	}
-
 	startPipeTimer() {
 		this.time.addEvent({
 			delay: 1500,
@@ -125,10 +117,11 @@ export class Game extends Phaser.Scene {
 	}
 
 	gameOver() {
-		this.physics.pause()
-		;(this.player.body as Phaser.Physics.Arcade.Body).enable = false
+		this.input.off('pointerdown', this.player.flap)
+		this.player.die()
 
-		this.player.setTint(0xff0000)
+		this.physics.pause()
+
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(
 			'gameOver',
@@ -136,22 +129,5 @@ export class Game extends Phaser.Scene {
 				this.scene.run('GameOver', data)
 			}
 		)
-		this.tweens.add({
-			targets: this.player,
-			y: this.player.y - 50,
-			duration: 300,
-			ease: 'Power1',
-			onComplete: () => {
-				this.tweens.add({
-					targets: this.player,
-					y: this.scale.height + 500,
-					duration: 1200,
-					ease: 'Power1',
-					onComplete: () => {
-						this.player.destroy()
-					},
-				})
-			},
-		})
 	}
 }
