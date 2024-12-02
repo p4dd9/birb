@@ -17,16 +17,15 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 		switch (ev.type) {
 			case 'saveStats': {
 				const newScore = ev.data.personal.highscore
-				let currentPersonalStats = await redisService.getPersonalStats()
+				let currentPersonalStats = await redisService.getPlayerStats()
 
 				if (!currentPersonalStats) {
-					currentPersonalStats = { gameRounds: 0, highscore: 0 }
+					currentPersonalStats = { highscore: 0, attempts: 0 }
 				}
 
 				const isNewHighScore = newScore > currentPersonalStats.highscore
-				await redisService.savePersonalStats({
+				await redisService.saveScore({
 					highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
-					gameRounds: currentPersonalStats.gameRounds + 1,
 				})
 
 				if (isNewHighScore) {
@@ -39,13 +38,31 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 						isNewHighScore,
 						newScore,
 						highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
-						gameRounds: currentPersonalStats.gameRounds + 1,
+						attempts: currentPersonalStats.attempts + 1,
 					},
 				})
 				break
 			}
+			case 'getBestPlayer': {
+				const bestPlayer = await redisService.getBestPlayer()
+				if (!bestPlayer) return
+				context.ui.webView.postMessage('game-webview', {
+					type: 'updateBestPlayer',
+					data: bestPlayer,
+				})
+				break
+			}
+			case 'getBestPlayers': {
+				const bestPlayers = await redisService.getTopPlayers()
+				if (!bestPlayers || bestPlayers.length < 0) return
+				context.ui.webView.postMessage('game-webview', {
+					type: 'updateBestPlayers',
+					data: bestPlayers,
+				})
+				break
+			}
 			default: {
-				console.log(`Unknown message type ${ev.type}!`)
+				console.log(`Unknown message type "${(ev as unknown as any).type}" !`)
 			}
 		}
 	}

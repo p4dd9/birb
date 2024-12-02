@@ -1,3 +1,6 @@
+import type { Player } from '../../shared/messages'
+import globalEventEmitter from '../web/GlobalEventEmitter'
+
 export class Menu extends Phaser.Scene {
 	gameTitleText: Phaser.GameObjects.Text
 
@@ -12,13 +15,81 @@ export class Menu extends Phaser.Scene {
 
 	isMute: boolean = false
 
+	bestPlayer: Phaser.GameObjects.Text
+
+	private banner1: Phaser.GameObjects.Text
+	private banner2: Phaser.GameObjects.Text
+	private bannerWidth: number
+	private scrollSpeed: number
+
 	constructor() {
 		super('Menu')
 	}
 
+	override update(_time: number, delta: number) {
+		if (!this.banner1 || !this.banner2) {
+			return
+		}
+		this.banner1.x -= this.scrollSpeed * (delta / 1000)
+		this.banner2.x -= this.scrollSpeed * (delta / 1000)
+
+		if (this.banner1.x + this.bannerWidth < 0) {
+			this.banner1.x = this.banner2.x + this.bannerWidth
+		}
+		if (this.banner2.x + this.bannerWidth < 0) {
+			this.banner2.x = this.banner1.x + this.bannerWidth
+		}
+	}
 	create() {
 		const centerX = this.scale.width / 2
 		const centerY = this.scale.height / 2
+
+		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
+			console.log(bestPlayer)
+			this.bestPlayer = this.add
+				.text(250, this.scale.height - 250, `${bestPlayer.userId}: ${bestPlayer.score}`, {
+					fontSize: 72,
+					fontFamily: 'mago3',
+					color: 'black',
+				})
+				.setOrigin(0.5, 0.5)
+				.setAngle(42)
+			this.add.tween({
+				targets: this.bestPlayer,
+				scale: 1.1,
+				yoyo: true,
+				duration: 1000,
+				repeat: -1,
+			})
+		})
+
+		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
+			console.log(bestPlayers)
+
+			const bannerText = bestPlayers
+				.map((player) => `Player: ${player.userId}, Score: ${player.score}`)
+				.join('   ||   ')
+
+			this.banner1 = this.add.text(0, 50, bannerText, {
+				font: '24px Arial',
+				color: '#ffffff',
+				backgroundColor: '#000000',
+				padding: { left: 10, right: 10, top: 5, bottom: 5 },
+			})
+			this.banner2 = this.add.text(this.banner1.width, 50, bannerText, {
+				font: '24px Arial',
+				color: '#ffffff',
+				backgroundColor: '#000000',
+				padding: { left: 10, right: 10, top: 5, bottom: 5 },
+			})
+
+			this.banner1.setOrigin(0, 0.5)
+			this.banner2.setOrigin(0, 0.5)
+
+			this.bannerWidth = this.banner1.width
+
+			this.scrollSpeed = 100
+		})
 
 		this.gameTitleText = this.add
 			.text(centerX, centerY - 155, 'REDDIBIRDS', {
@@ -70,11 +141,13 @@ export class Menu extends Phaser.Scene {
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
 
+		globalEventEmitter.emit('getBestPlayer')
+		globalEventEmitter.emit('getBestPlayers')
+
 		this.scale.on('resize', this.resize, this)
 	}
 
 	private getMuteButtonText(): string {
-		console.log(this.game.sound.mute)
 		return this.isMute ? 'Unmute' : 'Mute'
 	}
 

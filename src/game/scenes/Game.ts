@@ -125,7 +125,7 @@ export class Game extends Phaser.Scene {
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(
 			'gameOver',
-			(data: { isNewHighscore: boolean; newScore: number; highscore: number; gameRounds: number }) => {
+			(data: { isNewHighscore: boolean; newScore: number; highscore: number; attempts: number }) => {
 				this.scene.run('GameOver', data)
 			}
 		)

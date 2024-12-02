@@ -1,4 +1,4 @@
-import type { SaveStatsMessage } from '../../shared/messages'
+import type { Player, SaveStatsMessage } from '../../shared/messages'
 import globalEventEmitter from './GlobalEventEmitter'
 
 export class PostMessageEventManager {
@@ -25,15 +25,27 @@ export class PostMessageEventManager {
 					return
 				}
 
+				console.log(ev)
 				switch (data.message.type) {
 					case 'gameOver': {
 						const gameOverData = data.message.data as {
 							isNewHighScore: boolean
 							newScore: number
 							highscore: number
-							gameRounds: number
+							attempts: number
 						}
 						globalEventEmitter.emit('gameOver', gameOverData)
+						break
+					}
+					case 'updateBestPlayer': {
+						const gameOverData = data.message.data as Player
+						globalEventEmitter.emit('updateBestPlayer', gameOverData)
+						break
+					}
+					case 'updateBestPlayers': {
+						const gameOverData = data.message.data as Player[]
+						globalEventEmitter.emit('updateBestPlayers', gameOverData)
+						break
 					}
 					default: {
 						console.log(`Unknown type ${data.message.type} for message ${data.message}.`)
@@ -51,6 +63,20 @@ export class PostMessageEventManager {
 				data: {
 					personal: { highscore },
 				},
+			}
+			PostMessageEventManager.postMessage(message)
+		})
+
+		globalEventEmitter.on('getBestPlayer', () => {
+			let message: { type: string } = {
+				type: 'getBestPlayer',
+			}
+			PostMessageEventManager.postMessage(message)
+		})
+
+		globalEventEmitter.on('getBestPlayers', () => {
+			let message: { type: string } = {
+				type: 'getBestPlayers',
 			}
 			PostMessageEventManager.postMessage(message)
 		})

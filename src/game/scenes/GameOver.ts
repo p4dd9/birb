@@ -10,11 +10,12 @@ export class GameOver extends Phaser.Scene {
 		super('GameOver')
 	}
 
-	create(data: { isNewHighScore: boolean; newScore: number; highscore: number; gameRounds: number }) {
+	create(data: { isNewHighScore: boolean; newScore: number; highscore: number; attempts: number }) {
 		const centerX = this.scale.width / 2
 		const centerY = this.scale.height / 2
 
-		const { isNewHighScore, newScore, highscore, gameRounds } = data
+		const { isNewHighScore, newScore, highscore, attempts } = data
+		console.log(data)
 
 		this.gameOverText = this.add
 			.text(centerX, centerY - 70, 'Game Over', {
@@ -33,7 +34,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0, 1)
 
 		this.gamesCountText = this.add
-			.text(this.scale.width - 50, this.scale.height - 50, `Games: ${gameRounds}`, {
+			.text(this.scale.width - 50, this.scale.height - 50, `Games: ${attempts}`, {
 				fontSize: 72,
 				fontFamily: 'mago3',
 				color: 'black',

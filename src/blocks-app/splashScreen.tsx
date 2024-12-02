@@ -1,7 +1,5 @@
 import { Devvit, useState } from '@devvit/public-api'
-import type { StartGameMessage } from '../shared/messages'
-import type { Stats } from '../shared/types'
-import { createRedisService } from './redisService'
+import { createRedisService, type SaveScoreData } from './redisService'
 
 type SplashScreenProps = {
 	context: Devvit.Context
@@ -12,15 +10,10 @@ type SplashScreenProps = {
 export function SplashScreen(props: SplashScreenProps): JSX.Element {
 	const { context, webviewVisible, setWebviewVisible } = props
 	const redisService = createRedisService(props.context)
-	const [stats] = useState<Stats | null>(async () => await redisService.getPersonalStats())
+	const [stats] = useState<SaveScoreData | null>(async () => await redisService.getPlayerStats())
 
 	const onLaunchApp = () => {
 		setWebviewVisible(true)
-		const message: StartGameMessage = {
-			type: 'startGame',
-			data: !stats ? { personal: { highscore: 0, gameRounds: 0 } } : { personal: stats },
-		}
-		// context.ui.webView.postMessage('game-webview', message)
 	}
 
 	return (
