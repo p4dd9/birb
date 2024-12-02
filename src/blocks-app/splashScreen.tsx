@@ -1,7 +1,7 @@
 import { Devvit, useState } from '@devvit/public-api'
-import { createRedisService } from './redisService'
-import type { Stats } from '../shared/types'
 import type { StartGameMessage } from '../shared/messages'
+import type { Stats } from '../shared/types'
+import { createRedisService } from './redisService'
 
 type SplashScreenProps = {
 	context: Devvit.Context
@@ -20,7 +20,7 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 			type: 'startGame',
 			data: !stats ? { personal: { highscore: 0, gameRounds: 0 } } : { personal: stats },
 		}
-		context.ui.webView.postMessage('game-webview', message)
+		// context.ui.webView.postMessage('game-webview', message)
 	}
 
 	return (
@@ -36,12 +36,7 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 				resizeMode="cover"
 			/>
 			<vstack grow height="100%" width="100%" alignment="middle center">
-				<text size="xlarge" weight="bold" color="white">
-					ReddiBirds
-				</text>
-				<spacer />
-				<spacer />
-				<button onPress={onLaunchApp}>Launch App</button>
+				<button onPress={onLaunchApp}>Launch ReddiBirds</button>
 			</vstack>
 		</zstack>
 	)

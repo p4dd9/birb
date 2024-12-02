@@ -21,11 +21,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.world.on('worldbounds', (body: Phaser.Physics.Arcade.Body) => {
 			if (body.gameObject === this) {
 				scene.gameOver()
+				this.setCollideWorldBounds(false)
 			}
 		})
 	}
 
 	updateBird() {
+		if (!this.body) return
 		const velocityY = (this.body as Phaser.Physics.Arcade.Body).velocity.y
 
 		if (velocityY < this.velocityThreshold) {

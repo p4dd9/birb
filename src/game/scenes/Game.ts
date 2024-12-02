@@ -1,17 +1,17 @@
-import type { SaveStatsMessage } from '../../shared/messages'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import { PrimaryText } from '../objects/PrimaryText'
+import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Game extends Phaser.Scene {
 	player: Player
 	pipes: Phaser.GameObjects.Group
 	score: PrimaryText
+	currentScore: number = 0
 
 	intro: Phaser.GameObjects.Image
 	introText: PrimaryText
 
-	currentScore: number = 0
 	isGameStarted: boolean = false
 
 	constructor() {
@@ -68,16 +68,6 @@ export class Game extends Phaser.Scene {
 		this.introText.destroy()
 	}
 
-	saveStats() {
-		let message: SaveStatsMessage = {
-			type: 'saveStats',
-			data: {
-				personal: { highscore: this.currentScore },
-			},
-		}
-		window.parent?.postMessage(message, '*')
-	}
-
 	resize() {
 		this.score.setX(this.scale.width / 2)
 
@@ -89,7 +79,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	flap() {
-		if (this.isGameStarted) {
+		if (this.isGameStarted && this.player.body) {
 			this.player.setVelocityY(-300)
 			this.player.playFlapAnimation()
 		}
@@ -127,8 +117,32 @@ export class Game extends Phaser.Scene {
 
 	gameOver() {
 		this.physics.pause()
+		;(this.player.body as Phaser.Physics.Arcade.Body).enable = false
+
 		this.player.setTint(0xff0000)
-		this.saveStats()
-		this.scene.run('GameOver')
+		globalEventEmitter.emit('saveStats', this.currentScore)
+		globalEventEmitter.once(
+			'gameOver',
+			(data: { isNewHighscore: boolean; newScore: number; highscore: number }) => {
+				this.scene.run('GameOver', data)
+			}
+		)
+		this.tweens.add({
+			targets: this.player,
+			y: this.player.y - 50,
+			duration: 300,
+			ease: 'Power1',
+			onComplete: () => {
+				this.tweens.add({
+					targets: this.player,
+					y: this.scale.height + 500,
+					duration: 1200,
+					ease: 'Power1',
+					onComplete: () => {
+						this.player.destroy()
+					},
+				})
+			},
+		})
 	}
 }
