@@ -33,7 +33,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0, 1)
 
 		this.gamesCountText = this.add
-			.text(this.scale.width - 50, this.scale.width - 50, `Games: ${gameRounds}`, {
+			.text(this.scale.width - 50, this.scale.height - 50, `Games: ${gameRounds}`, {
 				fontSize: 72,
 				fontFamily: 'mago3',
 				color: 'black',
