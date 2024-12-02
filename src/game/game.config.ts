@@ -2,6 +2,7 @@ import type { Types } from 'phaser'
 import { Boot } from './scenes/Boots'
 import { Game } from './scenes/Game'
 import { GameOver } from './scenes/GameOver'
+import { Menu } from './scenes/Menu'
 import { Preloader } from './scenes/Preloader'
 
 export const gameConfig: Types.Core.GameConfig = {
@@ -18,5 +19,5 @@ export const gameConfig: Types.Core.GameConfig = {
 		},
 	},
 	transparent: true,
-	scene: [Boot, Preloader, Game, GameOver],
+	scene: [Boot, Preloader, Menu, Game, GameOver],
 }

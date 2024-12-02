@@ -44,6 +44,6 @@ export class Preloader extends Phaser.Scene {
 				repeat: 0,
 			})
 		}
-		this.scene.start('Game')
+		this.scene.start('Menu')
 	}
 }

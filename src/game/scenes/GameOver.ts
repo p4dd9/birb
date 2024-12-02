@@ -44,6 +44,11 @@ export class GameOver extends Phaser.Scene {
 			.image(centerX, centerY + 120, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameOverText.displayWidth / 2, 100)
 			.setOrigin(0.5)
+			.setInteractive({ cursor: 'pointer' })
+			.once('pointerdown', () => {
+				this.scene.start('Game')
+			})
+
 		this.replayButtonText = this.add
 			.text(centerX, centerY + 105, 'Restart', {
 				fontSize: '82px',
@@ -51,10 +56,6 @@ export class GameOver extends Phaser.Scene {
 				color: 'black',
 			})
 			.setOrigin(0.5)
-			.setInteractive({ cursor: 'pointer' })
-			.once('pointerdown', () => {
-				this.scene.start('Game')
-			})
 
 		this.scale.on('resize', this.resize, this)
 	}
