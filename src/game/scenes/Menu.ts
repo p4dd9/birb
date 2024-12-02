@@ -1,7 +1,11 @@
 export class Menu extends Phaser.Scene {
 	gameTitleText: Phaser.GameObjects.Text
+
 	playButton: Phaser.GameObjects.Image
 	playButtonText: Phaser.GameObjects.Text
+
+	scoreBoardButton: Phaser.GameObjects.Image
+	scoreBoardButtonText: Phaser.GameObjects.Text
 
 	personalHighscoreText: Phaser.GameObjects.Text
 	muteButtonText: Phaser.GameObjects.Text
@@ -17,7 +21,7 @@ export class Menu extends Phaser.Scene {
 		const centerY = this.scale.height / 2
 
 		this.gameTitleText = this.add
-			.text(centerX, centerY - 120, 'REDDIBIRDS', {
+			.text(centerX, centerY - 155, 'REDDIBIRDS', {
 				fontSize: 172,
 				fontFamily: 'mago3',
 				color: 'black',
@@ -25,7 +29,7 @@ export class Menu extends Phaser.Scene {
 			.setOrigin(0.5)
 
 		this.playButton = this.add
-			.image(centerX, this.gameTitleText.y + 160, 'UI_Flat_Frame03a')
+			.image(centerX, this.gameTitleText.y + 170, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameTitleText.displayWidth / 2, 100)
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
@@ -34,6 +38,22 @@ export class Menu extends Phaser.Scene {
 			})
 		this.playButtonText = this.add
 			.text(centerX, this.playButton.y - 15, 'Play', {
+				fontSize: '82px',
+				fontFamily: 'mago3',
+				color: 'black',
+			})
+			.setOrigin(0.5)
+
+		this.scoreBoardButton = this.add
+			.image(centerX, this.playButton.y + 130, 'UI_Flat_Frame03a')
+			.setDisplaySize(this.gameTitleText.displayWidth / 2, 100)
+			.setOrigin(0.5)
+			.setInteractive({ cursor: 'pointer' })
+			.once('pointerdown', () => {
+				this.scene.start('Game')
+			})
+		this.scoreBoardButtonText = this.add
+			.text(centerX, this.scoreBoardButton.y - 15, 'Scores', {
 				fontSize: '82px',
 				fontFamily: 'mago3',
 				color: 'black',
@@ -69,10 +89,13 @@ export class Menu extends Phaser.Scene {
 	}
 
 	resize() {
-		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 120)
+		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 155)
 
-		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 160)
+		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 170)
 		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y - 15)
+
+		this.scoreBoardButton.setPosition(this.scale.width / 2, this.playButton.y + 130)
+		this.scoreBoardButtonText.setPosition(this.scale.width / 2, this.scoreBoardButton.y - 15)
 
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 50)
 	}
