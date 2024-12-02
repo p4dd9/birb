@@ -29,15 +29,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	flap() {
-		console.log(this)
 		this.setVelocityY(-300)
 		this.playFlapAnimation()
+		this.scene.sound.play(`whoosh_swish_small_0${Phaser.Math.Between(1, 3)}`, { volume: 0.4 })
 	}
 
 	die() {
 		;(this.body as Phaser.Physics.Arcade.Body).enable = false
 		this.setTint(0xff0000)
-
+		this.scene.sound.play(`bird_tweety_hurt_0${Phaser.Math.Between(1, 6)}`, { volume: 0.5 })
 		this.scene.tweens.add({
 			targets: this,
 			y: this.y - 50,

@@ -13,11 +13,26 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 
+		this.load.audio('darkness_theme', 'audio/darkness_theme.ogg')
+
+		this.load.audio('bird_tweety_hurt_01', 'audio/bird_tweety_hurt_01.wav')
+		this.load.audio('bird_tweety_hurt_02', 'audio/bird_tweety_hurt_02.wav')
+		this.load.audio('bird_tweety_hurt_03', 'audio/bird_tweety_hurt_03.wav')
+		this.load.audio('bird_tweety_hurt_04', 'audio/bird_tweety_hurt_04.wav')
+		this.load.audio('bird_tweety_hurt_05', 'audio/bird_tweety_hurt_05.wav')
+		this.load.audio('bird_tweety_hurt_06', 'audio/bird_tweety_hurt_06.wav')
+
+		this.load.audio('whoosh_swish_small_01', 'audio/whoosh_swish_small_01.wav')
+		this.load.audio('whoosh_swish_small_02', 'audio/whoosh_swish_small_02.wav')
+		this.load.audio('whoosh_swish_small_03', 'audio/whoosh_swish_small_03.wav')
+
 		this.load.spritesheet('birds', 'birds.png', { frameWidth: 16, frameHeight: 16 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
 	}
 
 	create() {
+		this.sound.add('darkness_theme')
+		this.sound.play('darkness_theme', { loop: true, volume: 0.4 })
 		for (let row = 0; row < 7; row++) {
 			this.anims.create({
 				key: `flap_${row}`,
