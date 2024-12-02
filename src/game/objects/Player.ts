@@ -6,6 +6,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	velocityThreshold: number = 0
 
 	isAnimating: boolean = false
+	currentBirdSprite: number = 0
 
 	constructor(scene: Game, x: number, y: number) {
 		super(scene, x, y, 'birds', 0)
@@ -40,10 +41,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	playFlapAnimation() {
 		if (!this.isAnimating) {
 			this.isAnimating = true
-			this.play('flap', true)
+			this.play(`flap_${this.currentBirdSprite}`, true)
 			this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
 				this.isAnimating = false
 			})
 		}
+	}
+
+	changeToRandomBird() {
+		let newRow
+		do {
+			newRow = Phaser.Math.Between(0, 6)
+		} while (newRow === this.currentBirdSprite)
+
+		this.currentBirdSprite = newRow
 	}
 }
