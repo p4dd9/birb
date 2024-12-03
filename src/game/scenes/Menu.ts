@@ -32,7 +32,7 @@ export class Menu extends Phaser.Scene {
 					color: 'black',
 				})
 				.setOrigin(0.5, 0.5)
-				.setAngle(68)
+				.setAngle(10)
 			this.add.tween({
 				targets: this.bestPlayer,
 				scale: 1.1,

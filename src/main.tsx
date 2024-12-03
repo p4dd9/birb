@@ -9,14 +9,14 @@ Devvit.configure({
 })
 
 Devvit.addMenuItem({
-	label: 'Untitled Game with PhaserJS',
+	label: 'Create REDDIBIRDS Post',
 	location: 'subreddit',
 	forUserType: 'moderator',
 	onPress: addMenuItem,
 })
 
 Devvit.addCustomPostType({
-	name: 'Untitled Game with PhaserJS',
+	name: 'REDDIBIRDS',
 	height: 'regular',
 	render: (context: Devvit.Context) => {
 		const [webviewVisible, setWebviewVisible] = useState(false)
