@@ -75,7 +75,9 @@ export function createRedisService(context: Devvit.Context): RedisService {
 					const comment = await context.reddit.submitComment({
 						id: postId,
 						richtext: new RichTextBuilder().codeBlock({}, (cb) =>
-							cb.rawText(`"${newTopUserName.username}"s highscore is ${newTopPlayer[0]?.score}!`)
+							cb.rawText(
+								`WOW! "${newTopUserName.username}" scored a new highscore: ${newTopPlayer[0]?.score}!`
+							)
 						),
 					})
 
