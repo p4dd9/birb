@@ -1,4 +1,4 @@
-import { Devvit } from '@devvit/public-api'
+import { Devvit, RichTextBuilder } from '@devvit/public-api'
 import type { PostMessageMessages } from '../shared/messages'
 import { createRedisService } from './redisService'
 
@@ -59,6 +59,36 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					type: 'updateBestPlayers',
 					data: bestPlayers,
 				})
+				break
+			}
+
+			case 'shareAsComment': {
+				if (!context.postId) {
+					return
+				}
+				const currentUser = await context.reddit.getCurrentUser()
+				if (!currentUser?.id) {
+					return
+				}
+				const playerStats = await redisService.getPlayerByUserId(currentUser.id)
+				if (!playerStats) {
+					return
+				}
+
+				try {
+					const comment = await context.reddit.submitComment({
+						id: context.postId,
+						richtext: new RichTextBuilder().codeBlock({}, (cb) =>
+							cb.rawText(`"${currentUser.username}"s highscore is ${playerStats.highscore}!`)
+						),
+					})
+
+					if (comment) {
+						context.ui.showToast('Your fantastic highscore was shared as a comment!')
+					}
+				} catch (err) {
+					throw new Error(`Error uploading media: ${err}`)
+				}
 				break
 			}
 			default: {

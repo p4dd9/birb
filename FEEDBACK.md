@@ -4,3 +4,11 @@
 - Auto-Update for existing installation for Community Users
 - Redis is great for smaller applications.
 - Display current App Version in Post (somewhere for developers)
+- Share "File" object through the postMessage (string) to allow sharing screenshots of the game
+- Allow data origin to be uploaded so that one can share a screenshot directly as a comment
+  message
+  :
+  "Error uploading media: Error: ServerCallRequired"
+  origin
+  :
+  "local"

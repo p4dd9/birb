@@ -80,6 +80,13 @@ export class PostMessageEventManager {
 			}
 			PostMessageEventManager.postMessage(message)
 		})
+
+		globalEventEmitter.on('shareAsComment', () => {
+			let message: { type: string } = {
+				type: 'shareAsComment',
+			}
+			PostMessageEventManager.postMessage(message)
+		})
 	}
 
 	static postMessage(message: any) {

@@ -15,6 +15,7 @@ export type RedisService = {
 	saveScore: (stats: SaveScoreData) => Promise<void>
 	getBestPlayer: () => Promise<Player | null>
 	getTopPlayers: () => Promise<Array<Player>>
+	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
 }
 
 export function createRedisService(context: Devvit.Context): RedisService {
@@ -22,6 +23,19 @@ export function createRedisService(context: Devvit.Context): RedisService {
 
 	return {
 		getPlayerStats: async () => {
+			if (!userId) return null
+
+			const attempts = await redis.hGet(`post:${postId}:attempts`, userId)
+			const highscore = await redis.zScore(`post:${postId}:highscores`, userId)
+
+			const mappedStats = {
+				highscore: highscore ? Number(highscore) : 0,
+				attempts: attempts ? Number(attempts) : 0,
+			}
+			return mappedStats
+		},
+
+		getPlayerByUserId: async (userId: string) => {
 			if (!userId) return null
 
 			const attempts = await redis.hGet(`post:${postId}:attempts`, userId)

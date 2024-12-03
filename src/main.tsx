@@ -4,11 +4,10 @@ import { SplashScreen } from './blocks-app/splashScreen'
 import { WebviewContainer } from './blocks-app/webviewContainer'
 
 Devvit.configure({
-	redditAPI: true, // username
-	redis: true, // db storage
+	redditAPI: true,
+	redis: true,
 })
 
-// Add a menu item to the subreddit menu for instantiating the new experience post
 Devvit.addMenuItem({
 	label: 'Untitled Game with PhaserJS',
 	location: 'subreddit',
@@ -16,7 +15,6 @@ Devvit.addMenuItem({
 	onPress: addMenuItem,
 })
 
-// Add a post type definition
 Devvit.addCustomPostType({
 	name: 'Untitled Game with PhaserJS',
 	height: 'regular',
