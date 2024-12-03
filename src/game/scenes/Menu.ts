@@ -7,9 +7,6 @@ export class Menu extends Phaser.Scene {
 	playButton: Phaser.GameObjects.Image
 	playButtonText: Phaser.GameObjects.Text
 
-	scoreBoardButton: Phaser.GameObjects.Image
-	scoreBoardButtonText: Phaser.GameObjects.Text
-
 	personalHighscoreText: Phaser.GameObjects.Text
 	muteButtonText: Phaser.GameObjects.Text
 
@@ -17,37 +14,19 @@ export class Menu extends Phaser.Scene {
 
 	bestPlayer: Phaser.GameObjects.Text
 
-	private banner1: Phaser.GameObjects.Text
-	private banner2: Phaser.GameObjects.Text
-	private bannerWidth: number
-	private scrollSpeed: number
+	breakingNews: Phaser.GameObjects.Text
 
 	constructor() {
 		super('Menu')
 	}
 
-	override update(_time: number, delta: number) {
-		if (!this.banner1 || !this.banner2) {
-			return
-		}
-		this.banner1.x -= this.scrollSpeed * (delta / 1000)
-		this.banner2.x -= this.scrollSpeed * (delta / 1000)
-
-		if (this.banner1.x + this.bannerWidth < 0) {
-			this.banner1.x = this.banner2.x + this.bannerWidth
-		}
-		if (this.banner2.x + this.bannerWidth < 0) {
-			this.banner2.x = this.banner1.x + this.bannerWidth
-		}
-	}
 	create() {
 		const centerX = this.scale.width / 2
 		const centerY = this.scale.height / 2
 
 		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
-			console.log(bestPlayer)
 			this.bestPlayer = this.add
-				.text(250, this.scale.height - 250, `${bestPlayer.userId}: ${bestPlayer.score}`, {
+				.text(250, this.scale.height - 250, `${bestPlayer.userName}: ${bestPlayer.score}`, {
 					fontSize: 72,
 					fontFamily: 'mago3',
 					color: 'black',
@@ -64,35 +43,20 @@ export class Menu extends Phaser.Scene {
 		})
 
 		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
-			console.log(bestPlayers)
+			const bannerText = bestPlayers.map((player) => `"${player.userName}" ${player.score}`).join(' - ')
+			this.breakingNews = this.add
+				.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
+					fontSize: 100,
+					color: 'black',
+					fontFamily: 'mago3',
+				})
+				.setOrigin(0, 0)
 
-			const bannerText = bestPlayers
-				.map((player) => `Player: ${player.userId}, Score: ${player.score}`)
-				.join('   ||   ')
-
-			this.banner1 = this.add.text(0, 50, bannerText, {
-				font: '24px Arial',
-				color: '#ffffff',
-				backgroundColor: '#000000',
-				padding: { left: 10, right: 10, top: 5, bottom: 5 },
-			})
-			this.banner2 = this.add.text(this.banner1.width, 50, bannerText, {
-				font: '24px Arial',
-				color: '#ffffff',
-				backgroundColor: '#000000',
-				padding: { left: 10, right: 10, top: 5, bottom: 5 },
-			})
-
-			this.banner1.setOrigin(0, 0.5)
-			this.banner2.setOrigin(0, 0.5)
-
-			this.bannerWidth = this.banner1.width
-
-			this.scrollSpeed = 100
+			this.startBreakingNews()
 		})
 
 		this.gameTitleText = this.add
-			.text(centerX, centerY - 155, 'REDDIBIRDS', {
+			.text(centerX, centerY - 110, 'REDDIBIRDS', {
 				fontSize: 172,
 				fontFamily: 'mago3',
 				color: 'black',
@@ -115,22 +79,6 @@ export class Menu extends Phaser.Scene {
 			})
 			.setOrigin(0.5)
 
-		this.scoreBoardButton = this.add
-			.image(centerX, this.playButton.y + 130, 'UI_Flat_Frame03a')
-			.setDisplaySize(this.gameTitleText.displayWidth / 2, 100)
-			.setOrigin(0.5)
-			.setInteractive({ cursor: 'pointer' })
-			.once('pointerdown', () => {
-				this.scene.start('Game')
-			})
-		this.scoreBoardButtonText = this.add
-			.text(centerX, this.scoreBoardButton.y - 15, 'Scores', {
-				fontSize: '82px',
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
-
 		this.muteButtonText = this.add
 			.text(this.scale.width - 50, this.scale.height - 50, this.getMuteButtonText(), {
 				fontSize: 72,
@@ -147,11 +95,24 @@ export class Menu extends Phaser.Scene {
 		this.scale.on('resize', this.resize, this)
 	}
 
-	private getMuteButtonText(): string {
+	startBreakingNews() {
+		this.add.tween({
+			targets: this.breakingNews,
+			x: -this.breakingNews.displayWidth,
+			duration: 9000,
+			repeat: 0,
+			onComplete: () => {
+				this.breakingNews.x = this.scale.width
+				this.startBreakingNews()
+			},
+		})
+	}
+
+	getMuteButtonText(): string {
 		return this.isMute ? 'Unmute' : 'Mute'
 	}
 
-	private toggleMute(): void {
+	toggleMute(): void {
 		if (this.sound.locked) {
 			console.warn('Sound system is locked. Waiting for user interaction.')
 			return
@@ -162,13 +123,10 @@ export class Menu extends Phaser.Scene {
 	}
 
 	resize() {
-		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 155)
+		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 110)
 
 		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 170)
 		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y - 15)
-
-		this.scoreBoardButton.setPosition(this.scale.width / 2, this.playButton.y + 130)
-		this.scoreBoardButtonText.setPosition(this.scale.width / 2, this.scoreBoardButton.y - 15)
 
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 50)
 	}

@@ -29,5 +29,6 @@ export type StartGameMessage = {
 
 export type Player = {
 	userId: string
+	userName: string
 	score: number
 }
