@@ -1,4 +1,4 @@
-import { Devvit } from '@devvit/public-api'
+import { Devvit, RichTextBuilder } from '@devvit/public-api'
 import type { Player } from '../shared/messages'
 
 export type SaveScoreData = {
@@ -51,8 +51,39 @@ export function createRedisService(context: Devvit.Context): RedisService {
 		saveScore: async (stats) => {
 			if (!userId) return
 
+			const currentTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
+				by: 'rank',
+				reverse: true,
+			})
+
 			await redis.zAdd(`post:${postId}:highscores`, { member: userId, score: stats.highscore })
 			await redis.hIncrBy(`post:${postId}:attempts`, userId, 1)
+
+			const newTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
+				by: 'rank',
+				reverse: true,
+			})
+
+			if (!newTopPlayer || !newTopPlayer[0] || !postId) {
+				return
+			}
+
+			if (newTopPlayer.length > 0 && newTopPlayer[0].member !== (currentTopPlayer[0]?.member || null)) {
+				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
+
+				if (newTopUserName) {
+					const comment = await context.reddit.submitComment({
+						id: postId,
+						richtext: new RichTextBuilder().codeBlock({}, (cb) =>
+							cb.rawText(`"${newTopUserName.username}"s highscore is ${newTopPlayer[0]?.score}!`)
+						),
+					})
+
+					if (comment) {
+						context.ui.showToast('Your fantastic highscore was shared as a comment!')
+					}
+				}
+			}
 		},
 
 		getBestPlayer: async () => {

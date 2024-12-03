@@ -1,8 +1,4 @@
-export type PostMessageMessages =
-	| SaveStatsMessage
-	| GetBestPlayerMessage
-	| GetBestPlayersMessage
-	| ShareAsCommentMessage
+export type PostMessageMessages = SaveStatsMessage | GetBestPlayerMessage | GetBestPlayersMessage
 export type SaveScoreData = {
 	highscore: number
 }
@@ -22,10 +18,6 @@ export type GetBestPlayerMessage = {
 export type GetBestPlayersMessage = {
 	type: 'getBestPlayers'
 	data: {}
-}
-
-export type ShareAsCommentMessage = {
-	type: 'shareAsComment'
 }
 
 export type StartGameMessage = {

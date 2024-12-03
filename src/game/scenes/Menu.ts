@@ -26,13 +26,13 @@ export class Menu extends Phaser.Scene {
 
 		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
 			this.bestPlayer = this.add
-				.text(250, this.scale.height - 250, `${bestPlayer.userName}: ${bestPlayer.score}`, {
+				.text(450, this.scale.height - 200, `${bestPlayer.userName}: ${bestPlayer.score}`, {
 					fontSize: 72,
 					fontFamily: 'mago3',
 					color: 'black',
 				})
 				.setOrigin(0.5, 0.5)
-				.setAngle(42)
+				.setAngle(68)
 			this.add.tween({
 				targets: this.bestPlayer,
 				scale: 1.1,

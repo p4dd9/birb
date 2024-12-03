@@ -1,8 +1,4 @@
-import globalEventEmitter from '../web/GlobalEventEmitter'
-
 export class GameOver extends Phaser.Scene {
-	shareAsComment: Phaser.GameObjects.Text
-
 	gameOverText: Phaser.GameObjects.Text
 
 	replayButton: Phaser.GameObjects.Image
@@ -24,21 +20,8 @@ export class GameOver extends Phaser.Scene {
 
 		const { isNewHighScore, newScore, highscore, attempts } = data
 
-		this.shareAsComment = this.add
-			.text(this.scale.width - 50, -20, 'Comment Score', {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-				align: 'right',
-			})
-			.setOrigin(1, 0)
-			.setInteractive({ cursor: 'pointer' })
-			.on('pointerdown', () => {
-				globalEventEmitter.emit('shareAsComment')
-			})
-
 		this.gameOverText = this.add
-			.text(centerX, centerY - 50, 'Game Over', {
+			.text(centerX, centerY - 100, 'Game Over', {
 				fontSize: 172,
 				fontFamily: 'mago3',
 				color: 'black',
@@ -63,7 +46,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0.5)
 
 		this.menuButton = this.add
-			.image(centerX, this.replayButtonText.y + 130, 'UI_Flat_Frame03a')
+			.image(centerX, this.replayButtonText.y + 150, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameOverText.displayWidth / 3, 100)
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
@@ -100,12 +83,12 @@ export class GameOver extends Phaser.Scene {
 	}
 
 	resize() {
-		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 70)
+		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
 		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 120)
 		this.replayButtonText.setPosition(this.scale.width / 2, this.scale.height / 2 + 105)
 
-		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 130)
+		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 150)
 		this.menuButtonText.setPosition(this.scale.width / 2, this.menuButton.y - 12)
 
 		this.personalHighscoreText.setPosition(50, this.scale.height - 50)
