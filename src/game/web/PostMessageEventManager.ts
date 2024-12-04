@@ -52,7 +52,7 @@ export class PostMessageEventManager {
 						const body = document.body
 						if (body) {
 							body.style.background = `url('/assets/bg/${backgroundKey}.png')`
-							body.style.backgroundRepeat = `repeat-x `
+							body.style.backgroundRepeat = `repeat-x`
 							body.style.backgroundSize = `100vh`
 						}
 						break
