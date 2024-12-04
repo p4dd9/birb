@@ -11,7 +11,7 @@
 		"allowUnusedLabels": false,
 		"exactOptionalPropertyTypes": true,
 		"forceConsistentCasingInFileNames": true,
-		"noImplicitOverride": true,
+		"noImplicitOverride": false,
 		"noUncheckedIndexedAccess": true,
 		"noUncheckedSideEffectImports": true,
 		"noUnusedLocals": true,

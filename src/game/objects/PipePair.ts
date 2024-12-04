@@ -7,8 +7,14 @@ export class PipePair extends Phaser.GameObjects.Container {
 	bottomPipe: Phaser.GameObjects.NineSlice
 	scoreZone: Phaser.GameObjects.Zone
 
+	scene: Game
+
 	constructor(scene: Game, x: number, gapY: number) {
 		super(scene, x, gapY)
+		this.scene = scene
+
+		this.invokeCoin = this.invokeCoin.bind(this)
+		this.invokeMysteryBox = this.invokeMysteryBox.bind(this)
 
 		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
@@ -40,6 +46,10 @@ export class PipePair extends Phaser.GameObjects.Container {
 		;(this.topPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 		;(this.bottomPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
+		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
+			this.createPowerUp()
+		}
+
 		scene.tweens.add({
 			targets: this,
 			x: -50,
@@ -49,5 +59,40 @@ export class PipePair extends Phaser.GameObjects.Container {
 				this.destroy()
 			},
 		})
+	}
+
+	createPowerUp() {
+		const random = Phaser.Math.FloatBetween(0, 1)
+
+		if (random >= 0.3) {
+			this.createPowerUpItem('coin', this.invokeCoin)
+		} else {
+			this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
+		}
+	}
+
+	createPowerUpItem(spriteAnim: string, cb: () => void) {
+		const powerup = this.scene.add.sprite(0, 0, 'animated_items').setScale(2).play(spriteAnim)
+		this.scene.physics.add.existing(powerup, false)
+		;(powerup.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
+		;(powerup.body as Phaser.Physics.Arcade.Body).setImmovable(true)
+
+		this.scene.physics.add.overlap(this.scene.player, powerup, () => {
+			powerup.destroy()
+			cb()
+		})
+		this.add(powerup)
+	}
+
+	invokeMysteryBox() {
+		if (Phaser.Math.Between(0, 1) > 0) {
+			this.scene.player.setScale(0.5)
+		} else {
+			this.scene.player.setScale(1.2)
+		}
+	}
+
+	invokeCoin() {
+		this.scene.incrementScore()
 	}
 }

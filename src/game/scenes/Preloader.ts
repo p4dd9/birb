@@ -27,6 +27,7 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('whoosh_swish_small_03', 'audio/whoosh_swish_small_03.wav')
 
 		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
+		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
 	}
 
@@ -44,6 +45,26 @@ export class Preloader extends Phaser.Scene {
 				repeat: 0,
 			})
 		}
+
+		this.anims.create({
+			key: 'mystery_box',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * 3,
+				end: 8 * 3 + 5,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
+
+		this.anims.create({
+			key: 'coin',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 0,
+				end: 7,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
 		this.scene.start('Menu')
 	}
 }
