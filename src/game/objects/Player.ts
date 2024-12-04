@@ -78,7 +78,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		}
 	}
 
-	changeToRandomBird() {
+	changeToRandomBird(forcedFrame?: number) {
+		if (typeof forcedFrame === 'number') {
+			this.currentBirdSprite = forcedFrame
+			return
+		}
 		let newRow
 		do {
 			newRow = Phaser.Math.Between(0, 6)

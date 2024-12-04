@@ -48,13 +48,13 @@ export class Game extends Phaser.Scene {
 		this.input.on('pointerdown', this.player.flap)
 		this.scale.on('resize', this.resize, this)
 
-		this.input.keyboard?.createCombo('bird', {
+		this.input.keyboard?.createCombo('phaser', {
 			resetOnWrongKey: true,
 			resetOnMatch: true,
 			deleteOnMatch: false,
 		})
 		this.input.keyboard?.on('keycombomatch', () => {
-			this.player.changeToRandomBird()
+			this.player.changeToRandomBird(7)
 		})
 
 		this.resetScore()

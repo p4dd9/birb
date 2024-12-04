@@ -33,7 +33,7 @@ export class Preloader extends Phaser.Scene {
 	create() {
 		this.sound.add('darkness_theme')
 		this.sound.play('darkness_theme', { loop: true, volume: 0.4 })
-		for (let row = 0; row < 7; row++) {
+		for (let row = 0; row < 8; row++) {
 			this.anims.create({
 				key: `flap_${row}`,
 				frames: this.anims.generateFrameNumbers('birds', {
