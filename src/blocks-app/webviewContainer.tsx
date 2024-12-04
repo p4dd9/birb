@@ -62,12 +62,22 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				break
 			}
 
-			case 'requestBackgroundChange': {
+			case 'requestAppSettings': {
 				const worldSelect = (await context.settings.get('world-select')) ?? null
 				if (!Array.isArray(worldSelect) || !worldSelect[0]) {
 					context.ui.webView.postMessage('game-webview', { type: 'changeBackground', data: 'sunset' })
 				} else {
 					context.ui.webView.postMessage('game-webview', { type: 'changeBackground', data: worldSelect[0] })
+				}
+
+				const pipeSelect = (await context.settings.get('pipe-select')) ?? null
+				if (!Array.isArray(pipeSelect)) {
+					context.ui.webView.postMessage('game-webview', { type: 'changePipeFrame', data: 0 })
+				} else {
+					context.ui.webView.postMessage('game-webview', {
+						type: 'changePipeFrame',
+						data: Number(pipeSelect[0]),
+					})
 				}
 
 				break

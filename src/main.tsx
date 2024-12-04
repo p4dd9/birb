@@ -2,6 +2,8 @@ import { Devvit, useState } from '@devvit/public-api'
 import { addMenuItem } from './blocks-app/addMenuItem'
 import { SplashScreen } from './blocks-app/splashScreen'
 import { WebviewContainer } from './blocks-app/webviewContainer'
+import { PipeSelect } from './settings/pipe.select'
+import { WorldSelect } from './settings/world.select'
 
 Devvit.configure({
 	redditAPI: true,
@@ -15,37 +17,7 @@ Devvit.addMenuItem({
 	onPress: addMenuItem,
 })
 
-Devvit.addSettings([
-	{
-		type: 'select',
-		name: 'world-select',
-		label: 'Select World (This will change the background appearance within Reddibirds)',
-		options: [
-			{
-				label: 'Sunset',
-				value: 'sunset',
-			},
-			{
-				label: 'Daylight',
-				value: 'daylight',
-			},
-			{
-				label: 'Evening',
-				value: 'evenging',
-			},
-			{
-				label: 'Night',
-				value: 'night',
-			},
-			{
-				label: 'Midnight',
-				value: 'midnight',
-			},
-		],
-		multiSelect: false,
-		defaultValue: ['sunset'],
-	},
-])
+Devvit.addSettings([WorldSelect, PipeSelect])
 
 Devvit.addCustomPostType({
 	name: 'REDDIBIRDS',

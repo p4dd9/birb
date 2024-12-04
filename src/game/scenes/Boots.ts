@@ -6,7 +6,10 @@ export class Boot extends Phaser.Scene {
 	}
 
 	init() {
-		globalEventEmitter.emit('requestBackgroundChange')
+		globalEventEmitter.emit('requestAppSettings')
+		globalEventEmitter.on('changePipeFrame', (pipeFrame: number) => {
+			this.game.registry.set('pipeFrame', pipeFrame)
+		})
 	}
 
 	create() {

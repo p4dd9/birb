@@ -57,6 +57,11 @@ export class PostMessageEventManager {
 						}
 						break
 					}
+					case 'changePipeFrame': {
+						const pipeFrame = data.message.data as number
+						globalEventEmitter.emit('changePipeFrame', pipeFrame)
+						break
+					}
 					default: {
 						console.log(`Unknown type ${data.message.type} for message ${data.message}.`)
 					}
@@ -91,9 +96,9 @@ export class PostMessageEventManager {
 			PostMessageEventManager.postMessageToParent(message)
 		})
 
-		globalEventEmitter.on('requestBackgroundChange', () => {
+		globalEventEmitter.on('requestAppSettings', () => {
 			let message: { type: string } = {
-				type: 'requestBackgroundChange',
+				type: 'requestAppSettings',
 			}
 			PostMessageEventManager.postMessageToParent(message)
 		})

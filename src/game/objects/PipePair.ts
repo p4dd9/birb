@@ -10,12 +10,13 @@ export class PipePair extends Phaser.GameObjects.Container {
 	constructor(scene: Game, x: number, gapY: number) {
 		super(scene, x, gapY)
 
+		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
-			.nineslice(0, -75, 'pipes', 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
+			.nineslice(0, -75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
 			.setOrigin(0.5, 1)
 
 		this.bottomPipe = scene.add
-			.nineslice(0, +75, 'pipes', 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
+			.nineslice(0, +75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
 			.setOrigin(0.5, 0)
 
 		this.scoreZone = scene.add.zone(0, 0, PIPE_WIDTH, 150).setOrigin(0.5)

@@ -28,7 +28,7 @@ export type StartGameMessage = {
 }
 
 export type ChangeWorldMessage = {
-	type: 'requestBackgroundChange'
+	type: 'requestAppSettings'
 }
 
 export type Player = {

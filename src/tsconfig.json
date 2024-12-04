@@ -6,7 +6,7 @@
 		"tsBuildInfoFile": "../dist/tsconfig.tsbuildinfo"
 	},
 	// https://github.com/Microsoft/TypeScript/issues/25636
-	"include": ["blocks-app/**/*", "app/**/*", "app/**/*.json", "main.tsx", "../package.json"],
+	"include": ["blocks-app/**/*", "settings/**/*", "main.tsx", "../package.json"],
 	"exclude": ["**/*.test.ts"],
 	"references": [{ "path": "shared" }]
 }
