@@ -15,6 +15,38 @@ Devvit.addMenuItem({
 	onPress: addMenuItem,
 })
 
+Devvit.addSettings([
+	{
+		type: 'select',
+		name: 'world-select',
+		label: 'Select World (This will change the background appearance within Reddibirds)',
+		options: [
+			{
+				label: 'Sunset',
+				value: 'sunset',
+			},
+			{
+				label: 'Daylight',
+				value: 'daylight',
+			},
+			{
+				label: 'Evening',
+				value: 'evenging',
+			},
+			{
+				label: 'Night',
+				value: 'night',
+			},
+			{
+				label: 'Midnight',
+				value: 'midnight',
+			},
+		],
+		multiSelect: false,
+		defaultValue: ['sunset'],
+	},
+])
+
 Devvit.addCustomPostType({
 	name: 'REDDIBIRDS',
 	height: 'regular',

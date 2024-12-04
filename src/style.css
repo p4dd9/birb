@@ -3,15 +3,10 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: #333;
+	background: #0b1416;
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background: url('./public/assets/bg/Background1.png');
 	background-repeat: repeat-x;
 	background-size: 100vh;
-}
-
-canvas {
-	border: 2px solid #666;
 }

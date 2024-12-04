@@ -24,8 +24,8 @@ export class PostMessageEventManager {
 				) {
 					return
 				}
-
 				console.log(ev)
+
 				switch (data.message.type) {
 					case 'gameOver': {
 						const gameOverData = data.message.data as {
@@ -47,6 +47,14 @@ export class PostMessageEventManager {
 						globalEventEmitter.emit('updateBestPlayers', gameOverData)
 						break
 					}
+					case 'changeBackground': {
+						const backgroundKey = data.message.data as string
+						const body = document.body
+						if (body) {
+							body.style.background = `url('/assets/bg/${backgroundKey}.png') repeat-x / 100vh`
+						}
+						break
+					}
 					default: {
 						console.log(`Unknown type ${data.message.type} for message ${data.message}.`)
 					}
@@ -64,25 +72,32 @@ export class PostMessageEventManager {
 					personal: { highscore },
 				},
 			}
-			PostMessageEventManager.postMessage(message)
+			PostMessageEventManager.postMessageToParent(message)
 		})
 
 		globalEventEmitter.on('getBestPlayer', () => {
 			let message: { type: string } = {
 				type: 'getBestPlayer',
 			}
-			PostMessageEventManager.postMessage(message)
+			PostMessageEventManager.postMessageToParent(message)
 		})
 
 		globalEventEmitter.on('getBestPlayers', () => {
 			let message: { type: string } = {
 				type: 'getBestPlayers',
 			}
-			PostMessageEventManager.postMessage(message)
+			PostMessageEventManager.postMessageToParent(message)
+		})
+
+		globalEventEmitter.on('requestBackgroundChange', () => {
+			let message: { type: string } = {
+				type: 'requestBackgroundChange',
+			}
+			PostMessageEventManager.postMessageToParent(message)
 		})
 	}
 
-	static postMessage(message: any) {
+	static postMessageToParent(message: any) {
 		window.parent?.postMessage(message, PostMessageEventManager.targetOrigin)
 	}
 }

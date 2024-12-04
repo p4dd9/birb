@@ -173,11 +173,11 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../assets/bg/Background1.png</key>
-            <key type="filename">../assets/bg/Background2.png</key>
-            <key type="filename">../assets/bg/Background3.png</key>
-            <key type="filename">../assets/bg/Background4.png</key>
-            <key type="filename">../assets/bg/Background5.png</key>
+            <key type="filename">../assets/bg/sunset.png</key>
+            <key type="filename">../assets/bg/daylight.png</key>
+            <key type="filename">../assets/bg/evening.png</key>
+            <key type="filename">../assets/bg/night.png</key>
+            <key type="filename">../assets/bg/midnight.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -199,11 +199,11 @@
             <struct type="SpriteSheet">
                 <key>files</key>
                 <array>
-                    <filename>../assets/bg/Background1.png</filename>
-                    <filename>../assets/bg/Background2.png</filename>
-                    <filename>../assets/bg/Background3.png</filename>
-                    <filename>../assets/bg/Background4.png</filename>
-                    <filename>../assets/bg/Background5.png</filename>
+                    <filename>../assets/bg/sunset.png</filename>
+                    <filename>../assets/bg/daylight.png</filename>
+                    <filename>../assets/bg/evening.png</filename>
+                    <filename>../assets/bg/night.png</filename>
+                    <filename>../assets/bg/midnight.png</filename>
                 </array>
             </struct>
         </map>

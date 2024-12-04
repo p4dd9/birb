@@ -61,6 +61,13 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				})
 				break
 			}
+
+			case 'requestBackgroundChange': {
+				const worldSelect = (await context.settings.get('world-select')) ?? null
+				if (!Array.isArray(worldSelect) || !worldSelect[0]) return
+				context.ui.webView.postMessage('game-webview', { type: 'changeBackground', data: worldSelect[0] })
+				break
+			}
 			default: {
 				console.log(`Unknown message type "${(ev as unknown as any).type}" !`)
 			}

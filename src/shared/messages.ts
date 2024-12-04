@@ -1,4 +1,4 @@
-export type PostMessageMessages = SaveStatsMessage | GetBestPlayerMessage | GetBestPlayersMessage
+export type PostMessageMessages = SaveStatsMessage | GetBestPlayerMessage | GetBestPlayersMessage | ChangeWorldMessage
 export type SaveScoreData = {
 	highscore: number
 }
@@ -25,6 +25,10 @@ export type StartGameMessage = {
 	data: {
 		personal: SaveScoreData
 	}
+}
+
+export type ChangeWorldMessage = {
+	type: 'requestBackgroundChange'
 }
 
 export type Player = {
