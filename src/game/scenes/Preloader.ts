@@ -13,7 +13,7 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 
-		this.load.audio('darkness_theme', 'audio/darkness_theme.ogg')
+		this.load.audio('bgm_action_5', 'audio/bgm_action_5.mp3')
 
 		this.load.audio('bird_tweety_hurt_01', 'audio/bird_tweety_hurt_01.wav')
 		this.load.audio('bird_tweety_hurt_02', 'audio/bird_tweety_hurt_02.wav')
@@ -31,8 +31,8 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
-		this.sound.add('darkness_theme')
-		this.sound.play('darkness_theme', { loop: true, volume: 0.4 })
+		this.sound.add('bgm_action_5')
+		this.sound.play('bgm_action_5', { loop: true, volume: 0.3 })
 		for (let row = 0; row < 8; row++) {
 			this.anims.create({
 				key: `flap_${row}`,

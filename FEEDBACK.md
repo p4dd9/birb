@@ -13,3 +13,5 @@
   :
   "local"
 - onload webview (pre-action) to load settings before first render
+- image
+- dynamic change of preview based on settings context
