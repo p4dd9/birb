@@ -26,7 +26,7 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('whoosh_swish_small_02', 'audio/whoosh_swish_small_02.wav')
 		this.load.audio('whoosh_swish_small_03', 'audio/whoosh_swish_small_03.wav')
 
-		this.load.spritesheet('birds', 'birds.png', { frameWidth: 16, frameHeight: 16 })
+		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
 	}
 
