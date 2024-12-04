@@ -3,6 +3,7 @@ import { addMenuItem } from './blocks-app/addMenuItem'
 import { SplashScreen } from './blocks-app/splashScreen'
 import { WebviewContainer } from './blocks-app/webviewContainer'
 import { PipeSelect } from './settings/pipe.select'
+import { PlayerSelect } from './settings/player.select'
 import { WorldSelect } from './settings/world.select'
 
 Devvit.configure({
@@ -17,7 +18,7 @@ Devvit.addMenuItem({
 	onPress: addMenuItem,
 })
 
-Devvit.addSettings([WorldSelect, PipeSelect])
+Devvit.addSettings([WorldSelect, PipeSelect, PlayerSelect])
 Devvit.addTrigger({
 	event: 'AppUpgrade',
 	onEvent: async (event, context) => {

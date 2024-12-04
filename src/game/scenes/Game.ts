@@ -54,7 +54,7 @@ export class Game extends Phaser.Scene {
 			deleteOnMatch: false,
 		})
 		this.input.keyboard?.on('keycombomatch', () => {
-			this.player.changeToRandomBird(7)
+			this.player.changePlayerFrame(7)
 		})
 
 		this.resetScore()

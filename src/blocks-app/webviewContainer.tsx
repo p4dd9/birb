@@ -80,6 +80,16 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					})
 				}
 
+				const playerSelect = (await context.settings.get('player-select')) ?? null
+				if (!Array.isArray(playerSelect)) {
+					context.ui.webView.postMessage('game-webview', { type: 'changePlayerFrame', data: 0 })
+				} else {
+					context.ui.webView.postMessage('game-webview', {
+						type: 'changePlayerFrame',
+						data: Number(playerSelect[0]),
+					})
+				}
+
 				break
 			}
 			default: {

@@ -62,6 +62,12 @@ export class PostMessageEventManager {
 						globalEventEmitter.emit('changePipeFrame', pipeFrame)
 						break
 					}
+
+					case 'changePlayerFrame': {
+						const playerFrame = data.message.data as number
+						globalEventEmitter.emit('changePlayerFrame', playerFrame)
+						break
+					}
 					default: {
 						console.log(`Unknown type ${data.message.type} for message ${data.message}.`)
 					}

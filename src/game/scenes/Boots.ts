@@ -10,6 +10,9 @@ export class Boot extends Phaser.Scene {
 		globalEventEmitter.on('changePipeFrame', (pipeFrame: number) => {
 			this.game.registry.set('pipeFrame', pipeFrame)
 		})
+		globalEventEmitter.on('changePlayerFrame', (playerFrame: number) => {
+			this.game.registry.set('playerFrame', playerFrame)
+		})
 	}
 
 	create() {
