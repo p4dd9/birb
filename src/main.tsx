@@ -18,7 +18,17 @@ Devvit.addMenuItem({
 	onPress: addMenuItem,
 })
 
-Devvit.addSettings([WorldSelect, PipeSelect, PlayerSelect])
+Devvit.addSettings([PlayerSelect, WorldSelect, PipeSelect])
+
+Devvit.addSettings([
+	{
+		type: 'group',
+		label: 'Reddibirds Theme Customization',
+		fields: [WorldSelect, PipeSelect, PlayerSelect],
+		helpText:
+			'The settings will change the appearance of the Game in your Community. Takes effect when a reddit user loads the game.',
+	},
+])
 Devvit.addTrigger({
 	event: 'AppUpgrade',
 	onEvent: async (event, context) => {

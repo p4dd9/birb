@@ -3,7 +3,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 export const WorldSelect: SettingsFormField = {
 	type: 'select',
 	name: 'world-select',
-	label: 'Select World (This will change the background appearance within Reddibirds)',
+	label: 'Select World',
 	options: [
 		{
 			label: 'Sunset',
@@ -27,5 +27,6 @@ export const WorldSelect: SettingsFormField = {
 		},
 	],
 	multiSelect: false,
+	helpText: 'Change the background',
 	defaultValue: ['sunset'],
 }

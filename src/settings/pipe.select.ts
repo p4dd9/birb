@@ -3,7 +3,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 export const PipeSelect: SettingsFormField = {
 	type: 'select',
 	name: 'pipe-select',
-	label: 'Select Pipe Color (This will change the pipe colors)',
+	label: 'Select Pipe',
 	options: [
 		{
 			label: 'Green',
@@ -39,5 +39,6 @@ export const PipeSelect: SettingsFormField = {
 		},
 	],
 	multiSelect: false,
+	helpText: 'Change the pipe colors',
 	defaultValue: ['0'],
 }

@@ -3,7 +3,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 export const PlayerSelect: SettingsFormField = {
 	type: 'select',
 	name: 'player-select',
-	label: 'Select Bird (This will change the bird character)',
+	label: 'Select Bird',
 	options: [
 		{
 			label: 'Flix',
@@ -35,5 +35,6 @@ export const PlayerSelect: SettingsFormField = {
 		},
 	],
 	multiSelect: false,
+	helpText: 'Change the bird character',
 	defaultValue: ['0'],
 }
