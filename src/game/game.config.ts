@@ -18,6 +18,7 @@ export const gameConfig: Types.Core.GameConfig = {
 			debug: false,
 		},
 	},
+	pixelArt: true,
 	transparent: true,
 	scene: [Boot, Preloader, Menu, Game, GameOver],
 }
