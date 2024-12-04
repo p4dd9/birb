@@ -9,7 +9,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	currentBirdSprite: number = 0
 
 	constructor(scene: Game, x: number, y: number) {
-		super(scene, x, y, 'birds', scene.game.registry.get('playerFrame'))
+		super(scene, x, y, 'birds', Number(scene.game.registry.get('playerFrame') * 4))
+
+		this.changePlayerFrame(Number(scene.game.registry.get('playerFrame')))
 
 		this.setScale(4)
 		this.flap = this.flap.bind(this)
