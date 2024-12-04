@@ -18,6 +18,12 @@ Devvit.addMenuItem({
 })
 
 Devvit.addSettings([WorldSelect, PipeSelect])
+Devvit.addTrigger({
+	event: 'AppUpgrade',
+	onEvent: async (event, context) => {
+		console.log(await context.settings.getAll())
+	},
+})
 
 Devvit.addCustomPostType({
 	name: 'REDDIBIRDS',
