@@ -6,7 +6,6 @@ export class PipePair extends Phaser.GameObjects.Container {
 	topPipe: Phaser.GameObjects.NineSlice
 	bottomPipe: Phaser.GameObjects.NineSlice
 	scoreZone: Phaser.GameObjects.Zone
-
 	scene: Game
 
 	constructor(scene: Game, x: number, gapY: number) {
@@ -65,10 +64,19 @@ export class PipePair extends Phaser.GameObjects.Container {
 		})
 	}
 
-	createPowerUp(item?: 'coin') {
+	createPowerUp(item?: 'coin' | 'mystery_box') {
 		const random = Phaser.Math.FloatBetween(0, 1)
 
-		if (random >= 0.3 || item === 'coin') {
+		if (item) {
+			if (item === 'mystery_box') {
+				this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
+			} else if (item === 'coin') {
+				this.createPowerUpItem('coin', this.invokeCoin)
+			}
+			return
+		}
+
+		if (random >= 0.5) {
 			this.createPowerUpItem('coin', this.invokeCoin)
 		} else {
 			this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
@@ -89,20 +97,20 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	invokeMysteryBox() {
-		if (Phaser.Math.Between(0, 1) > 0) {
-			const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
-			this.scene.sound.play(`shrink`, {
-				rate: randomPitch,
-				volume: 0.2,
-			})
-			this.scene.player.setScale(0.5)
-		} else {
-			const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
-			this.scene.sound.play(`grow`, {
-				rate: randomPitch,
-				volume: 0.2,
-			})
-			this.scene.player.setScale(1.5)
+		const effectIndex = Phaser.Math.Between(1, 5)
+		switch (effectIndex) {
+			case 1:
+				this.scene.shrinkPlayer()
+				break
+			case 2:
+				this.scene.growPlayer()
+				break
+			case 3:
+				this.scene.pixelate()
+				break
+			default:
+				console.warn('Unhandled mystery box effect!')
+				break
 		}
 	}
 

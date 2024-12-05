@@ -135,4 +135,44 @@ export class Game extends Phaser.Scene {
 			}
 		)
 	}
+
+	pixelate() {
+		const pixelation = this.cameras.main.postFX.addPixelate(0)
+		this.tweens.add({
+			targets: pixelation,
+			amount: 8,
+			duration: 1000,
+			callbackScope: this,
+			onComplete: () => {
+				this.time.delayedCall(3000, () => {
+					this.tweens.add({
+						targets: pixelation,
+						amount: 1,
+						duration: 1000,
+						onComplete: () => {
+							this.cameras.main.postFX.clear()
+						},
+					})
+				})
+			},
+		})
+	}
+
+	growPlayer() {
+		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
+		this.sound.play(`grow`, {
+			rate: randomPitch,
+			volume: 0.2,
+		})
+		this.player.setScale(1.5)
+	}
+
+	shrinkPlayer() {
+		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
+		this.sound.play(`shrink`, {
+			rate: randomPitch,
+			volume: 0.2,
+		})
+		this.player.setScale(0.5)
+	}
 }

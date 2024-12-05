@@ -24,6 +24,8 @@ export class Menu extends Phaser.Scene {
 		const centerX = this.scale.width / 2
 		const centerY = this.scale.height / 2
 
+		this.cameras.main.postFX.clear()
+
 		this.sound.stopByKey('Junkala_Stake_2')
 		if (!this.sound.get('Junkala_Select_2').isPlaying) {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
