@@ -149,7 +149,7 @@ export class Game extends Phaser.Scene {
 		})
 
 		this.events.on('update', this.onPointerMoveLightsOuts, this)
-		this.time.delayedCall(2000, () => {
+		this.time.delayedCall(6000, () => {
 			this.lights.disable()
 			this.pipes.getChildren().map((pipe) => {
 				;(pipe as Phaser.GameObjects.NineSlice).setAlpha(1)
@@ -171,7 +171,7 @@ export class Game extends Phaser.Scene {
 			duration: 1000,
 			callbackScope: this,
 			onComplete: () => {
-				this.time.delayedCall(3000, () => {
+				this.time.delayedCall(4000, () => {
 					this.tweens.add({
 						targets: pixelation,
 						amount: 1,
