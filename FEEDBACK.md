@@ -16,3 +16,4 @@
 - image
 - dynamic change of preview based on settings context
 - support apng and gif for preview
+- self-maintained allowlist to which services an app can connect to (within config of any install)

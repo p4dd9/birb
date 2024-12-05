@@ -1,4 +1,5 @@
 import type { Player, SaveStatsMessage } from '../../shared/messages'
+import { addDebugMsg } from '../debug'
 import globalEventEmitter from './GlobalEventEmitter'
 
 export class PostMessageEventManager {
@@ -9,8 +10,8 @@ export class PostMessageEventManager {
 	static targetEmbeddedWebviewId = 'game-webview'
 
 	static registerEvents() {
-		PostMessageEventManager.registerOnMessage()
 		PostMessageEventManager.registerInternalEvents()
+		PostMessageEventManager.registerOnMessage()
 	}
 
 	static registerOnMessage() {
@@ -18,25 +19,9 @@ export class PostMessageEventManager {
 			'message',
 			(ev) => {
 				const { type, data } = ev.data
-
-				const debugWIndow = document.getElementById('debug')
-				const el = document.createElement('p')
-				el.innerText = JSON.stringify(ev.data)
-				debugWIndow?.appendChild(el)
-
 				if (type !== PostMessageEventManager.allowedMessageType) {
 					return
 				}
-				console.log(ev)
-				const body = document.body
-
-				console.log(body)
-				if (body) {
-					body.style.background = `red`
-					body.style.backgroundRepeat = `repeat-x`
-					body.style.backgroundSize = `100vh`
-				}
-
 				switch (data.message.type) {
 					case 'gameOver': {
 						const gameOverData = data.message.data as {
@@ -61,16 +46,22 @@ export class PostMessageEventManager {
 					case 'changeBackground': {
 						const backgroundKey = data.message.data as string
 						const body = document.body
-						console.log(body)
+						addDebugMsg(body.style.background)
 						if (body) {
 							body.style.background = `url('/assets/bg/${backgroundKey}.png')`
 							body.style.backgroundRepeat = `repeat-x`
 							body.style.backgroundSize = `100vh`
+
+							addDebugMsg(body.style.background)
+						} else {
+							addDebugMsg('body not found')
 						}
 						break
 					}
 					case 'changePipeFrame': {
 						const pipeFrame = data.message.data as number
+						addDebugMsg(pipeFrame.toString())
+
 						globalEventEmitter.emit('changePipeFrame', pipeFrame)
 						break
 					}

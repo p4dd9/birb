@@ -18,7 +18,6 @@ export const gameConfig: Types.Core.GameConfig = {
 			debug: false,
 		},
 	},
-	pixelArt: true,
 	fps: {
 		target: 60,
 		limit: 70,

@@ -1,4 +1,5 @@
 import type { Player } from '../../shared/messages'
+import { addDebugMsg } from '../debug'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Menu extends Phaser.Scene {
@@ -32,9 +33,12 @@ export class Menu extends Phaser.Scene {
 		}
 
 		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
+			addDebugMsg('updateBestPlayer1')
 			if (this.bestPlayer) {
+				addDebugMsg('updateBestPlayer2')
 				this.bestPlayer.destroy()
 			}
+			addDebugMsg('updateBestPlayer3')
 			this.bestPlayer = this.add
 				.text(450, this.scale.height - 200, `${bestPlayer.userName}: ${bestPlayer.score}`, {
 					fontSize: 72,
@@ -105,6 +109,7 @@ export class Menu extends Phaser.Scene {
 
 		this.scale.on('resize', this.resize, this)
 
+		addDebugMsg('emitStuff')
 		globalEventEmitter.emit('getBestPlayers')
 		globalEventEmitter.emit('getBestPlayer')
 	}

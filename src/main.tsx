@@ -29,12 +29,13 @@ Devvit.addSettings([
 			'The settings will change the appearance of the Game in your Community. Takes effect when a reddit user loads the game.',
 	},
 ])
-Devvit.addTrigger({
+
+/**Devvit.addTrigger({
 	event: 'AppUpgrade',
 	onEvent: async (event, context) => {
 		console.log(await context.settings.getAll())
 	},
-})
+})**/
 
 Devvit.addCustomPostType({
 	name: 'REDDIBIRDS',
