@@ -35,7 +35,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		this.playFlapAnimation()
 
 		const relativePan = Phaser.Math.Clamp((this.scene.player.x / this.scene.scale.width) * 2 - 1, -0.4, 0.4)
-		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
+		const randomPitch = Phaser.Math.FloatBetween(0.8, 1.2)
 		this.scene.sound.play(`flap${Phaser.Math.Between(1, 3)}`, { pan: relativePan, rate: randomPitch })
 	}
 
