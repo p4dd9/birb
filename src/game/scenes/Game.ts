@@ -147,7 +147,7 @@ export class Game extends Phaser.Scene {
 		this.pipes.getChildren().map((pipe) => {
 			;(pipe as Phaser.GameObjects.NineSlice).setPipeline('Light2D').setAlpha(0.4)
 		})
-
+		this.sound.play('lightsout', { volume: 0.3 })
 		this.events.on('update', this.onPointerMoveLightsOuts, this)
 		this.time.delayedCall(6000, () => {
 			this.lights.disable()
@@ -165,6 +165,7 @@ export class Game extends Phaser.Scene {
 
 	pixelate() {
 		const pixelation = this.cameras.main.postFX.addPixelate(0)
+		this.sound.play('pixelate', { volume: 0.3 })
 		this.tweens.add({
 			targets: pixelation,
 			amount: 8,

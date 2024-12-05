@@ -18,14 +18,24 @@ export class PostMessageEventManager {
 			'message',
 			(ev) => {
 				const { type, data } = ev.data
-				/*if (
-					!PostMessageEventManager.allowedOrigins.includes(ev.origin) ||
-					type !== PostMessageEventManager.allowedMessageType
-				) {
-					alert(`Invalid allowedOrigins ${ev.origin}`)
+
+				const debugWIndow = document.getElementById('debug')
+				const el = document.createElement('p')
+				el.innerText = JSON.stringify(ev.data)
+				debugWIndow?.appendChild(el)
+
+				if (type !== PostMessageEventManager.allowedMessageType) {
 					return
-				}*/
+				}
 				console.log(ev)
+				const body = document.body
+
+				console.log(body)
+				if (body) {
+					body.style.background = `red`
+					body.style.backgroundRepeat = `repeat-x`
+					body.style.backgroundSize = `100vh`
+				}
 
 				switch (data.message.type) {
 					case 'gameOver': {
@@ -51,6 +61,7 @@ export class PostMessageEventManager {
 					case 'changeBackground': {
 						const backgroundKey = data.message.data as string
 						const body = document.body
+						console.log(body)
 						if (body) {
 							body.style.background = `url('/assets/bg/${backgroundKey}.png')`
 							body.style.backgroundRepeat = `repeat-x`

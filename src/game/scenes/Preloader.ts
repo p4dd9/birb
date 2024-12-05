@@ -22,6 +22,9 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('flap2', 'audio/flap2.mp3')
 		this.load.audio('flap3', 'audio/flap3.mp3')
 
+		this.load.audio('pixelate', 'audio/pixelate.mp3')
+		this.load.audio('lightsout', 'audio/lightsout.mp3')
+
 		this.load.audio('grow', 'audio/grow.mp3')
 		this.load.audio('shrink', 'audio/shrink.mp3')
 

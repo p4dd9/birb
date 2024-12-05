@@ -2,3 +2,5 @@
 node_modules
 dist
 webroot
+# Sentry Config File
+.env.sentry-build-plugin

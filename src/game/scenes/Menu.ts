@@ -103,10 +103,10 @@ export class Menu extends Phaser.Scene {
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
 
-		globalEventEmitter.emit('getBestPlayer')
-		globalEventEmitter.emit('getBestPlayers')
-
 		this.scale.on('resize', this.resize, this)
+
+		globalEventEmitter.emit('getBestPlayers')
+		globalEventEmitter.emit('getBestPlayer')
 	}
 
 	startBreakingNews() {
