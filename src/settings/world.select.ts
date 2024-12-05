@@ -15,7 +15,7 @@ export const WorldSelect: SettingsFormField = {
 		},
 		{
 			label: 'Evening',
-			value: 'evenging',
+			value: 'evening',
 		},
 		{
 			label: 'Night',
