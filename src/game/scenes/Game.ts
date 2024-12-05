@@ -24,7 +24,7 @@ export class Game extends Phaser.Scene {
 		this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')
 
-		this.sound.play('Junkala_Stake_2', { volume: 0.05 })
+		this.sound.play('Junkala_Stake_2', { volume: 0.05, loop: true })
 
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
