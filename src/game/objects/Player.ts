@@ -43,7 +43,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		;(this.body as Phaser.Physics.Arcade.Body).enable = false
 		this.setTint(0xff0000)
 
-		this.scene.sound.play(`bird_tweety_hurt_0${Phaser.Math.Between(1, 6)}`, { volume: 0.1 })
+		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
+		this.scene.sound.play(`death1`, { volume: 0.1, rate: randomPitch })
 		this.scene.tweens.add({
 			targets: this,
 			y: this.y - 50,
