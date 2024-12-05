@@ -19,10 +19,12 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.topPipe = scene.add
 			.nineslice(0, -75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
 			.setOrigin(0.5, 1)
+			.setName('pipe')
 
 		this.bottomPipe = scene.add
 			.nineslice(0, +75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
 			.setOrigin(0.5, 0)
+			.setName('pipe')
 
 		this.scoreZone = scene.add.zone(0, 0, PIPE_WIDTH, 150).setOrigin(0.5)
 		scene.physics.add.existing(this.scoreZone, false)
@@ -97,7 +99,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	invokeMysteryBox() {
-		const effectIndex = Phaser.Math.Between(1, 5)
+		const effectIndex = Phaser.Math.Between(1, 4)
 		switch (effectIndex) {
 			case 1:
 				this.scene.shrinkPlayer()
@@ -107,6 +109,9 @@ export class PipePair extends Phaser.GameObjects.Container {
 				break
 			case 3:
 				this.scene.pixelate()
+				break
+			case 4:
+				this.scene.lightsOut()
 				break
 			default:
 				console.warn('Unhandled mystery box effect!')

@@ -14,6 +14,8 @@ export class Game extends Phaser.Scene {
 
 	isGameStarted: boolean = false
 
+	spotLight: Phaser.GameObjects.Light
+
 	constructor() {
 		super('Game')
 	}
@@ -25,6 +27,8 @@ export class Game extends Phaser.Scene {
 		this.sound.stopByKey('Junkala_Stake_2')
 
 		this.sound.play('Junkala_Stake_2', { volume: 0.05, loop: true })
+
+		this.spotLight = this.lights.addLight(400, 300, 280).setIntensity(3)
 
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
@@ -134,6 +138,29 @@ export class Game extends Phaser.Scene {
 				this.scene.run('GameOver', data)
 			}
 		)
+	}
+
+	lightsOut() {
+		this.lights.enable()
+		this.lights.setAmbientColor(0x222222)
+
+		this.pipes.getChildren().map((pipe) => {
+			;(pipe as Phaser.GameObjects.NineSlice).setPipeline('Light2D').setAlpha(0.4)
+		})
+
+		this.events.on('update', this.onPointerMoveLightsOuts, this)
+		this.time.delayedCall(2000, () => {
+			this.lights.disable()
+			this.pipes.getChildren().map((pipe) => {
+				;(pipe as Phaser.GameObjects.NineSlice).setAlpha(1)
+				;(pipe as Phaser.GameObjects.NineSlice).resetPipeline()
+			})
+			this.events.off('update', this.onPointerMoveLightsOuts, this)
+		})
+	}
+
+	onPointerMoveLightsOuts() {
+		this.spotLight.setPosition(this.player.x, this.player.y)
 	}
 
 	pixelate() {
