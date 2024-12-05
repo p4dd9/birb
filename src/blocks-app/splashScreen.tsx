@@ -17,11 +17,11 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 		<zstack grow={!webviewVisible} height={webviewVisible ? '0%' : '100%'}>
 			<vstack grow height="100%" width="100%" alignment="middle center">
 				<image
-					url="splash-background.png"
+					url="splash-background.gif"
 					height="100%"
 					width="100%"
-					imageWidth="1290px"
-					imageHeight="258px"
+					imageWidth={808}
+					imageHeight={254}
 					resizeMode="cover"
 				/>
 			</vstack>

@@ -72,7 +72,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	createPowerUpItem(spriteAnim: string, cb: () => void) {
-		const powerup = this.scene.add.sprite(0, 0, 'animated_items').setScale(2).play(spriteAnim)
+		const powerup = this.scene.add.sprite(0, 0, 'animated_items').setScale(3).play(spriteAnim)
 		this.scene.physics.add.existing(powerup, false)
 		;(powerup.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 		;(powerup.body as Phaser.Physics.Arcade.Body).setImmovable(true)
@@ -88,7 +88,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		if (Phaser.Math.Between(0, 1) > 0) {
 			this.scene.player.setScale(0.5)
 		} else {
-			this.scene.player.setScale(1.2)
+			this.scene.player.setScale(1.5)
 		}
 	}
 
