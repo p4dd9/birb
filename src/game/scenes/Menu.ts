@@ -24,6 +24,11 @@ export class Menu extends Phaser.Scene {
 		const centerX = this.scale.width / 2
 		const centerY = this.scale.height / 2
 
+		this.sound.stopByKey('Junkala_Stake_2')
+		if (!this.sound.get('Junkala_Select_2').isPlaying) {
+			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
+		}
+
 		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
 			if (this.bestPlayer) {
 				this.bestPlayer.destroy()
@@ -75,6 +80,7 @@ export class Menu extends Phaser.Scene {
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
 			.once('pointerdown', () => {
+				this.sound.play('buttonclick1', { volume: 0.5 })
 				this.scene.start('Game')
 			})
 		this.playButtonText = this.add
@@ -123,6 +129,7 @@ export class Menu extends Phaser.Scene {
 			console.warn('Sound system is locked. Waiting for user interaction.')
 			return
 		}
+		this.sound.play('buttonclick1', { volume: 0.5 })
 		this.isMute = !this.game.sound.mute
 		this.sound.setMute(!this.game.sound.mute)
 		this.muteButtonText.setText(this.getMuteButtonText())

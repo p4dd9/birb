@@ -1,4 +1,4 @@
-import type { Game } from '../scenes/Game'
+import { Game } from '../scenes/Game'
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 	upRotation: number = -25
@@ -7,10 +7,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
 	isAnimating: boolean = false
 	currentBirdSprite: number = 0
+	scene: Game
 
 	constructor(scene: Game, x: number, y: number) {
 		super(scene, x, y, 'birds', Number((scene.game.registry.get('playerFrame') ?? 0) * 4))
-
+		this.scene = scene
 		this.changePlayerFrame(Number(scene.game.registry.get('playerFrame') ?? 0))
 
 		this.flap = this.flap.bind(this)
@@ -32,13 +33,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	flap() {
 		this.setVelocityY(-300)
 		this.playFlapAnimation()
-		this.scene.sound.play(`whoosh_swish_small_0${Phaser.Math.Between(1, 3)}`, { volume: 0.4 })
+
+		const relativePan = Phaser.Math.Clamp((this.scene.player.x / this.scene.scale.width) * 2 - 1, -0.4, 0.4)
+		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+		this.scene.sound.play(`flap${Phaser.Math.Between(1, 3)}`, { pan: relativePan, rate: randomPitch })
 	}
 
 	die() {
 		;(this.body as Phaser.Physics.Arcade.Body).enable = false
 		this.setTint(0xff0000)
-		this.scene.sound.play(`bird_tweety_hurt_0${Phaser.Math.Between(1, 6)}`, { volume: 0.5 })
+
+		this.scene.sound.play(`bird_tweety_hurt_0${Phaser.Math.Between(1, 6)}`, { volume: 0.1 })
 		this.scene.tweens.add({
 			targets: this,
 			y: this.y - 50,

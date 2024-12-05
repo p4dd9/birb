@@ -13,7 +13,8 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 
-		this.load.audio('bgm_action_5', 'audio/bgm_action_5.mp3')
+		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.ogg')
+		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.ogg')
 
 		this.load.audio('bird_tweety_hurt_01', 'audio/bird_tweety_hurt_01.wav')
 		this.load.audio('bird_tweety_hurt_02', 'audio/bird_tweety_hurt_02.wav')
@@ -22,9 +23,16 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('bird_tweety_hurt_05', 'audio/bird_tweety_hurt_05.wav')
 		this.load.audio('bird_tweety_hurt_06', 'audio/bird_tweety_hurt_06.wav')
 
-		this.load.audio('whoosh_swish_small_01', 'audio/whoosh_swish_small_01.wav')
-		this.load.audio('whoosh_swish_small_02', 'audio/whoosh_swish_small_02.wav')
-		this.load.audio('whoosh_swish_small_03', 'audio/whoosh_swish_small_03.wav')
+		this.load.audio('flap1', 'audio/flap1.mp3')
+		this.load.audio('flap2', 'audio/flap2.mp3')
+		this.load.audio('flap3', 'audio/flap3.mp3')
+
+		this.load.audio('buttonclick1', 'audio/buttonclick1.mp3')
+
+		this.load.audio('Pickup_Coin_0', 'audio/Pickup_Coin_0.wav')
+		this.load.audio('Pickup_Coin_1', 'audio/Pickup_Coin_1.wav')
+		this.load.audio('Pickup_Coin_2', 'audio/Pickup_Coin_2.wav')
+		this.load.audio('Pickup_Coin_3', 'audio/Pickup_Coin_3.wav')
 
 		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
 		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
@@ -32,8 +40,9 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
-		this.sound.add('bgm_action_5')
-		this.sound.play('bgm_action_5', { loop: true, volume: 0.3 })
+		this.sound.add('Junkala_Stake_2')
+		this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
+
 		for (let row = 0; row < 8; row++) {
 			this.anims.create({
 				key: `flap_${row}`,

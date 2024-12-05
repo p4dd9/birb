@@ -34,6 +34,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
 			.once('pointerdown', () => {
+				this.sound.play('buttonclick1', { volume: 0.5 })
 				this.scene.start('Game')
 			})
 
@@ -51,6 +52,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
 			.once('pointerdown', () => {
+				this.sound.play('buttonclick1', { volume: 0.5 })
 				this.scene.stop('Game')
 				this.scene.start('Menu')
 			})
