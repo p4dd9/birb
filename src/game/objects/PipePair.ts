@@ -49,7 +49,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
 			this.createPowerUp()
 		}
-
+		this.createPowerUp()
 		scene.tweens.add({
 			targets: this,
 			x: -50,
@@ -86,8 +86,18 @@ export class PipePair extends Phaser.GameObjects.Container {
 
 	invokeMysteryBox() {
 		if (Phaser.Math.Between(0, 1) > 0) {
+			const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+			this.scene.sound.play(`shrink`, {
+				rate: randomPitch,
+				volume: 0.2,
+			})
 			this.scene.player.setScale(0.5)
 		} else {
+			const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+			this.scene.sound.play(`grow`, {
+				rate: randomPitch,
+				volume: 0.2,
+			})
 			this.scene.player.setScale(1.5)
 		}
 	}

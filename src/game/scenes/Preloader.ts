@@ -27,6 +27,11 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('flap2', 'audio/flap2.mp3')
 		this.load.audio('flap3', 'audio/flap3.mp3')
 
+		this.load.audio('grow', 'audio/grow.mp3')
+		this.load.audio('shrink', 'audio/shrink.mp3')
+
+		this.load.audio('victory', 'audio/victory.mp3')
+
 		this.load.audio('buttonclick1', 'audio/buttonclick1.mp3')
 
 		this.load.audio('Pickup_Coin_0', 'audio/Pickup_Coin_0.wav')
