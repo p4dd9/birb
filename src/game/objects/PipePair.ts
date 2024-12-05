@@ -95,7 +95,11 @@ export class PipePair extends Phaser.GameObjects.Container {
 	invokeCoin() {
 		const relativePan = Phaser.Math.Clamp((this.scene.player.x / this.scene.scale.width) * 2 - 1, -0.4, 0.4)
 		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
-		this.scene.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, { pan: relativePan, rate: randomPitch })
+		this.scene.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, {
+			pan: relativePan,
+			rate: randomPitch,
+			volume: 0.2,
+		})
 		this.scene.incrementScore()
 	}
 }
