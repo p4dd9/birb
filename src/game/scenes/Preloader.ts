@@ -16,12 +16,7 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.ogg')
 		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.ogg')
 
-		this.load.audio('bird_tweety_hurt_01', 'audio/bird_tweety_hurt_01.wav')
-		this.load.audio('bird_tweety_hurt_02', 'audio/bird_tweety_hurt_02.wav')
-		this.load.audio('bird_tweety_hurt_03', 'audio/bird_tweety_hurt_03.wav')
-		this.load.audio('bird_tweety_hurt_04', 'audio/bird_tweety_hurt_04.wav')
-		this.load.audio('bird_tweety_hurt_05', 'audio/bird_tweety_hurt_05.wav')
-		this.load.audio('bird_tweety_hurt_06', 'audio/bird_tweety_hurt_06.wav')
+		this.load.audio('death1', 'audio/death1.mp3')
 
 		this.load.audio('flap1', 'audio/flap1.mp3')
 		this.load.audio('flap2', 'audio/flap2.mp3')
