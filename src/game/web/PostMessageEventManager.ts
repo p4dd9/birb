@@ -5,7 +5,7 @@ export class PostMessageEventManager {
 	static allowedOrigins = ['https://www.reddit.com']
 	static allowedMessageType = 'devvit-message'
 
-	static targetOrigin = 'https://www.reddit.com'
+	static targetOrigin = '*'
 	static targetEmbeddedWebviewId = 'game-webview'
 
 	static registerEvents() {
@@ -22,6 +22,7 @@ export class PostMessageEventManager {
 					!PostMessageEventManager.allowedOrigins.includes(ev.origin) ||
 					type !== PostMessageEventManager.allowedMessageType
 				) {
+					alert(`Invalid allowedOrigins ${ev.origin}`)
 					return
 				}
 				console.log(ev)
