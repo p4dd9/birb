@@ -20,8 +20,8 @@ export class GameOver extends Phaser.Scene {
 
 		const { isNewHighScore, newScore, highscore, attempts } = data
 
-		if (!isNewHighScore) {
-			this.sound.play('victory', { volume: 0.4 })
+		if (isNewHighScore) {
+			this.sound.play('victory', { volume: 0.2 })
 		}
 
 		this.gameOverText = this.add

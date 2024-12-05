@@ -49,7 +49,11 @@ export class PipePair extends Phaser.GameObjects.Container {
 		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
 			this.createPowerUp()
 		}
-		this.createPowerUp()
+
+		if (this.scene.currentScore === 1) {
+			this.createPowerUp('coin')
+		}
+
 		scene.tweens.add({
 			targets: this,
 			x: -50,
@@ -61,10 +65,10 @@ export class PipePair extends Phaser.GameObjects.Container {
 		})
 	}
 
-	createPowerUp() {
+	createPowerUp(item?: 'coin') {
 		const random = Phaser.Math.FloatBetween(0, 1)
 
-		if (random >= 0.3) {
+		if (random >= 0.3 || item === 'coin') {
 			this.createPowerUpItem('coin', this.invokeCoin)
 		} else {
 			this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
