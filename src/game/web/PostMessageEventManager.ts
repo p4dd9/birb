@@ -18,13 +18,13 @@ export class PostMessageEventManager {
 			'message',
 			(ev) => {
 				const { type, data } = ev.data
-				if (
+				/*if (
 					!PostMessageEventManager.allowedOrigins.includes(ev.origin) ||
 					type !== PostMessageEventManager.allowedMessageType
 				) {
 					alert(`Invalid allowedOrigins ${ev.origin}`)
 					return
-				}
+				}*/
 				console.log(ev)
 
 				switch (data.message.type) {
