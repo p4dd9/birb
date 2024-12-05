@@ -81,7 +81,9 @@ export class PostMessageEventManager {
 	}
 
 	static registerInternalEvents() {
+		console.log('registerEvents')
 		globalEventEmitter.on('saveStats', (highscore: number) => {
+			console.log('saveStats')
 			let message: SaveStatsMessage = {
 				type: 'saveStats',
 				data: {
@@ -92,6 +94,7 @@ export class PostMessageEventManager {
 		})
 
 		globalEventEmitter.on('getBestPlayer', () => {
+			console.log('getBestPlayer')
 			let message: { type: string } = {
 				type: 'getBestPlayer',
 			}
@@ -99,6 +102,7 @@ export class PostMessageEventManager {
 		})
 
 		globalEventEmitter.on('getBestPlayers', () => {
+			console.log('getBestPlayers')
 			let message: { type: string } = {
 				type: 'getBestPlayers',
 			}
@@ -106,6 +110,7 @@ export class PostMessageEventManager {
 		})
 
 		globalEventEmitter.on('requestAppSettings', () => {
+			console.log('requestAppSettings')
 			let message: { type: string } = {
 				type: 'requestAppSettings',
 			}

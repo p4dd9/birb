@@ -52,9 +52,9 @@ export class Game extends Phaser.Scene {
 			.setDepth(100)
 			.setOrigin(0.5, 0)
 
-		this.input.on('pointerdown', this.start)
-
+		this.input.once('pointerdown', this.start)
 		this.input.on('pointerdown', this.player.flap)
+
 		this.scale.on('resize', this.resize, this)
 
 		this.input.keyboard?.createCombo('phaser', {
@@ -76,6 +76,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	start() {
+		console.log('start')
 		if (this.isGameStarted) return
 		this.isGameStarted = true
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
@@ -86,8 +87,8 @@ export class Game extends Phaser.Scene {
 	}
 
 	resize() {
+		console.log('resize Game')
 		this.score.setX(this.scale.width / 2)
-
 		if (!this.isGameStarted) {
 			this.player.setPosition(200, this.scale.height / 2 - 100)
 			this.intro.setPosition(this.player.x + 100, this.player.y + 100)
@@ -130,11 +131,12 @@ export class Game extends Phaser.Scene {
 		this.player.die()
 
 		this.physics.pause()
-
+		console.log('digga')
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(
 			'gameOver',
 			(data: { isNewHighscore: boolean; newScore: number; highscore: number; attempts: number }) => {
+				this.scale.off('resize', this.resize, this)
 				this.scene.run('GameOver', data)
 			}
 		)

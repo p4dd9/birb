@@ -87,6 +87,7 @@ export class Menu extends Phaser.Scene {
 			.setInteractive({ cursor: 'pointer' })
 			.once('pointerdown', () => {
 				this.sound.play('buttonclick1', { volume: 0.5 })
+				this.scale.off('resize', this.resize, this)
 				this.scene.start('Game')
 			})
 		this.playButtonText = this.add
@@ -149,5 +150,13 @@ export class Menu extends Phaser.Scene {
 		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y - 15)
 
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 50)
+
+		if (this.breakingNews) {
+			this.breakingNews.setPosition(this.scale.width, 0)
+		}
+
+		if (this.bestPlayer) {
+			this.bestPlayer.setPosition(450, this.scale.height - 200)
+		}
 	}
 }

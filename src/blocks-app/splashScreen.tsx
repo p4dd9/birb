@@ -7,7 +7,7 @@ type SplashScreenProps = {
 }
 
 export function SplashScreen(props: SplashScreenProps): JSX.Element {
-	const { webviewVisible, setWebviewVisible } = props
+	const { webviewVisible, setWebviewVisible, context } = props
 
 	const onLaunchApp = () => {
 		setWebviewVisible(true)
@@ -20,8 +20,8 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 					url="splash-background.gif"
 					height="100%"
 					width="100%"
-					imageWidth={808}
-					imageHeight={254}
+					imageWidth={`${context.dimensions!.width}px`}
+					imageHeight={`${context.dimensions!.height}px`}
 					resizeMode="cover"
 				/>
 			</vstack>
