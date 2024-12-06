@@ -11,10 +11,12 @@ export class PipePair extends Phaser.GameObjects.Container {
 	bottomPipe: Phaser.GameObjects.NineSlice
 	scoreZone: Phaser.GameObjects.Zone
 	scene: Game
+	pipeNumber: number
 
 	constructor(scene: Game, x: number) {
 		super(scene, x, Phaser.Math.Between(MIN_Y_CENTER, MAX_Y_CENTER))
 		this.scene = scene
+		this.pipeNumber = scene.pipeCount
 
 		this.invokeCoin = this.invokeCoin.bind(this)
 		this.invokeEmerald = this.invokeEmerald.bind(this)
@@ -75,11 +77,11 @@ export class PipePair extends Phaser.GameObjects.Container {
 		;(this.topPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 		;(this.bottomPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
-		if (this.scene.currentScore === 0) {
+		if (this.pipeNumber === 0) {
 			this.createPowerUp('coin')
 		}
 
-		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
+		if (this.pipeNumber > 0 && this.pipeNumber % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
 			this.createPowerUp()
 		}
 

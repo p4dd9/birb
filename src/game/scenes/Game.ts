@@ -16,6 +16,8 @@ export class Game extends Phaser.Scene {
 
 	spotLight: Phaser.GameObjects.Light
 
+	pipeCount: number = 0
+
 	constructor() {
 		super('Game')
 	}
@@ -87,7 +89,6 @@ export class Game extends Phaser.Scene {
 	}
 
 	resize() {
-		console.log('resize Game')
 		this.score.setX(this.scale.width / 2)
 		if (!this.isGameStarted) {
 			this.player.setPosition(200, this.scale.height / 2 - 100)
@@ -109,6 +110,7 @@ export class Game extends Phaser.Scene {
 	addPipeRow() {
 		if (this.isGameStarted) {
 			new PipePair(this, this.cameras.main.width + 50)
+			this.pipeCount++
 		}
 	}
 
