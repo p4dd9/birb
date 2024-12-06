@@ -1,3 +1,5 @@
+import globalEventEmitter from '../web/GlobalEventEmitter'
+
 export class Preloader extends Phaser.Scene {
 	constructor() {
 		super('Preloader')
@@ -43,6 +45,8 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
+		globalEventEmitter.emit('requestAppSettings')
+
 		this.sound.add('Junkala_Stake_2')
 		this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 

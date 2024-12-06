@@ -1,4 +1,8 @@
-export type PostMessageMessages = SaveStatsMessage | GetBestPlayerMessage | GetBestPlayersMessage | ChangeWorldMessage
+export type PostMessageMessages =
+	| SaveStatsMessage
+	| GetBestPlayerMessage
+	| GetBestPlayersMessage
+	| RequestSettingsMessage
 export type SaveScoreData = {
 	highscore: number
 }
@@ -27,8 +31,19 @@ export type StartGameMessage = {
 	}
 }
 
-export type ChangeWorldMessage = {
+export type RequestSettingsMessage = {
 	type: 'requestAppSettings'
+}
+
+export type WorldSetting = {
+	world: string
+	playerFrame: number
+	pipeFrame: number
+}
+
+export type UpdateGameSettingMessage = {
+	type: 'changeWorld'
+	data: WorldSetting
 }
 
 export type Player = {

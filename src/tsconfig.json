@@ -1,12 +1,8 @@
 {
 	"extends": "../tsconfig-base.json",
 	"compilerOptions": {
-		"lib": ["ES2020", "WebWorker"],
-		"outDir": "../dist",
-		"tsBuildInfoFile": "../dist/tsconfig.tsbuildinfo"
+		"lib": ["ES2020", "WebWorker"]
 	},
-	// https://github.com/Microsoft/TypeScript/issues/25636
-	"include": ["blocks-app/**/*", "settings/**/*", "main.tsx", "../package.json"],
-	"exclude": ["**/*.test.ts"],
+	"include": ["blocks-app/**/*", "settings/**/*", "main.tsx"],
 	"references": [{ "path": "shared" }]
 }

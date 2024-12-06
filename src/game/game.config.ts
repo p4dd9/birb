@@ -8,6 +8,7 @@ import { Preloader } from './scenes/Preloader'
 export const gameConfig: Types.Core.GameConfig = {
 	type: Phaser.AUTO,
 	autoFocus: true,
+	parent: 'game-container',
 	scale: {
 		mode: Phaser.Scale.EXPAND,
 	},

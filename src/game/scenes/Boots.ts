@@ -1,3 +1,4 @@
+import type { WorldSetting } from '../../shared/messages'
 import { addDebugMsg } from '../debug'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
@@ -6,19 +7,13 @@ export class Boot extends Phaser.Scene {
 		super('Boot')
 	}
 
-	init() {
-		globalEventEmitter.emit('requestAppSettings')
-		globalEventEmitter.on('changePipeFrame', (pipeFrame: number) => {
-			addDebugMsg(pipeFrame.toString())
-			this.game.registry.set('pipeFrame', pipeFrame)
-			addDebugMsg(this.game.registry.get('pipeFrame'))
-		})
-		globalEventEmitter.on('changePlayerFrame', (playerFrame: number) => {
-			this.game.registry.set('playerFrame', playerFrame)
-		})
-	}
-
 	create() {
+		globalEventEmitter.once('changeWorld', (worldSetting: WorldSetting) => {
+			addDebugMsg('Changed pipeframe to ' + JSON.stringify(worldSetting))
+			this.game.registry.set('pipeFrame', worldSetting.pipeFrame)
+			this.game.registry.set('playerFrame', worldSetting.playerFrame)
+		})
+
 		this.scene.start('Preloader')
 	}
 }

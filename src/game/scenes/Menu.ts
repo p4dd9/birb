@@ -58,9 +58,12 @@ export class Menu extends Phaser.Scene {
 
 		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
 			const bannerText = bestPlayers.map((player) => `"${player.userName}" ${player.score}`).join(' - ')
+			addDebugMsg('updateBestPlayers1')
 			if (this.breakingNews) {
+				addDebugMsg('updateBestPlayers2')
 				this.breakingNews.destroy()
 			}
+			addDebugMsg('updateBestPlayers3')
 			this.breakingNews = this.add
 				.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
 					fontSize: 100,
@@ -110,8 +113,9 @@ export class Menu extends Phaser.Scene {
 
 		this.scale.on('resize', this.resize, this)
 
-		addDebugMsg('emitStuff')
+		addDebugMsg('emit getBestPlayers from menu')
 		globalEventEmitter.emit('getBestPlayers')
+		addDebugMsg('emit getBestPlayer from menu')
 		globalEventEmitter.emit('getBestPlayer')
 	}
 

@@ -1,5 +1,5 @@
 import { Devvit } from '@devvit/public-api'
-import type { PostMessageMessages } from '../shared/messages'
+import type { PostMessageMessages, UpdateGameSettingMessage } from '../shared/messages'
 import { createRedisService } from './redisService'
 
 type WebviewContainerProps = {
@@ -67,33 +67,19 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				const playerSelect = (await context.settings.get('player-select')) ?? null
 				const pipeSelect = (await context.settings.get('pipe-select')) ?? null
 
-				console.log(worldSelect)
-				console.log(playerSelect)
-				console.log(pipeSelect)
+				const mappedWorldSelect = !Array.isArray(worldSelect) || !worldSelect[0] ? 'sunset' : worldSelect[0]
+				const mappedPlayerFrame = !Array.isArray(playerSelect) ? 0 : Number(playerSelect[0])
+				const mappedPipeFrame = !Array.isArray(pipeSelect) ? 0 : Number(pipeSelect[0])
 
-				if (!Array.isArray(pipeSelect)) {
-					context.ui.webView.postMessage('game-webview', { type: 'changePipeFrame', data: 0 })
-				} else {
-					context.ui.webView.postMessage('game-webview', {
-						type: 'changePipeFrame',
-						data: Number(pipeSelect[0]),
-					})
-				}
+				context.ui.webView.postMessage('game-webview', {
+					type: 'changeWorld',
+					data: {
+						world: mappedWorldSelect,
+						playerFrame: mappedPlayerFrame,
+						pipeFrame: mappedPipeFrame,
+					},
+				} as UpdateGameSettingMessage)
 
-				if (!Array.isArray(worldSelect) || !worldSelect[0]) {
-					context.ui.webView.postMessage('game-webview', { type: 'changeBackground', data: 'sunset' })
-				} else {
-					context.ui.webView.postMessage('game-webview', { type: 'changeBackground', data: worldSelect[0] })
-				}
-
-				if (!Array.isArray(playerSelect)) {
-					context.ui.webView.postMessage('game-webview', { type: 'changePlayerFrame', data: 0 })
-				} else {
-					context.ui.webView.postMessage('game-webview', {
-						type: 'changePlayerFrame',
-						data: Number(playerSelect[0]),
-					})
-				}
 				break
 			}
 			default: {
