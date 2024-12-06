@@ -38,13 +38,12 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 
-		"sourceMap": true,
+		"sourceMap": false,
 
 		"target": "ES2020",
 
 		// don't transform type-only imports.
 		"verbatimModuleSyntax": true
 	},
-	// https://github.com/microsoft/TypeScript/wiki/Performance#misconfigured-include-and-exclude
-	"exclude": ["dist", "node_modules", ".*/"]
+	"exclude": ["dist", "node_modules", ".*/", "webroot"]
 }
