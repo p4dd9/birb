@@ -13,7 +13,6 @@ export type PlayerStats = {
 export type RedisService = {
 	getPlayerStats: () => Promise<PlayerStats | null>
 	saveScore: (stats: SaveScoreData) => Promise<void>
-	getBestPlayer: () => Promise<Player | null>
 	getTopPlayers: () => Promise<Array<Player>>
 	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
 }
@@ -86,25 +85,6 @@ export function createRedisService(context: Devvit.Context): RedisService {
 					}
 				}
 			}
-		},
-
-		getBestPlayer: async () => {
-			const bestPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 1, {
-				by: 'rank',
-				reverse: true,
-			})
-
-			if (bestPlayer.length === 0 || !bestPlayer[0]) return null
-			const bestPlayerUserName = await context.reddit.getUserById(bestPlayer[0].member)
-			if (!bestPlayerUserName) return null
-
-			const mappedBestPlayer = {
-				userId: bestPlayer[0].member,
-				userName: bestPlayerUserName.username,
-				score: Number(bestPlayer[0].score),
-			}
-
-			return mappedBestPlayer
 		},
 
 		getTopPlayers: async () => {

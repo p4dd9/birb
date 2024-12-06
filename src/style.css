@@ -21,10 +21,11 @@ body {
 	width: 300px;
 	height: 300px;
 	overflow: scroll;
+	display: none;
 }
 
 #debug:hover {
-	display: none;
+	/*display: none;*/
 }
 
 p {

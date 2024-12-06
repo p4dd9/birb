@@ -43,15 +43,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				})
 				break
 			}
-			case 'getBestPlayer': {
-				const bestPlayer = await redisService.getBestPlayer()
-				if (!bestPlayer) return
-				context.ui.webView.postMessage('game-webview', {
-					type: 'updateBestPlayer',
-					data: bestPlayer,
-				})
-				break
-			}
+
 			case 'getBestPlayers': {
 				const bestPlayers = await redisService.getTopPlayers()
 				if (!bestPlayers || bestPlayers.length < 0) return
@@ -71,6 +63,8 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				const mappedPlayerFrame = !Array.isArray(playerSelect) ? 0 : Number(playerSelect[0])
 				const mappedPipeFrame = !Array.isArray(pipeSelect) ? 0 : Number(pipeSelect[0])
 
+				// BUG/WEIRD: come "context.ui.webView.postMessage" that are fired in the same context do not arrive on mobile within the webview (!)
+				// TMP Solution: combine as much as possible to provide reliable gameplay for now.
 				context.ui.webView.postMessage('game-webview', {
 					type: 'changeWorld',
 					data: {

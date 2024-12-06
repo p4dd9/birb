@@ -1,5 +1,4 @@
 import type { Player } from '../../shared/messages'
-import { addDebugMsg } from '../debug'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Menu extends Phaser.Scene {
@@ -32,13 +31,31 @@ export class Menu extends Phaser.Scene {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
-		globalEventEmitter.once('updateBestPlayer', (bestPlayer: Player) => {
-			addDebugMsg('updateBestPlayer1')
+		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
+			const bannerText = bestPlayers
+				.slice(0, 3)
+				.map((player) => `"${player.userName}" ${player.score}`)
+				.join(',')
+			if (this.breakingNews) {
+				this.breakingNews.destroy()
+			}
+
+			this.breakingNews = this.add
+				.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
+					fontSize: 100,
+					color: 'black',
+					fontFamily: 'mago3',
+				})
+				.setOrigin(0, 0)
+
+			this.startBreakingNews()
+
 			if (this.bestPlayer) {
-				addDebugMsg('updateBestPlayer2')
 				this.bestPlayer.destroy()
 			}
-			addDebugMsg('updateBestPlayer3')
+
+			const bestPlayer = bestPlayers[0]
+			if (!bestPlayer) return
 			this.bestPlayer = this.add
 				.text(450, this.scale.height - 200, `${bestPlayer.userName}: ${bestPlayer.score}`, {
 					fontSize: 72,
@@ -54,25 +71,6 @@ export class Menu extends Phaser.Scene {
 				duration: 1000,
 				repeat: -1,
 			})
-		})
-
-		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
-			const bannerText = bestPlayers.map((player) => `"${player.userName}" ${player.score}`).join(' - ')
-			addDebugMsg('updateBestPlayers1')
-			if (this.breakingNews) {
-				addDebugMsg('updateBestPlayers2')
-				this.breakingNews.destroy()
-			}
-			addDebugMsg('updateBestPlayers3')
-			this.breakingNews = this.add
-				.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
-					fontSize: 100,
-					color: 'black',
-					fontFamily: 'mago3',
-				})
-				.setOrigin(0, 0)
-
-			this.startBreakingNews()
 		})
 
 		this.gameTitleText = this.add
@@ -113,10 +111,7 @@ export class Menu extends Phaser.Scene {
 
 		this.scale.on('resize', this.resize, this)
 
-		addDebugMsg('emit getBestPlayers from menu')
 		globalEventEmitter.emit('getBestPlayers')
-		addDebugMsg('emit getBestPlayer from menu')
-		globalEventEmitter.emit('getBestPlayer')
 	}
 
 	startBreakingNews() {
@@ -124,7 +119,7 @@ export class Menu extends Phaser.Scene {
 			targets: this.breakingNews,
 			x: -this.breakingNews.displayWidth,
 			duration: 9000,
-			repeat: 0,
+			repeat: -1,
 			onComplete: () => {
 				this.breakingNews.x = this.scale.width
 				this.startBreakingNews()

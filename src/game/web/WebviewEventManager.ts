@@ -38,11 +38,6 @@ export class WebviewEventManager {
 						globalEventEmitter.emit('gameOver', gameOverData)
 						break
 					}
-					case 'updateBestPlayer': {
-						const gameOverData = message.data as Player
-						globalEventEmitter.emit('updateBestPlayer', gameOverData)
-						break
-					}
 					case 'updateBestPlayers': {
 						const gameOverData = message.data as Player[]
 						globalEventEmitter.emit('updateBestPlayers', gameOverData)
@@ -86,14 +81,6 @@ export class WebviewEventManager {
 				data: {
 					personal: { highscore },
 				},
-			}
-			WebviewEventManager.postMessageToParent(message)
-		})
-
-		globalEventEmitter.on('getBestPlayer', () => {
-			console.log('getBestPlayer')
-			let message: { type: string } = {
-				type: 'getBestPlayer',
 			}
 			WebviewEventManager.postMessageToParent(message)
 		})

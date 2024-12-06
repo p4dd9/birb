@@ -1,8 +1,4 @@
-export type PostMessageMessages =
-	| SaveStatsMessage
-	| GetBestPlayerMessage
-	| GetBestPlayersMessage
-	| RequestSettingsMessage
+export type PostMessageMessages = SaveStatsMessage | GetBestPlayersMessage | RequestSettingsMessage
 export type SaveScoreData = {
 	highscore: number
 }
@@ -12,11 +8,6 @@ export type SaveStatsMessage = {
 	data: {
 		personal: Pick<SaveScoreData, 'highscore'>
 	}
-}
-
-export type GetBestPlayerMessage = {
-	type: 'getBestPlayer'
-	data: {}
 }
 
 export type GetBestPlayersMessage = {
