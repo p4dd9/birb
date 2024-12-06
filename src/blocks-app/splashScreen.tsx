@@ -26,7 +26,9 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 				/>
 			</vstack>
 			<vstack grow height="100%" width="100%" alignment="middle center">
-				<button onPress={onLaunchApp}>Launch Game</button>
+				<button icon="play-fill" appearance="secondary" size="large" onPress={onLaunchApp}>
+					PLAY GAME
+				</button>
 			</vstack>
 		</zstack>
 	)
