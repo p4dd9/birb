@@ -44,7 +44,7 @@ export class GameOver extends Phaser.Scene {
 			})
 
 		this.replayButtonText = this.add
-			.text(centerX, centerY + 105, 'Restart', {
+			.text(centerX, centerY + 85, 'Restart', {
 				fontSize: '82px',
 				fontFamily: 'mago3',
 				color: 'black',
@@ -94,7 +94,7 @@ export class GameOver extends Phaser.Scene {
 		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
 		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 120)
-		this.replayButtonText.setPosition(this.scale.width / 2, this.scale.height / 2 + 105)
+		this.replayButtonText.setPosition(this.scale.width / 2, this.scale.height / 2 + 85)
 
 		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 150)
 		this.menuButtonText.setPosition(this.scale.width / 2, this.menuButton.y - 12)
