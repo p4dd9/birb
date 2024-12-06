@@ -23,11 +23,13 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.invokeSapphire = this.invokeSapphire.bind(this)
 		this.invokeMysteryBox = this.invokeMysteryBox.bind(this)
 
+		const gapHeightMultiplier = scene.pipeCount < 5 ? 1.5 : 1
+
 		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
 			.nineslice(
 				0,
-				-GAP_HEIGHT / 2,
+				(-GAP_HEIGHT / 2) * gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -43,7 +45,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.bottomPipe = scene.add
 			.nineslice(
 				0,
-				GAP_HEIGHT / 2,
+				(GAP_HEIGHT / 2) * gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -81,7 +83,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 			this.createPowerUp('coin')
 		}
 
-		if (this.pipeNumber > 0 && this.pipeNumber % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
+		if (this.pipeNumber > 0 && Phaser.Math.Between(0, 1) > 0) {
 			this.createPowerUp()
 		}
 

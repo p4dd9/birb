@@ -110,5 +110,18 @@ export class Preloader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		})
+
+		const LIFE_ROW_INDEX = 1
+		const LIFE_ROW_FRAMES_END = 5
+
+		this.anims.create({
+			key: 'extralife',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * LIFE_ROW_INDEX,
+				end: 8 * LIFE_ROW_INDEX + LIFE_ROW_FRAMES_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
 	}
 }
