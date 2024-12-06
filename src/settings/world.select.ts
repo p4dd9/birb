@@ -2,7 +2,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 
 export const WorldSelect: SettingsFormField = {
 	type: 'select',
-	name: 'world-select',
+	name: 'worldSelect',
 	label: 'Select World',
 	options: [
 		{

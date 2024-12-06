@@ -46,11 +46,9 @@ export class Preloader extends Phaser.Scene {
 
 	create() {
 		globalEventEmitter.emit('requestAppSettings')
-		this.createAnimations()
-
 		this.sound.add('Junkala_Stake_2')
-		this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
-
+		this.sound.add('Junkala_Select_2')
+		this.createAnimations()
 		this.scene.start('Menu')
 	}
 

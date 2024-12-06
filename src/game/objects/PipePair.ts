@@ -97,7 +97,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 			},
 		})
 
-		if (this.pipeNumber >= 100) {
+		if (this.pipeNumber >= 50) {
 			scene.tweens.add({
 				targets: this,
 				y: this.y + 100 * (Phaser.Math.Between(0, 1) > 0 ? -1 : 1),

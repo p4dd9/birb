@@ -12,7 +12,7 @@ Devvit.configure({
 })
 
 Devvit.addMenuItem({
-	label: 'Create REDDIBIRDS Post',
+	label: 'Create Reddibirds Game',
 	location: 'subreddit',
 	forUserType: 'moderator',
 	onPress: addMenuItem,
@@ -38,7 +38,7 @@ Devvit.addSettings([
 })**/
 
 Devvit.addCustomPostType({
-	name: 'REDDIBIRDS',
+	name: `Let's play Reddibirds!`,
 	height: 'regular',
 	render: (context: Devvit.Context) => {
 		const [webviewVisible, setWebviewVisible] = useState(false)

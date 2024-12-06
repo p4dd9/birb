@@ -45,9 +45,7 @@ export class WebviewEventManager {
 					}
 					case 'changeWorld': {
 						const worldSetting = message.data as WorldSetting
-
 						const canvasParent = document.getElementById('game-container')
-
 						if (canvasParent && canvasParent instanceof HTMLDivElement) {
 							// BUG/WEIRD: unreliable pixel dimension on window and body element in webviews, most likely as there are some resizing events fired (idk rly)
 							// ISSUE not showing repeating bg: body.style.background = `url('/assets/bg/${worldSetting.world}.png') 0% 0% / auto 320px repeat-x`

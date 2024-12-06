@@ -10,7 +10,8 @@
 	"devDependencies": {
 		"prettier": "^3.4.1",
 		"typescript": "^5.7.2",
-		"vite": "^6.0.1"
+		"vite": "^6.0.1",
+		"terser": "^5.37.0"
 	},
 	"scripts": {
 		"vite": "vite",

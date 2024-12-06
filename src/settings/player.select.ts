@@ -2,7 +2,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 
 export const PlayerSelect: SettingsFormField = {
 	type: 'select',
-	name: 'player-select',
+	name: 'playerSelect',
 	label: 'Select Bird',
 	options: [
 		{

@@ -15,6 +15,7 @@ export type RedisService = {
 	saveScore: (stats: SaveScoreData) => Promise<void>
 	getTopPlayers: () => Promise<Array<Player>>
 	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
+	getAppSettings: () => Promise<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>
 }
 
 export function createRedisService(context: Devvit.Context): RedisService {
@@ -105,6 +106,10 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			)
 
 			return mappedBestPlayers
+		},
+
+		getAppSettings: async () => {
+			return await context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
 		},
 	}
 }

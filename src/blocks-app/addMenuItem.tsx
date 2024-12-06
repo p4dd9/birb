@@ -4,9 +4,8 @@ export async function addMenuItem(_: MenuItemOnPressEvent, context: Devvit.Conte
 	const { reddit, ui } = context
 	const subreddit = await reddit.getCurrentSubreddit()
 	await reddit.submitPost({
-		title: 'REDDIBIRDS',
+		title: `Let's play Reddibirds!`,
 		subredditName: subreddit.name,
-		// The preview appears while the post loads
 		preview: (
 			<vstack height="100%" width="100%" alignment="middle center">
 				<text size="large">Loading ...</text>

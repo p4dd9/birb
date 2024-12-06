@@ -27,51 +27,15 @@ export class Menu extends Phaser.Scene {
 		this.cameras.main.postFX.clear()
 
 		this.sound.stopByKey('Junkala_Stake_2')
-		if (!this.sound.get('Junkala_Select_2').isPlaying) {
+		if (!this.sound.get('Junkala_Select_2')?.isPlaying) {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
 		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
-			const bannerText = bestPlayers
-				.slice(0, 3)
-				.map((player) => `"${player.userName}" ${player.score}`)
-				.join(',')
-			if (this.breakingNews) {
-				this.breakingNews.destroy()
-			}
-
-			this.breakingNews = this.add
-				.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
-					fontSize: 100,
-					color: 'black',
-					fontFamily: 'mago3',
-				})
-				.setOrigin(0, 0)
-
-			this.startBreakingNews()
-
-			if (this.bestPlayer) {
-				this.bestPlayer.destroy()
-			}
-
-			const bestPlayer = bestPlayers[0]
-			if (!bestPlayer) return
-			this.bestPlayer = this.add
-				.text(450, this.scale.height - 200, `${bestPlayer.userName}: ${bestPlayer.score}`, {
-					fontSize: 72,
-					fontFamily: 'mago3',
-					color: 'black',
-				})
-				.setOrigin(0.5, 0.5)
-				.setAngle(10)
-			this.add.tween({
-				targets: this.bestPlayer,
-				scale: 1.1,
-				yoyo: true,
-				duration: 1000,
-				repeat: -1,
-			})
+			this.createBreakingNews(bestPlayers)
+			this.createBestPlayer(bestPlayers[0])
 		})
+		globalEventEmitter.emit('getBestPlayers')
 
 		this.gameTitleText = this.add
 			.text(centerX, centerY - 110, 'REDDIBIRDS', {
@@ -110,11 +74,51 @@ export class Menu extends Phaser.Scene {
 			.on('pointerdown', this.toggleMute, this)
 
 		this.scale.on('resize', this.resize, this)
-
-		globalEventEmitter.emit('getBestPlayers')
 	}
 
-	startBreakingNews() {
+	createBreakingNews(players: Player[]) {
+		const topPlayers = players
+			.slice(0, 3)
+			.map((player) => `"${player.userName}" ${player.score}`)
+			.join(',')
+		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
+		if (players.length < 1) {
+			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! *LIVE*`
+		}
+
+		this.breakingNews = this.add
+			.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
+				fontSize: 100,
+				color: 'black',
+				fontFamily: 'mago3',
+			})
+			.setOrigin(0, 0)
+		this.startBreakingTheNews()
+	}
+
+	createBestPlayer(bestPlayer?: Player) {
+		let text = `Let's play Reddibirds!!!`
+		if (bestPlayer) {
+			text = `${bestPlayer.userName}: ${bestPlayer.score}`
+		}
+		this.bestPlayer = this.add
+			.text(450, this.scale.height - 200, text, {
+				fontSize: 72,
+				fontFamily: 'mago3',
+				color: 'black',
+			})
+			.setOrigin(0.5, 0.5)
+			.setAngle(10)
+		this.add.tween({
+			targets: this.bestPlayer,
+			scale: 1.1,
+			yoyo: true,
+			duration: 1100,
+			repeat: -1,
+		})
+	}
+
+	startBreakingTheNews() {
 		this.add.tween({
 			targets: this.breakingNews,
 			x: -this.breakingNews.displayWidth,
@@ -122,7 +126,7 @@ export class Menu extends Phaser.Scene {
 			repeat: -1,
 			onComplete: () => {
 				this.breakingNews.x = this.scale.width
-				this.startBreakingNews()
+				this.startBreakingTheNews()
 			},
 		})
 	}

@@ -33,7 +33,6 @@ p {
 }
 
 #game-container {
-	background: url('/assets/bg/sunset.png') center center / auto 320px repeat-x;
 	animation: parallaxScroll 7s linear infinite;
 }
 

@@ -1,5 +1,6 @@
-import { Devvit } from '@devvit/public-api'
+import { Devvit, useAsync } from '@devvit/public-api'
 import type { PostMessageMessages, UpdateGameSettingMessage } from '../shared/messages'
+import { mappAppSettingsToMessage } from './redisMapper'
 import { createRedisService } from './redisService'
 
 type WebviewContainerProps = {
@@ -10,6 +11,21 @@ type WebviewContainerProps = {
 export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
 	const redisService = createRedisService(context)
+
+	useAsync(
+		async () => {
+			if (webviewVisible) {
+				const appSettings = await redisService.getAppSettings()
+				const mappedMessage = mappAppSettingsToMessage(appSettings)
+				context.ui.webView.postMessage('game-webview', {
+					type: 'changeWorld',
+					data: mappedMessage,
+				} as UpdateGameSettingMessage)
+			}
+			return null
+		},
+		{ depends: [webviewVisible] }
+	)
 
 	const handleMessage = async (ev: PostMessageMessages) => {
 		console.log('Received message', ev)
@@ -55,23 +71,12 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			}
 
 			case 'requestAppSettings': {
-				const worldSelect = (await context.settings.get('world-select')) ?? null
-				const playerSelect = (await context.settings.get('player-select')) ?? null
-				const pipeSelect = (await context.settings.get('pipe-select')) ?? null
+				const appSettings = await redisService.getAppSettings()
+				const mappedMessage = mappAppSettingsToMessage(appSettings)
 
-				const mappedWorldSelect = !Array.isArray(worldSelect) || !worldSelect[0] ? 'sunset' : worldSelect[0]
-				const mappedPlayerFrame = !Array.isArray(playerSelect) ? 0 : Number(playerSelect[0])
-				const mappedPipeFrame = !Array.isArray(pipeSelect) ? 0 : Number(pipeSelect[0])
-
-				// BUG/WEIRD: come "context.ui.webView.postMessage" that are fired in the same context do not arrive on mobile within the webview (!)
-				// TMP Solution: combine as much as possible to provide reliable gameplay for now.
 				context.ui.webView.postMessage('game-webview', {
 					type: 'changeWorld',
-					data: {
-						world: mappedWorldSelect,
-						playerFrame: mappedPlayerFrame,
-						pipeFrame: mappedPipeFrame,
-					},
+					data: mappedMessage,
 				} as UpdateGameSettingMessage)
 
 				break

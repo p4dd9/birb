@@ -2,7 +2,7 @@ import type { SettingsFormField } from '@devvit/public-api/types/settings'
 
 export const PipeSelect: SettingsFormField = {
 	type: 'select',
-	name: 'pipe-select',
+	name: 'pipeSelect',
 	label: 'Select Pipe',
 	options: [
 		{

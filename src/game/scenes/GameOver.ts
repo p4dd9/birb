@@ -33,7 +33,7 @@ export class GameOver extends Phaser.Scene {
 			.setOrigin(0.5)
 
 		this.replayButton = this.add
-			.image(centerX, centerY + 120, 'UI_Flat_Frame03a')
+			.image(centerX, centerY + 100, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameOverText.displayWidth / 2, 100)
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
@@ -93,7 +93,7 @@ export class GameOver extends Phaser.Scene {
 	resize() {
 		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
-		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 120)
+		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 100)
 		this.replayButtonText.setPosition(this.scale.width / 2, this.scale.height / 2 + 85)
 
 		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 150)
