@@ -1,6 +1,10 @@
 import type { Game } from '../scenes/Game'
 
 const PIPE_WIDTH = 90
+const GAP_HEIGHT = 150
+
+const MIN_Y_CENTER = 100
+const MAX_Y_CENTER = 400
 
 export class PipePair extends Phaser.GameObjects.Container {
 	topPipe: Phaser.GameObjects.NineSlice
@@ -8,8 +12,8 @@ export class PipePair extends Phaser.GameObjects.Container {
 	scoreZone: Phaser.GameObjects.Zone
 	scene: Game
 
-	constructor(scene: Game, x: number, gapY: number) {
-		super(scene, x, gapY)
+	constructor(scene: Game, x: number) {
+		super(scene, x, Phaser.Math.Between(MIN_Y_CENTER, MAX_Y_CENTER))
 		this.scene = scene
 
 		this.invokeCoin = this.invokeCoin.bind(this)
@@ -17,12 +21,34 @@ export class PipePair extends Phaser.GameObjects.Container {
 
 		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
-			.nineslice(0, -75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
+			.nineslice(
+				0,
+				-GAP_HEIGHT / 2,
+				'pipes',
+				pipeFrame ?? 0,
+				PIPE_WIDTH,
+				scene.scale.height,
+				undefined,
+				undefined,
+				39,
+				39
+			)
 			.setOrigin(0.5, 1)
 			.setName('pipe')
 
 		this.bottomPipe = scene.add
-			.nineslice(0, +75, 'pipes', pipeFrame ?? 0, PIPE_WIDTH, 1500, undefined, undefined, 39, 39)
+			.nineslice(
+				0,
+				GAP_HEIGHT / 2,
+				'pipes',
+				pipeFrame ?? 0,
+				PIPE_WIDTH,
+				scene.scale.height,
+				undefined,
+				undefined,
+				39,
+				39
+			)
 			.setOrigin(0.5, 0)
 			.setName('pipe')
 

@@ -98,6 +98,7 @@ export class Game extends Phaser.Scene {
 
 	startPipeTimer() {
 		this.time.addEvent({
+			startAt: 1450,
 			delay: 1500,
 			callback: this.addPipeRow,
 			callbackScope: this,
@@ -107,8 +108,7 @@ export class Game extends Phaser.Scene {
 
 	addPipeRow() {
 		if (this.isGameStarted) {
-			const pipeHeight = Phaser.Math.Between(100, 400)
-			new PipePair(this, this.cameras.main.width + 50, pipeHeight)
+			new PipePair(this, this.cameras.main.width + 50)
 		}
 	}
 
