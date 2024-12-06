@@ -116,8 +116,8 @@ export class Game extends Phaser.Scene {
 		this.gameOver()
 	}
 
-	incrementScore() {
-		this.currentScore++
+	incrementScore(score: number = 1) {
+		this.currentScore += score
 		this.score.setText(this.currentScore.toString())
 	}
 
@@ -204,5 +204,27 @@ export class Game extends Phaser.Scene {
 			volume: 0.2,
 		})
 		this.player.setScale(0.5)
+	}
+
+	pickupEmerald() {
+		const relativePan = Phaser.Math.Clamp((this.player.x / this.scale.width) * 2 - 1, -0.4, 0.4)
+		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+		this.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, {
+			pan: relativePan,
+			rate: randomPitch,
+			volume: 0.2,
+		})
+		this.incrementScore(5)
+	}
+
+	pickUpSapphire() {
+		const relativePan = Phaser.Math.Clamp((this.player.x / this.scale.width) * 2 - 1, -0.4, 0.4)
+		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+		this.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, {
+			pan: relativePan,
+			rate: randomPitch,
+			volume: 0.2,
+		})
+		this.incrementScore(10)
 	}
 }

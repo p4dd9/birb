@@ -46,10 +46,15 @@ export class Preloader extends Phaser.Scene {
 
 	create() {
 		globalEventEmitter.emit('requestAppSettings')
+		this.createAnimations()
 
 		this.sound.add('Junkala_Stake_2')
 		this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 
+		this.scene.start('Menu')
+	}
+
+	createAnimations() {
 		for (let row = 0; row < 8; row++) {
 			this.anims.create({
 				key: `flap_${row}`,
@@ -81,6 +86,29 @@ export class Preloader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		})
-		this.scene.start('Menu')
+
+		const EMERALD_ROW_INDEX = 7
+		const EMERALD_ROW_FRAMES_END = 7
+		this.anims.create({
+			key: 'emerald',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * EMERALD_ROW_INDEX,
+				end: 8 * EMERALD_ROW_INDEX + EMERALD_ROW_FRAMES_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
+
+		const SAPPHIRE_ROW_INDEX = 6
+		const SAPPHIRE_ROW_FRAMES_END = 7
+		this.anims.create({
+			key: 'sapphire',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * SAPPHIRE_ROW_INDEX,
+				end: 8 * SAPPHIRE_ROW_INDEX + SAPPHIRE_ROW_FRAMES_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
 	}
 }

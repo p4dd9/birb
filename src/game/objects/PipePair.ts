@@ -17,6 +17,8 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.scene = scene
 
 		this.invokeCoin = this.invokeCoin.bind(this)
+		this.invokeEmerald = this.invokeEmerald.bind(this)
+		this.invokeSapphire = this.invokeSapphire.bind(this)
 		this.invokeMysteryBox = this.invokeMysteryBox.bind(this)
 
 		const pipeFrame = scene.game.registry.get('pipeFrame')
@@ -73,12 +75,12 @@ export class PipePair extends Phaser.GameObjects.Container {
 		;(this.topPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 		;(this.bottomPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
-		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
-			this.createPowerUp()
+		if (this.scene.currentScore === 0) {
+			this.createPowerUp('coin')
 		}
 
-		if (this.scene.currentScore === 1) {
-			this.createPowerUp('coin')
+		if (this.scene.currentScore > 0 && this.scene.currentScore % 2 === 0 && Phaser.Math.Between(0, 1) > 0) {
+			this.createPowerUp()
 		}
 
 		scene.tweens.add({
@@ -92,7 +94,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		})
 	}
 
-	createPowerUp(item?: 'coin' | 'mystery_box') {
+	createPowerUp(item?: 'coin' | 'mystery_box' | 'emerald' | 'sapphire') {
 		const random = Phaser.Math.FloatBetween(0, 1)
 
 		if (item) {
@@ -100,14 +102,23 @@ export class PipePair extends Phaser.GameObjects.Container {
 				this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
 			} else if (item === 'coin') {
 				this.createPowerUpItem('coin', this.invokeCoin)
+			} else if (item === 'emerald') {
+				this.createPowerUpItem('emerald', this.invokeEmerald)
+			} else if (item === 'sapphire') {
+				this.createPowerUpItem('sapphire', this.invokeSapphire)
 			}
+
 			return
 		}
 
 		if (random >= 0.5) {
 			this.createPowerUpItem('coin', this.invokeCoin)
-		} else {
+		} else if (random >= 0.2) {
 			this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
+		} else if (random >= 0.05) {
+			this.createPowerUpItem('emerald', this.invokeEmerald)
+		} else {
+			this.createPowerUpItem('sapphire', this.invokeSapphire)
 		}
 	}
 
@@ -122,6 +133,14 @@ export class PipePair extends Phaser.GameObjects.Container {
 			cb()
 		})
 		this.add(powerup)
+	}
+
+	invokeEmerald() {
+		this.scene.pickupEmerald()
+	}
+
+	invokeSapphire() {
+		this.scene.pickUpSapphire()
 	}
 
 	invokeMysteryBox() {
