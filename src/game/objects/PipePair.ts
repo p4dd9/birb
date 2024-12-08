@@ -98,16 +98,6 @@ export class PipePair extends Phaser.GameObjects.Container {
 			}
 		}
 
-		scene.tweens.add({
-			targets: this,
-			x: -50,
-			duration: 5000,
-			ease: 'Linear',
-			onComplete: () => {
-				this.destroy()
-			},
-		})
-
 		if (this.pipeNumber >= 50) {
 			scene.tweens.add({
 				targets: this,
@@ -117,6 +107,15 @@ export class PipePair extends Phaser.GameObjects.Container {
 				ease: 'Linear',
 			})
 		}
+		scene.tweens.add({
+			targets: this,
+			x: -50,
+			duration: 5000,
+			ease: 'Linear',
+			onComplete: () => {
+				this.destroy()
+			},
+		})
 	}
 
 	createPowerUp(item?: 'coin' | 'mystery_box' | 'emerald' | 'sapphire') {

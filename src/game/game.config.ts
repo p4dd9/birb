@@ -20,9 +20,9 @@ export const gameConfig: Types.Core.GameConfig = {
 		},
 	},
 	fps: {
-		target: 60,
-		limit: 70,
-		smoothStep: true,
+		target: 100,
+		limit: 120,
+		min: 30,
 	},
 	transparent: true,
 	scene: [Boot, Preloader, Menu, Game, GameOver],
