@@ -1,14 +1,16 @@
+import { MagoText } from '../objects/MagoText'
+
 export class GameOver extends Phaser.Scene {
-	gameOverText: Phaser.GameObjects.Text
+	gameOverText: MagoText
 
 	replayButton: Phaser.GameObjects.Image
-	replayButtonText: Phaser.GameObjects.Text
+	replayButtonText: MagoText
 
 	menuButton: Phaser.GameObjects.Image
-	menuButtonText: Phaser.GameObjects.Text
+	menuButtonText: MagoText
 
-	personalHighscoreText: Phaser.GameObjects.Text
-	gamesCountText: Phaser.GameObjects.Text
+	personalHighscoreText: MagoText
+	gamesCountText: MagoText
 
 	constructor() {
 		super('GameOver')
@@ -24,13 +26,7 @@ export class GameOver extends Phaser.Scene {
 			this.sound.play('victory', { volume: 0.2 })
 		}
 
-		this.gameOverText = this.add
-			.text(centerX, centerY - 100, 'Game Over', {
-				fontSize: 172,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
+		this.gameOverText = new MagoText(this, centerX, centerY - 100, 'Game Over', 172)
 
 		this.replayButton = this.add
 			.image(centerX, centerY + 100, 'UI_Flat_Frame03a')
@@ -43,13 +39,7 @@ export class GameOver extends Phaser.Scene {
 				this.scene.start('Game')
 			})
 
-		this.replayButtonText = this.add
-			.text(centerX, centerY + 85, 'Restart', {
-				fontSize: '82px',
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
+		this.replayButtonText = new MagoText(this, centerX, centerY + 85, 'Restart', 72)
 
 		this.menuButton = this.add
 			.image(centerX, this.replayButtonText.y + 150, 'UI_Flat_Frame03a')
@@ -63,29 +53,22 @@ export class GameOver extends Phaser.Scene {
 				this.scene.start('Menu')
 			})
 
-		this.menuButtonText = this.add
-			.text(centerX, this.menuButton.y - 12, 'Menu', {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
+		this.menuButtonText = new MagoText(this, centerX, this.menuButton.y - 12, 'Menu', 72)
+		this.personalHighscoreText = new MagoText(
+			this,
+			50,
+			this.scale.height - 50,
+			`Highscore: ${highscore}`,
+			72
+		).setOrigin(0, 1)
 
-		this.personalHighscoreText = this.add
-			.text(50, this.scale.height - 50, `Highscore: ${highscore}`, {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0, 1)
-
-		this.gamesCountText = this.add
-			.text(this.scale.width - 50, this.scale.height - 50, `Games: ${attempts}`, {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(1, 1)
+		this.gamesCountText = new MagoText(
+			this,
+			this.scale.width - 50,
+			this.scale.height - 50,
+			`Games: ${attempts}`,
+			72
+		).setOrigin(1, 1)
 
 		this.scale.on('resize', this.resize, this)
 	}

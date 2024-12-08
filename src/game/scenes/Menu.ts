@@ -1,20 +1,21 @@
 import type { Player } from '../../shared/messages'
+import { MagoText } from '../objects/MagoText'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Menu extends Phaser.Scene {
-	gameTitleText: Phaser.GameObjects.Text
+	gameTitleText: MagoText
 
 	playButton: Phaser.GameObjects.Image
-	playButtonText: Phaser.GameObjects.Text
+	playButtonText: Phaser.GameObjects.BitmapText
 
-	personalHighscoreText: Phaser.GameObjects.Text
-	muteButtonText: Phaser.GameObjects.Text
+	personalHighscoreText: MagoText
+	muteButtonText: MagoText
 
 	isMute: boolean = false
 
-	bestPlayer: Phaser.GameObjects.Text
+	bestPlayer: MagoText
 
-	breakingNews: Phaser.GameObjects.Text
+	breakingNews: Phaser.GameObjects.BitmapText
 
 	constructor() {
 		super('Menu')
@@ -37,13 +38,7 @@ export class Menu extends Phaser.Scene {
 		})
 		globalEventEmitter.emit('getBestPlayers')
 
-		this.gameTitleText = this.add
-			.text(centerX, centerY - 110, 'REDDIBIRDS', {
-				fontSize: 172,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
+		this.gameTitleText = new MagoText(this, centerX, centerY - 110, 'REDDIBIRDS', 172)
 
 		this.playButton = this.add
 			.image(centerX, this.gameTitleText.y + 170, 'UI_Flat_Frame03a')
@@ -55,20 +50,16 @@ export class Menu extends Phaser.Scene {
 				this.scale.off('resize', this.resize, this)
 				this.scene.start('Game')
 			})
-		this.playButtonText = this.add
-			.text(centerX, this.playButton.y - 15, 'Play', {
-				fontSize: '82px',
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5)
 
-		this.muteButtonText = this.add
-			.text(this.scale.width - 50, this.scale.height - 50, this.getMuteButtonText(), {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
+		this.playButtonText = this.add.bitmapText(centerX, this.playButton.y, 'mago3_black', 'Play', 82).setOrigin(0.5)
+
+		this.muteButtonText = new MagoText(
+			this,
+			this.scale.width - 50,
+			this.scale.height - 50,
+			this.getMuteButtonText(),
+			72
+		)
 			.setOrigin(1, 1)
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
@@ -83,13 +74,10 @@ export class Menu extends Phaser.Scene {
 			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
 		}
 
-		this.breakingNews = this.add
-			.text(this.scale.width, 0, bannerText, {
-				fontSize: 100,
-				color: 'black',
-				fontFamily: 'mago3',
-			})
-			.setOrigin(0, 0)
+		this.breakingNews = new MagoText(this, this.scale.width, 0, bannerText, 100).setOrigin(0, 0)
+
+		console.log(this.breakingNews.width)
+		console.log(this.breakingNews.height)
 		this.startBreakingTheNews()
 	}
 
@@ -98,14 +86,8 @@ export class Menu extends Phaser.Scene {
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`
 		}
-		this.bestPlayer = this.add
-			.text(450, this.scale.height - 200, text, {
-				fontSize: 72,
-				fontFamily: 'mago3',
-				color: 'black',
-			})
-			.setOrigin(0.5, 0.5)
-			.setAngle(10)
+		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 100).setAngle(10)
+
 		this.add.tween({
 			targets: this.bestPlayer,
 			scale: 1.1,
@@ -147,7 +129,7 @@ export class Menu extends Phaser.Scene {
 		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 110)
 
 		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 170)
-		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y - 15)
+		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y)
 
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 50)
 

@@ -1,16 +1,16 @@
+import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
-import { PrimaryText } from '../objects/PrimaryText'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Game extends Phaser.Scene {
 	player: Player
 	pipes: Phaser.GameObjects.Group
-	score: PrimaryText
+	score: MagoText
 	currentScore: number = 0
 
 	intro: Phaser.GameObjects.Image
-	introText: PrimaryText
+	introText: MagoText
 
 	isGameStarted: boolean = false
 
@@ -43,16 +43,9 @@ export class Game extends Phaser.Scene {
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
 		this.intro = this.add.image(this.player.x + 100, this.player.y + 100, 'Icon_Cursor_02a').setScale(3)
-		this.introText = new PrimaryText(this, this.player.x, this.player.y + 75, 'Tap', { fontSize: 72 }).setOrigin(
-			0.5,
-			0.5
-		)
 
-		this.score = new PrimaryText(this, this.scale.width / 2, -20, '0', {
-			fontSize: 121,
-		})
-			.setDepth(100)
-			.setOrigin(0.5, 0)
+		this.introText = new MagoText(this, this.player.x, this.player.y + 75, 'Tap', 72)
+		this.score = new MagoText(this, this.scale.width / 2, -20, '0', 121).setDepth(100).setOrigin(0.5, 0)
 
 		this.input.once('pointerdown', this.start)
 		this.input.on('pointerdown', this.player.flap)
