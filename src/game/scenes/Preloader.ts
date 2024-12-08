@@ -15,8 +15,8 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 
-		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.ogg')
-		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.ogg')
+		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.mp3')
+		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.mp3')
 
 		this.load.audio('death1', 'audio/death1.mp3')
 
