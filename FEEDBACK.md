@@ -19,3 +19,5 @@
 - self-maintained allowlist to which services an app can connect to (within config of any install)
 - mobile views in native app emulator to debug
 - clear instructions that src relates to blocks and webroot to webview (src to avoid exposing all gamelogic)
+- missing ".decr" redis logic in devvit wrapper
+- global score across installations/subreddits

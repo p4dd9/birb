@@ -9,6 +9,7 @@ import { WorldSelect } from './settings/world.select'
 Devvit.configure({
 	redditAPI: true,
 	redis: true,
+	realtime: true,
 })
 
 Devvit.addMenuItem({

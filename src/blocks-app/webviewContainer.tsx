@@ -1,7 +1,7 @@
-import { Devvit, useAsync } from '@devvit/public-api'
+import { Devvit, useAsync, useChannel, useState } from '@devvit/public-api'
 import type { PostMessageMessages, UpdateGameSettingMessage } from '../shared/messages'
 import { mappAppSettingsToMessage } from './redisMapper'
-import { createRedisService } from './redisService'
+import { createRedisService, type CommunityStats } from './redisService'
 
 type WebviewContainerProps = {
 	context: Devvit.Context
@@ -11,6 +11,19 @@ type WebviewContainerProps = {
 export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
 	const redisService = createRedisService(context)
+
+	const [communityScore, setCommunityScore] = useState<CommunityStats>(
+		async () => await redisService.getCommunityStats()
+	)
+
+	const channel = useChannel({
+		name: 'community_score',
+		onMessage: (data: { type: string; scoreStats: CommunityStats }) => {
+			if (data.type === 'update') {
+				setCommunityScore(data.scoreStats)
+			}
+		},
+	})
 
 	useAsync(
 		async () => {
@@ -40,13 +53,15 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				}
 
 				const isNewHighScore = newScore > currentPersonalStats.highscore
-				await redisService.saveScore({
+				const scoreStats = await redisService.saveScore({
 					highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
+					score: newScore,
 				})
 
 				if (isNewHighScore) {
 					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
 				}
+				await channel.send({ type: 'update', scoreStats })
 
 				context.ui.webView.postMessage('game-webview', {
 					type: 'gameOver',
@@ -87,6 +102,8 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 		}
 	}
 
+	channel.subscribe()
+
 	return (
 		<vstack grow={webviewVisible} height={webviewVisible ? '100%' : '0px'}>
 			<webview
@@ -97,6 +114,12 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				minWidth="100%"
 				onMessage={(msg) => handleMessage(msg as PostMessageMessages)}
 			/>
+			<vstack alignment="middle center" width="100%" minWidth="100%">
+				<text>
+					Community Score: {communityScore.communityScore}, Attempts: {communityScore.communityAttempts}, MVP{' '}
+					{communityScore.topPlayer}
+				</text>
+			</vstack>
 		</vstack>
 	)
 }

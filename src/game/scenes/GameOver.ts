@@ -77,10 +77,10 @@ export class GameOver extends Phaser.Scene {
 		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
 		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 100)
-		this.replayButtonText.setPosition(this.scale.width / 2, this.scale.height / 2 + 85)
+		this.replayButtonText.setPosition(this.replayButton.x, this.replayButton.y)
 
 		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 150)
-		this.menuButtonText.setPosition(this.scale.width / 2, this.menuButton.y - 12)
+		this.menuButtonText.setPosition(this.menuButton.x, this.menuButton.y)
 
 		this.personalHighscoreText.setPosition(50, this.scale.height - 50)
 		this.gamesCountText.setPosition(this.scale.width - 50, this.scale.height - 50)
