@@ -44,7 +44,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setTint(0xff0000)
 
 		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
-		this.scene.sound.play(`death1`, { volume: 0.1, rate: randomPitch })
+		this.scene.sound.play(`death1`, { volume: 0.2, rate: randomPitch })
 		this.scene.tweens.add({
 			targets: this,
 			y: this.y - 50,

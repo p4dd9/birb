@@ -190,22 +190,31 @@ export class Game extends Phaser.Scene {
 		})
 	}
 
-	growPlayer() {
-		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
-		this.sound.play(`grow`, {
-			rate: randomPitch,
-			volume: 0.2,
-		})
-		this.player.setScale(1.5)
-	}
-
 	shrinkPlayer() {
 		const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
 		this.sound.play(`shrink`, {
 			rate: randomPitch,
 			volume: 0.2,
 		})
-		this.player.setScale(0.5)
+
+		this.tweens.add({
+			targets: this.player,
+			scale: 0.6,
+			duration: 400,
+		})
+
+		this.time.delayedCall(10000, () => {
+			const randomPitch = Phaser.Math.FloatBetween(0.9, 1.1)
+			this.sound.play(`grow`, {
+				rate: randomPitch,
+				volume: 0.2,
+			})
+			this.tweens.add({
+				targets: this.player,
+				scale: 1,
+				duration: 400,
+			})
+		})
 	}
 
 	pickupEmerald() {

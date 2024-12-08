@@ -174,12 +174,9 @@ export class PipePair extends Phaser.GameObjects.Container {
 				this.scene.shrinkPlayer()
 				break
 			case 2:
-				this.scene.growPlayer()
-				break
-			case 3:
 				this.scene.pixelate()
 				break
-			case 4:
+			case 3:
 				this.scene.lightsOut()
 				break
 			default:
