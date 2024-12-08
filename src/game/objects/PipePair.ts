@@ -76,8 +76,12 @@ export class PipePair extends Phaser.GameObjects.Container {
 
 		scene.physics.add.existing(this.topPipe, false)
 		scene.physics.add.existing(this.bottomPipe, false)
-		;(this.topPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
-		;(this.bottomPipe.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
+		;(this.topPipe.body as Phaser.Physics.Arcade.Body)
+			.setAllowGravity(false)
+			.setSize(this.topPipe.displayWidth * 0.9, this.topPipe.displayHeight * 0.99)
+		;(this.bottomPipe.body as Phaser.Physics.Arcade.Body)
+			.setAllowGravity(false)
+			.setSize(this.topPipe.displayWidth * 0.9, this.topPipe.displayHeight * 0.99)
 
 		if (this.pipeNumber === 0) {
 			this.createPowerUp('coin')
