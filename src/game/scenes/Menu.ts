@@ -40,6 +40,18 @@ export class Menu extends Phaser.Scene {
 
 		this.gameTitleText = new MagoText(this, centerX, centerY - 110, 'REDDIBIRDS', 172)
 
+		// TODO: think about ui, customization per player + community goal
+		this.add
+			.sprite(
+				this.gameTitleText.x - this.gameTitleText.displayWidth / 2 - 30,
+				this.gameTitleText.y - 6,
+				'Spritesheet_Animation_UI_Pumpkin_Arrow',
+				0
+			)
+			.setOrigin(1, 0.5)
+			.setDisplaySize(64, 64)
+			.setVisible(false)
+
 		this.playButton = this.add
 			.image(centerX, this.gameTitleText.y + 170, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameTitleText.displayWidth / 2, 100)

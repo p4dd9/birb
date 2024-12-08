@@ -31,13 +31,6 @@ Devvit.addSettings([
 	},
 ])
 
-/**Devvit.addTrigger({
-	event: 'AppUpgrade',
-	onEvent: async (event, context) => {
-		console.log(await context.settings.getAll())
-	},
-})**/
-
 Devvit.addCustomPostType({
 	name: `Let's play Reddibirds!`,
 	height: 'regular',

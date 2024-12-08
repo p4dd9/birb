@@ -43,6 +43,11 @@ export class Preloader extends Phaser.Scene {
 		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
 		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
+		this.load.spritesheet(
+			'Spritesheet_Animation_UI_Pumpkin_Arrow',
+			'gui/Spritesheet_Animation_UI_Pumpkin_Arrow.png',
+			{ frameWidth: 32, frameHeight: 32 }
+		)
 	}
 
 	create() {
