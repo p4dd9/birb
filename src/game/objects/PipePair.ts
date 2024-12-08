@@ -149,9 +149,9 @@ export class PipePair extends Phaser.GameObjects.Container {
 			return
 		}
 
-		if (random >= 0.5) {
+		if (random >= 0.25) {
 			this.createPowerUpItem('coin', this.invokeCoin)
-		} else if (random >= 0.2) {
+		} else if (random >= 0.1) {
 			if (Phaser.Math.Between(0, 1) > 0) {
 				this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
 			} else {
