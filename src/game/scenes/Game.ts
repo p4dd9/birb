@@ -172,7 +172,7 @@ export class Game extends Phaser.Scene {
 		this.sound.play('pixelate', { volume: 0.3 })
 		this.tweens.add({
 			targets: pixelation,
-			amount: 8,
+			amount: 7,
 			duration: 1000,
 			callbackScope: this,
 			onComplete: () => {
