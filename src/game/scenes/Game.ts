@@ -45,7 +45,7 @@ export class Game extends Phaser.Scene {
 		this.intro = this.add.image(this.player.x + 100, this.player.y + 100, 'Icon_Cursor_02a').setScale(3)
 
 		this.introText = new MagoText(this, this.player.x, this.player.y + 75, 'Tap', 72)
-		this.score = new MagoText(this, this.scale.width / 2, -20, '0', 121).setDepth(100).setOrigin(0.5, 0)
+		this.score = new MagoText(this, this.scale.width / 2, 12, '0', 121).setDepth(100).setOrigin(0.5, 0)
 
 		this.input.once('pointerdown', this.start)
 		this.input.on('pointerdown', this.player.flap)
@@ -71,7 +71,6 @@ export class Game extends Phaser.Scene {
 	}
 
 	start() {
-		console.log('start')
 		if (this.isGameStarted) return
 		this.isGameStarted = true
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
@@ -82,7 +81,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	resize() {
-		this.score.setX(this.scale.width / 2)
+		this.score.setPosition(this.scale.width / 2, 12)
 		if (!this.isGameStarted) {
 			this.player.setPosition(200, this.scale.height / 2 - 100)
 			this.intro.setPosition(this.player.x + 100, this.player.y + 100)

@@ -56,7 +56,7 @@ export class Menu extends Phaser.Scene {
 		this.muteButtonText = new MagoText(
 			this,
 			this.scale.width - 50,
-			this.scale.height - 50,
+			this.scale.height - 25,
 			this.getMuteButtonText(),
 			72
 		)
@@ -74,7 +74,7 @@ export class Menu extends Phaser.Scene {
 			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
 		}
 
-		this.breakingNews = new MagoText(this, this.scale.width, 0, bannerText, 100).setOrigin(0, 0)
+		this.breakingNews = new MagoText(this, this.scale.width, 20, bannerText, 100).setOrigin(0, 0)
 
 		console.log(this.breakingNews.width)
 		console.log(this.breakingNews.height)
@@ -131,10 +131,10 @@ export class Menu extends Phaser.Scene {
 		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 170)
 		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y)
 
-		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 50)
+		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 25)
 
 		if (this.breakingNews) {
-			this.breakingNews.setPosition(this.scale.width, 0)
+			this.breakingNews.setPosition(this.scale.width, 20)
 		}
 
 		if (this.bestPlayer) {

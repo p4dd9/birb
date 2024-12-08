@@ -144,7 +144,7 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			const communityScore =
 				(await redis.hGet(`community:${context.subredditId}:score`, context.subredditId)) ?? 0
 			const communityAttempts =
-				(await redis.hGet(`community:${context.subredditId}:attempt`, context.subredditId)) ?? 0
+				(await redis.hGet(`community:${context.subredditId}:attempts`, context.subredditId)) ?? 0
 
 			const currentTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
 				by: 'rank',

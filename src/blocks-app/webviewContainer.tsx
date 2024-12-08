@@ -116,7 +116,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			/>
 			<vstack alignment="middle center" width="100%" minWidth="100%">
 				<text>
-					Community Score: {communityScore.communityScore}, Attempts: {communityScore.communityAttempts}, MVP{' '}
+					r/ Score: {communityScore.communityScore}, Attempts: {communityScore.communityAttempts}, MVP:{' '}
 					{communityScore.topPlayer}
 				</text>
 			</vstack>

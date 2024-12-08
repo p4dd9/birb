@@ -29,7 +29,7 @@ export class GameOver extends Phaser.Scene {
 		this.gameOverText = new MagoText(this, centerX, centerY - 100, 'Game Over', 172)
 
 		this.replayButton = this.add
-			.image(centerX, centerY + 100, 'UI_Flat_Frame03a')
+			.image(centerX, this.gameOverText.y + 150, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameOverText.displayWidth / 2, 100)
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
@@ -39,10 +39,10 @@ export class GameOver extends Phaser.Scene {
 				this.scene.start('Game')
 			})
 
-		this.replayButtonText = new MagoText(this, centerX, centerY + 85, 'Restart', 72)
+		this.replayButtonText = new MagoText(this, centerX, this.replayButton.y, 'Restart', 72)
 
 		this.menuButton = this.add
-			.image(centerX, this.replayButtonText.y + 150, 'UI_Flat_Frame03a')
+			.image(centerX, this.replayButtonText.y + 130, 'UI_Flat_Frame03a')
 			.setDisplaySize(this.gameOverText.displayWidth / 3, 100)
 			.setOrigin(0.5)
 			.setInteractive({ cursor: 'pointer' })
@@ -53,11 +53,11 @@ export class GameOver extends Phaser.Scene {
 				this.scene.start('Menu')
 			})
 
-		this.menuButtonText = new MagoText(this, centerX, this.menuButton.y - 12, 'Menu', 72)
+		this.menuButtonText = new MagoText(this, centerX, this.menuButton.y, 'Menu', 72)
 		this.personalHighscoreText = new MagoText(
 			this,
 			50,
-			this.scale.height - 50,
+			this.scale.height - 25,
 			`Highscore: ${highscore}`,
 			72
 		).setOrigin(0, 1)
@@ -65,7 +65,7 @@ export class GameOver extends Phaser.Scene {
 		this.gamesCountText = new MagoText(
 			this,
 			this.scale.width - 50,
-			this.scale.height - 50,
+			this.scale.height - 25,
 			`Games: ${attempts}`,
 			72
 		).setOrigin(1, 1)
@@ -76,13 +76,13 @@ export class GameOver extends Phaser.Scene {
 	resize() {
 		this.gameOverText.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
-		this.replayButton.setPosition(this.scale.width / 2, this.scale.height / 2 + 100)
+		this.replayButton.setPosition(this.gameOverText.x, this.gameOverText.y + 150)
 		this.replayButtonText.setPosition(this.replayButton.x, this.replayButton.y)
 
-		this.menuButton.setPosition(this.scale.width / 2, this.replayButtonText.y + 150)
+		this.menuButton.setPosition(this.replayButton.x, this.replayButtonText.y + 130)
 		this.menuButtonText.setPosition(this.menuButton.x, this.menuButton.y)
 
-		this.personalHighscoreText.setPosition(50, this.scale.height - 50)
-		this.gamesCountText.setPosition(this.scale.width - 50, this.scale.height - 50)
+		this.personalHighscoreText.setPosition(50, this.scale.height - 25)
+		this.gamesCountText.setPosition(this.scale.width - 50, this.scale.height - 25)
 	}
 }
