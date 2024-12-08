@@ -131,9 +131,9 @@ export class Game extends Phaser.Scene {
 	gameOver() {
 		this.input.off('pointerdown', this.player.flap)
 		this.player.die()
-
+		this.pipeCount = 0
 		this.physics.pause()
-		console.log('digga')
+
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(
 			'gameOver',
