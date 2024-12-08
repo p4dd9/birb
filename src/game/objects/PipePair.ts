@@ -1,7 +1,6 @@
 import type { Game } from '../scenes/Game'
 
 const PIPE_WIDTH = 90
-const GAP_HEIGHT = 150
 
 const MIN_Y_CENTER = 100
 const MAX_Y_CENTER = 400
@@ -22,6 +21,9 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.invokeEmerald = this.invokeEmerald.bind(this)
 		this.invokeSapphire = this.invokeSapphire.bind(this)
 		this.invokeMysteryBox = this.invokeMysteryBox.bind(this)
+		this.invokeBronzeKey = this.invokeBronzeKey.bind(this)
+		this.invokeSilverKey = this.invokeSilverKey.bind(this)
+		this.invokeGoldKey = this.invokeGoldKey.bind(this)
 
 		const gapHeightMultiplier = scene.pipeCount < 5 ? 1.5 : 1
 
@@ -29,7 +31,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.topPipe = scene.add
 			.nineslice(
 				0,
-				(-GAP_HEIGHT / 2) * gapHeightMultiplier,
+				(-scene.pipeGap / 2) * gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -45,7 +47,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.bottomPipe = scene.add
 			.nineslice(
 				0,
-				(GAP_HEIGHT / 2) * gapHeightMultiplier,
+				(scene.pipeGap / 2) * gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -122,9 +124,8 @@ export class PipePair extends Phaser.GameObjects.Container {
 		})
 	}
 
-	createPowerUp(item?: 'coin' | 'mystery_box' | 'emerald' | 'sapphire') {
+	createPowerUp(item?: 'coin' | 'mystery_box' | 'emerald' | 'sapphire' | 'key') {
 		const random = Phaser.Math.FloatBetween(0, 1)
-
 		if (item) {
 			if (item === 'mystery_box') {
 				this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
@@ -134,6 +135,15 @@ export class PipePair extends Phaser.GameObjects.Container {
 				this.createPowerUpItem('emerald', this.invokeEmerald)
 			} else if (item === 'sapphire') {
 				this.createPowerUpItem('sapphire', this.invokeSapphire)
+			} else if (item === 'key') {
+				const key = this.getRandomKey()
+				if (key === 'bronze_key') {
+					this.createPowerUpItem(key, this.invokeBronzeKey)
+				} else if (key === 'silver_key') {
+					this.createPowerUpItem(key, this.invokeSilverKey)
+				} else if (key === 'gold_key') {
+					this.createPowerUpItem(key, this.invokeGoldKey)
+				}
 			}
 
 			return
@@ -142,7 +152,18 @@ export class PipePair extends Phaser.GameObjects.Container {
 		if (random >= 0.5) {
 			this.createPowerUpItem('coin', this.invokeCoin)
 		} else if (random >= 0.2) {
-			this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
+			if (Phaser.Math.Between(0, 1) > 0) {
+				this.createPowerUpItem('mystery_box', this.invokeMysteryBox)
+			} else {
+				const key = this.getRandomKey()
+				if (key === 'bronze_key') {
+					this.createPowerUpItem(key, this.invokeBronzeKey)
+				} else if (key === 'silver_key') {
+					this.createPowerUpItem(key, this.invokeSilverKey)
+				} else if (key === 'gold_key') {
+					this.createPowerUpItem(key, this.invokeGoldKey)
+				}
+			}
 		} else if (random >= 0.05) {
 			this.createPowerUpItem('emerald', this.invokeEmerald)
 		} else {
@@ -169,6 +190,31 @@ export class PipePair extends Phaser.GameObjects.Container {
 
 	invokeSapphire() {
 		this.scene.pickUpSapphire()
+	}
+
+	invokeBronzeKey() {
+		this.scene.pickUpKey('bronze')
+	}
+	invokeSilverKey() {
+		this.scene.pickUpKey('silver')
+	}
+	invokeGoldKey() {
+		this.scene.pickUpKey('gold')
+	}
+
+	getRandomKey() {
+		const effectIndex = Phaser.Math.Between(1, 3)
+		switch (effectIndex) {
+			case 1:
+				return 'bronze_key'
+			case 2:
+				return 'silver_key'
+			case 3:
+				return 'gold_key'
+			default:
+				console.warn('Where did that key come from?')
+				return ''
+		}
 	}
 
 	invokeMysteryBox() {

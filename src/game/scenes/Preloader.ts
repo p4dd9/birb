@@ -121,5 +121,41 @@ export class Preloader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		})
+
+		/** KEYS */
+		const BRONZE_KEY_START = 12
+		const SILVER_KEY_START = 13
+		const GOLD_KEY_START = 14
+		const KEYS_ROW_FRAME_END = 7
+
+		this.anims.create({
+			key: 'bronze_key',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * BRONZE_KEY_START,
+				end: 8 * BRONZE_KEY_START + KEYS_ROW_FRAME_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
+
+		this.anims.create({
+			key: 'silver_key',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * SILVER_KEY_START,
+				end: 8 * SILVER_KEY_START + KEYS_ROW_FRAME_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
+
+		this.anims.create({
+			key: 'gold_key',
+			frames: this.anims.generateFrameNumbers('animated_items', {
+				start: 8 * GOLD_KEY_START,
+				end: 8 * GOLD_KEY_START + KEYS_ROW_FRAME_END,
+			}),
+			frameRate: 12,
+			repeat: -1,
+		})
 	}
 }

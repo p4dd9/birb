@@ -1,3 +1,4 @@
+import { PipeGaps } from '../config/pipe.config'
 import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
@@ -17,6 +18,7 @@ export class Game extends Phaser.Scene {
 	spotLight: Phaser.GameObjects.Light
 
 	pipeCount: number = 0
+	pipeGap: PipeGaps = PipeGaps.DEFAULT
 
 	constructor() {
 		super('Game')
@@ -229,5 +231,42 @@ export class Game extends Phaser.Scene {
 			volume: 0.2,
 		})
 		this.incrementScore(10)
+	}
+
+	pickUpKey(key: 'bronze' | 'silver' | 'gold') {
+		const relativePan = Phaser.Math.Clamp((this.player.x / this.scale.width) * 2 - 1, -0.4, 0.4)
+		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
+		// TODO: new sfx for keys
+		this.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, {
+			pan: relativePan,
+			rate: randomPitch,
+			volume: 0.2,
+		})
+		this.changePipeGap(key)
+	}
+
+	changePipeGap(key: 'bronze' | 'silver' | 'gold') {
+		switch (key) {
+			case 'bronze': {
+				this.pipeGap = PipeGaps.BRONZE
+				break
+			}
+			case 'silver': {
+				this.pipeGap = PipeGaps.BRONZE
+				break
+			}
+			case 'gold': {
+				this.pipeGap = PipeGaps.GOLD
+				break
+			}
+			default: {
+				this.pipeGap = PipeGaps.DEFAULT
+				break
+			}
+		}
+
+		this.time.delayedCall(5000, () => {
+			this.pipeGap = PipeGaps.DEFAULT
+		})
 	}
 }
