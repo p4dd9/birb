@@ -77,17 +77,14 @@ export class Menu extends Phaser.Scene {
 	}
 
 	createBreakingNews(players: Player[]) {
-		const topPlayers = players
-			.slice(0, 3)
-			.map((player) => `"${player.userName}" ${player.score}`)
-			.join(',')
+		const topPlayers = players.map((player) => `"${player.userName}" ${player.score}`).join(',')
 		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
 		if (players.length < 1) {
-			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! *LIVE*`
+			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
 		}
 
 		this.breakingNews = this.add
-			.text(this.scale.width, 0, `*LIVE* BREAKING SCORES! ${bannerText} *LIVE*`, {
+			.text(this.scale.width, 0, bannerText, {
 				fontSize: 100,
 				color: 'black',
 				fontFamily: 'mago3',

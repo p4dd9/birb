@@ -172,7 +172,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	invokeMysteryBox() {
-		const effectIndex = Phaser.Math.Between(1, 4)
+		const effectIndex = Phaser.Math.Between(1, 3)
 		switch (effectIndex) {
 			case 1:
 				this.scene.shrinkPlayer()
