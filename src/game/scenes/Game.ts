@@ -20,6 +20,8 @@ export class Game extends Phaser.Scene {
 	pipeCount: number = 0
 	pipeGap: PipeGaps = PipeGaps.DEFAULT
 
+	earth: Phaser.GameObjects.TileSprite
+
 	constructor() {
 		super('Game')
 	}
@@ -63,6 +65,11 @@ export class Game extends Phaser.Scene {
 			this.player.changePlayerFrame(7)
 		})
 
+		this.earth = this.add
+			.tileSprite(this.scale.width, this.scale.height - 32, this.scale.width, 32, 'earth')
+			.setScale(3)
+			.setDepth(50)
+
 		this.resetScore()
 	}
 
@@ -70,6 +77,8 @@ export class Game extends Phaser.Scene {
 		if (this.isGameStarted) {
 			this.player.updateBird()
 		}
+
+		this.earth.setTilePosition(this.earth.tilePositionX + 1.3)
 	}
 
 	start() {

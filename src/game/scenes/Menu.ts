@@ -76,8 +76,6 @@ export class Menu extends Phaser.Scene {
 
 		this.breakingNews = new MagoText(this, this.scale.width, 20, bannerText, 100).setOrigin(0, 0)
 
-		console.log(this.breakingNews.width)
-		console.log(this.breakingNews.height)
 		this.startBreakingTheNews()
 	}
 
@@ -86,7 +84,7 @@ export class Menu extends Phaser.Scene {
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`
 		}
-		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 100).setAngle(10)
+		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 72).setAngle(10)
 
 		this.add.tween({
 			targets: this.bestPlayer,
