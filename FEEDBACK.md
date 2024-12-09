@@ -21,3 +21,4 @@
 - clear instructions that src relates to blocks and webroot to webview (src to avoid exposing all gamelogic)
 - missing ".decr" redis logic in devvit wrapper
 - global score across installations/subreddits
+- add community icon/logo via context.reddit.getCurrentSubreddit()
