@@ -24,7 +24,7 @@ export class Game extends Phaser.Scene {
 
 	spotLight: Phaser.GameObjects.Light
 
-	pipeCount: number = 0
+	pipeCount: number
 	pipeGap: PipeGaps = PipeGaps.DEFAULT
 
 	earth: Phaser.GameObjects.TileSprite
@@ -35,6 +35,7 @@ export class Game extends Phaser.Scene {
 
 	create() {
 		this.isGameStarted = false
+		this.pipeCount = 0
 
 		this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')

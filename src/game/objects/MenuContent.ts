@@ -24,7 +24,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 
 		this.arrowLeft = this.scene.add
 			.sprite(
-				this.contentTitle.x - this.contentTitle.displayWidth / 2 - 50,
+				this.contentTitle.x - this.contentTitle.displayWidth / 2 - 40,
 				this.contentTitle.y - 6,
 				'Spritesheet_Animation_UI_Pumpkin_Arrow',
 				0
@@ -32,20 +32,27 @@ export class MenuContent extends Phaser.GameObjects.Container {
 			.setOrigin(1, 0.5)
 			.setDisplaySize(128, 128)
 			.setInteractive({ cursor: 'pointer' })
-			.on('pointerdown', () => this.navigateContent(-1))
+			.on('pointerdown', () => {
+				this.arrowLeft.play('arrows')
+				this.navigateContent(-1)
+			})
 
 		this.arrowRight = this.scene.add
 			.sprite(
-				this.contentTitle.x + this.contentTitle.displayWidth / 2 + 50,
+				this.contentTitle.x + this.contentTitle.displayWidth / 2 + 40,
 				this.contentTitle.y - 6,
 				'Spritesheet_Animation_UI_Pumpkin_Arrow',
 				0
 			)
+
 			.setOrigin(0, 0.5)
 			.setDisplaySize(128, 128)
 			.setInteractive({ cursor: 'pointer' })
 			.setFlipX(true)
-			.on('pointerdown', () => this.navigateContent(1))
+			.on('pointerdown', () => {
+				this.arrowRight.play('arrows')
+				this.navigateContent(1)
+			})
 
 		this.add([this.contentTitle, this.arrowLeft, this.arrowRight])
 	}

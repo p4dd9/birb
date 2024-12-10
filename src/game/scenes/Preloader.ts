@@ -175,5 +175,14 @@ export class Preloader extends Phaser.Scene {
 			frameRate: 12,
 			repeat: -1,
 		})
+
+		this.anims.create({
+			key: 'arrows',
+			frames: this.anims.generateFrameNumbers('Spritesheet_Animation_UI_Pumpkin_Arrow', {
+				start: 0,
+				end: 2,
+			}),
+			frameRate: 12,
+		})
 	}
 }
