@@ -1,6 +1,7 @@
 export enum MagoTextStyle {
 	small = 48,
 	normal = 72,
+	bigger = 82,
 	big = 100,
 	large = 121,
 	gigantic = 172,

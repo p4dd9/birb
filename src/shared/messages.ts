@@ -46,4 +46,5 @@ export type Player = {
 	userId: string
 	userName: string
 	score: number
+	attempts: number
 }

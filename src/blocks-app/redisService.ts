@@ -129,10 +129,12 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			const mappedBestPlayers = await Promise.all(
 				topPlayers.map(async ({ member, score }) => {
 					const userNameResponse = await context.reddit.getUserById(member)
+					const attempts = await redis.hGet(`post:${postId}:attempts`, member)
 					return {
 						userId: member,
 						userName: userNameResponse ? userNameResponse.username : 'Anonymous',
 						score: Number(score),
+						attempts: Number(attempts),
 					}
 				})
 			)
@@ -152,13 +154,13 @@ export function createRedisService(context: Devvit.Context): RedisService {
 
 			await context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
 
-			const records = await context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
-			if (records) {
-				const onlinePlayers = Object.entries(records).filter(([_, timestamp]) => {
+			const players = await context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
+			if (players) {
+				const onlinePlayers = Object.entries(players).filter(([_, timestamp]) => {
 					return now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL
 				})
 
-				const stalePlayers = Object.keys(records).filter(
+				const stalePlayers = Object.keys(players).filter(
 					(userId) => !onlinePlayers.some(([validId]) => validId === userId)
 				)
 

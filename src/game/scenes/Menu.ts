@@ -1,13 +1,9 @@
 import type { Player } from '../../shared/messages'
 import { MagoText } from '../objects/MagoText'
+import { MenuContent } from '../objects/MenuContent'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 export class Menu extends Phaser.Scene {
-	gameTitleText: MagoText
-
-	playButton: Phaser.GameObjects.Image
-	playButtonText: Phaser.GameObjects.BitmapText
-
 	personalHighscoreText: MagoText
 	muteButtonText: MagoText
 
@@ -17,6 +13,8 @@ export class Menu extends Phaser.Scene {
 
 	breakingNews: Phaser.GameObjects.BitmapText
 	playersOnline: Phaser.GameObjects.BitmapText
+
+	menuContent: MenuContent
 
 	constructor() {
 		super('Menu')
@@ -29,9 +27,6 @@ export class Menu extends Phaser.Scene {
 	}
 
 	create() {
-		const centerX = this.scale.width / 2
-		const centerY = this.scale.height / 2
-
 		this.cameras.main.postFX.clear()
 
 		this.sound.stopByKey('Junkala_Stake_2')
@@ -44,33 +39,7 @@ export class Menu extends Phaser.Scene {
 			this.createBestPlayer(bestPlayers[0])
 		})
 		globalEventEmitter.emit('getBestPlayers')
-
-		this.gameTitleText = new MagoText(this, centerX, centerY - 110, 'REDDIBIRDS', 172)
-
 		// TODO: think about ui, customization per player + community goal
-		this.add
-			.sprite(
-				this.gameTitleText.x - this.gameTitleText.displayWidth / 2 - 30,
-				this.gameTitleText.y - 6,
-				'Spritesheet_Animation_UI_Pumpkin_Arrow',
-				0
-			)
-			.setOrigin(1, 0.5)
-			.setDisplaySize(64, 64)
-			.setVisible(false)
-
-		this.playButton = this.add
-			.image(centerX, this.gameTitleText.y + 170, 'UI_Flat_Frame03a')
-			.setDisplaySize(this.gameTitleText.displayWidth / 2, 100)
-			.setOrigin(0.5)
-			.setInteractive({ cursor: 'pointer' })
-			.once('pointerdown', () => {
-				this.sound.play('buttonclick1', { volume: 0.5 })
-				this.scale.off('resize', this.resize, this)
-				this.scene.start('Game')
-			})
-
-		this.playButtonText = this.add.bitmapText(centerX, this.playButton.y, 'mago3_black', 'Play', 82).setOrigin(0.5)
 		this.playersOnline = new MagoText(this, 50, this.scale.height - 25, `Online: ?`, 72).setOrigin(0, 1)
 
 		this.muteButtonText = new MagoText(
@@ -83,7 +52,13 @@ export class Menu extends Phaser.Scene {
 			.setOrigin(1, 1)
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
+		globalEventEmitter.once('startGame', () => {
+			this.sound.play('buttonclick1', { volume: 0.5 })
+			this.scale.off('resize', this.resize, this)
+			this.scene.start('Game')
+		})
 
+		this.menuContent = new MenuContent(this)
 		this.scale.on('resize', this.resize, this)
 	}
 
@@ -104,7 +79,9 @@ export class Menu extends Phaser.Scene {
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`
 		}
-		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 72).setAngle(10)
+		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 72)
+			.setAngle(10)
+			.setName('menu_bestplayer')
 
 		this.add.tween({
 			targets: this.bestPlayer,
@@ -147,13 +124,9 @@ export class Menu extends Phaser.Scene {
 	}
 
 	resize() {
-		this.gameTitleText.setPosition(this.scale.width / 2, this.scale.height / 2 - 110)
-
-		this.playButton.setPosition(this.scale.width / 2, this.gameTitleText.y + 170)
-		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y)
-
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 25)
 		this.playersOnline.setPosition(50, this.scale.height - 25)
+		this.menuContent.setPosition(this.scale.width / 2, this.scale.height / 2 - 100)
 
 		if (this.breakingNews) {
 			this.breakingNews.setPosition(this.scale.width, 20)
