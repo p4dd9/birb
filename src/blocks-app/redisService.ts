@@ -1,4 +1,4 @@
-import { Devvit, RichTextBuilder } from '@devvit/public-api'
+import { Devvit } from '@devvit/public-api'
 import type { RedisPlayer } from '../shared/messages'
 
 export type SaveScoreData = {
@@ -97,22 +97,41 @@ export function createRedisService(context: Devvit.Context): RedisService {
 				return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
 			}
 
+			if (!currentTopPlayer[0]?.member) {
+				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
+
+				if (newTopUserName) {
+					try {
+						const comment = await context.reddit.submitComment({
+							id: postId,
+							text: `The early bird flaps to #1. u/${newTopUserName.username} was the first to score with "${newTopPlayer[0]?.score}" points!`,
+						})
+
+						if (comment) {
+							context.ui.showToast('Your highscore was shared as a comment!')
+						}
+					} catch (e) {
+						console.error('Failed to submit comment:', e)
+					}
+				}
+			}
+
 			// new highscore on posting
 			if (newTopPlayer[0].member !== currentTopPlayer[0]?.member) {
 				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
 
 				if (newTopUserName) {
-					const comment = await context.reddit.submitComment({
-						id: postId,
-						richtext: new RichTextBuilder().codeBlock({}, (cb) =>
-							cb.rawText(
-								`WOW! "${newTopUserName.username}" scored a new highscore: ${newTopPlayer[0]?.score}!`
-							)
-						),
-					})
+					try {
+						const comment = await context.reddit.submitComment({
+							id: postId,
+							text: `u/${newTopUserName.username} has taken the lead with "${newTopPlayer[0]?.score}" points!`,
+						})
 
-					if (comment) {
-						context.ui.showToast('Your fantastic highscore was shared as a comment!')
+						if (comment) {
+							context.ui.showToast('Your highscore was shared as a comment!')
+						}
+					} catch (e) {
+						console.error('Failed to submit comment:', e)
 					}
 				}
 			}

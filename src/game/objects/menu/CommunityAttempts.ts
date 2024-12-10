@@ -17,7 +17,7 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 	}
 
 	create(bestPlayers: RedisPlayer[]) {
-		bestPlayers.sort((a, b) => a.attempts - b.attempts)
+		bestPlayers.sort((a, b) => b.attempts - a.attempts)
 		for (let i = 0; i < 5; i++) {
 			this.add(
 				new MagoText(
