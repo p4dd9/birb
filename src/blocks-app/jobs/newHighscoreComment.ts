@@ -17,7 +17,7 @@ export const newHighscoreComment = Devvit.addSchedulerJob({
 			try {
 				const comment = await context.reddit.submitComment({
 					id: postId,
-					text: `u/${username} has taken the lead with "${score}" points!`,
+					text: `u/${username} has taken the lead with ${score} points!`,
 				})
 				comment.distinguish(true)
 			} catch (error) {
