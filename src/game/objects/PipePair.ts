@@ -1,6 +1,6 @@
 import type { Game } from '../scenes/Game'
 
-const PIPE_WIDTH = 90
+const PIPE_WIDTH = 100
 
 const MIN_Y_CENTER = 100
 const MAX_Y_CENTER = 400

@@ -6,7 +6,7 @@ import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
-const speedEarth = 0.44 * 3.5
+const speedEarth = 0.26 * 3.5
 const speedPipes = 1.3 * 3.5
 
 export class Game extends Phaser.Scene {
@@ -42,6 +42,13 @@ export class Game extends Phaser.Scene {
 		this.sound.play('Junkala_Stake_2', { volume: 0.05, loop: true })
 
 		this.spotLight = this.lights.addLight(400, 300, 280).setIntensity(3)
+		this.earth = this.add
+			.tileSprite(this.scale.width, this.scale.height - 32, this.scale.width, 32, 'earth')
+			.setScale(5)
+			.setDepth(50)
+		this.physics.add.existing(this.earth)
+		;(this.earth.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
+		;(this.earth.body as Phaser.Physics.Arcade.Body).setImmovable(true)
 
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
@@ -51,6 +58,7 @@ export class Game extends Phaser.Scene {
 		this.pipes = this.physics.add.group()
 
 		this.physics.add.overlap(this.player, this.pipes, this.hitPipe, undefined, this)
+		this.physics.add.overlap(this.player, this.earth, this.hitPipe, undefined, this)
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
 		this.intro = this.add.image(this.player.x + 100, this.player.y + 100, 'Icon_Cursor_02a').setScale(3)
@@ -71,11 +79,6 @@ export class Game extends Phaser.Scene {
 		this.input.keyboard?.on('keycombomatch', () => {
 			this.player.changePlayerFrame(7)
 		})
-
-		this.earth = this.add
-			.tileSprite(this.scale.width, this.scale.height - 32, this.scale.width, 32, 'earth')
-			.setScale(3)
-			.setDepth(50)
 
 		this.resetScore()
 
