@@ -18,16 +18,13 @@ export class Menu extends Phaser.Scene {
 
 	constructor() {
 		super('Menu')
-
-		globalEventEmitter.on('updateOnlinePlayers', (data: { count: number }) => {
-			if (this.playersOnline) {
-				this.playersOnline.setText(`Online: ${data.count}`)
-			}
-		})
 	}
 
 	create() {
 		this.cameras.main.postFX.clear()
+
+		this.updateOnlinePlayers = this.updateOnlinePlayers.bind(this)
+		globalEventEmitter.on('updateOnlinePlayers', this.updateOnlinePlayers)
 
 		this.sound.stopByKey('Junkala_Stake_2')
 		if (!this.sound.get('Junkala_Select_2')?.isPlaying) {
@@ -56,11 +53,21 @@ export class Menu extends Phaser.Scene {
 		globalEventEmitter.once('startGame', () => {
 			this.sound.play('buttonclick1', { volume: 0.5 })
 			this.scale.off('resize', this.resize, this)
+			globalEventEmitter.off('updateOnlinePlayers', this.updateOnlinePlayers)
+
 			this.scene.start('Game')
 		})
 
 		this.menuContent = new MenuContent(this)
 		this.scale.on('resize', this.resize, this)
+	}
+
+	updateOnlinePlayers(data: { count: number }) {
+		console.log('updateOnlinePlayers')
+		console.log(data)
+		if (this && this.playersOnline && data && data.count) {
+			this.playersOnline.setText(`Online: ${data.count}`)
+		}
 	}
 
 	createBreakingNews(players: RedisPlayer[]) {

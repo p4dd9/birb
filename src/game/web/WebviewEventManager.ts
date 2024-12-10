@@ -1,5 +1,4 @@
 import type { RedisPlayer, SaveStatsMessage, WorldSetting } from '../../shared/messages'
-import { addDebugMsg } from '../debug'
 import globalEventEmitter from './GlobalEventEmitter'
 
 export class WebviewEventManager {
@@ -19,13 +18,14 @@ export class WebviewEventManager {
 			'message',
 			(ev) => {
 				const { type, data } = ev.data
-				addDebugMsg(JSON.stringify(data))
+				console.log('Received postMessage (webviewEventManager)', ev.type)
 
 				if (type !== WebviewEventManager.allowedMessageType) {
 					return
 				}
 
 				const { message } = data
+				console.log('Received postMessage (webviewEventManager)', message.type)
 
 				switch (message.type) {
 					case 'gameOver': {

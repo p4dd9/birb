@@ -15,7 +15,6 @@ export class MenuContent extends Phaser.GameObjects.Container {
 
 		this.create()
 		this.add([new StartContent(scene), new CommunityScores(scene), new CommunityAttempts(scene)])
-		console.log(scene)
 		this.updateContent(this.currentIndex)
 		scene.add.existing(this)
 	}

@@ -23,7 +23,7 @@ export class CommunityScores extends Phaser.GameObjects.Container {
 					this.scene,
 					0,
 					i * 50 + 100,
-					`${i + 1}. ${bestPlayers[i]?.userName} (${bestPlayers[i]?.score})`
+					`${i + 1}. ${bestPlayers[i]?.userName ?? 'This could be you!'} (${bestPlayers[i]?.score ?? '?'})`
 				).setOrigin(0.5, 0)
 			)
 		}

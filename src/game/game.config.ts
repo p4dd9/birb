@@ -1,5 +1,5 @@
 import type { Types } from 'phaser'
-import { Boot } from './scenes/Boots'
+import { Boot } from './scenes/Boot'
 import { Game } from './scenes/Game'
 import { GameOver } from './scenes/GameOver'
 import { Menu } from './scenes/Menu'

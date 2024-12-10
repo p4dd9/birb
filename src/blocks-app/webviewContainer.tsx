@@ -1,7 +1,8 @@
-import { Devvit, useAsync, useChannel, useInterval, useState } from '@devvit/public-api'
+import { Devvit, useAsync, useChannel, useInterval } from '@devvit/public-api'
+import { ChannelStatus } from '@devvit/public-api/types/realtime'
 import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
 import { mappAppSettingsToMessage } from './redisMapper'
-import { createRedisService, type CommunityStats } from './redisService'
+import { createRedisService } from './redisService'
 
 type WebviewContainerProps = {
 	context: Devvit.Context
@@ -14,22 +15,11 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 
 	const emitUserPlaying = async () => {
 		const count = (await redisService.saveUserInteraction()) ?? 0
-		onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
+		if (onlinePlayersChannel.status === ChannelStatus.Connected) {
+			onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
+		}
 	}
 	useInterval(emitUserPlaying, 10000).start()
-
-	const [communityScore, setCommunityScore] = useState<CommunityStats>(async () => {
-		return await redisService.getCommunityStats()
-	})
-
-	const communityStatsChannel = useChannel({
-		name: 'community_score',
-		onMessage: (data: { type: string; scoreStats: CommunityStats }) => {
-			if (data.type === 'update') {
-				setCommunityScore(data.scoreStats)
-			}
-		},
-	})
 
 	const onlinePlayersChannel = useChannel({
 		name: 'online_player',
@@ -61,7 +51,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	)
 
 	const handleMessage = async (ev: PostMessageMessages) => {
-		console.log('Received message', ev)
+		console.log('Received postMessage (webviewcontainer)', ev)
 
 		switch (ev.type) {
 			case 'saveStats': {
@@ -73,15 +63,13 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				}
 
 				const isNewHighScore = newScore > currentPersonalStats.highscore
-				const scoreStats = await redisService.saveScore({
+				await redisService.saveScore({
 					highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
 					score: newScore,
 				})
-
 				if (isNewHighScore) {
 					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
 				}
-				await communityStatsChannel.send({ type: 'update', scoreStats })
 
 				context.ui.webView.postMessage('game-webview', {
 					type: 'gameOver',
@@ -122,7 +110,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 		}
 	}
 
-	communityStatsChannel.subscribe()
 	onlinePlayersChannel.subscribe()
 
 	return (
@@ -135,12 +122,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				minWidth="100%"
 				onMessage={(msg) => handleMessage(msg as PostMessageMessages)}
 			/>
-			<vstack alignment="middle center" width="100%" minWidth="100%">
-				<text>
-					r/ Score: {communityScore.communityScore}, Attempts: {communityScore.communityAttempts}, MVP:{' '}
-					{communityScore.topPlayer}
-				</text>
-			</vstack>
 		</vstack>
 	)
 }

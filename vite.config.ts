@@ -9,6 +9,7 @@ export default defineConfig({
 		outDir: resolve(__dirname, 'webroot'),
 		emptyOutDir: true,
 		chunkSizeWarningLimit: 1200,
+		sourcemap: true,
 		rollupOptions: {
 			output: {
 				manualChunks: {

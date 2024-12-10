@@ -31,14 +31,14 @@ const ACTIVE_PLAYERS_HASH = 'active_players'
 const ACTIVE_PLAYER_TTL = 30 * 1000
 
 export function createRedisService(context: Devvit.Context): RedisService {
-	const { redis, postId, userId } = context
+	const { redis, subredditId, postId, userId } = context
 
 	return {
 		getPlayerStats: async () => {
 			if (!userId) return null
 
-			const attempts = await redis.hGet(`post:${postId}:attempts`, userId)
-			const highscore = await redis.zScore(`post:${postId}:highscores`, userId)
+			const attempts = await redis.hGet(`post:${subredditId}:attempts`, userId)
+			const highscore = await redis.zScore(`post:${subredditId}:highscores`, userId)
 
 			const mappedStats = {
 				highscore: highscore ? Number(highscore) : 0,
@@ -50,8 +50,8 @@ export function createRedisService(context: Devvit.Context): RedisService {
 		getPlayerByUserId: async (userId: string) => {
 			if (!userId) return null
 
-			const attempts = await redis.hGet(`post:${postId}:attempts`, userId)
-			const highscore = await redis.zScore(`post:${postId}:highscores`, userId)
+			const attempts = await redis.hGet(`post:${subredditId}:attempts`, userId)
+			const highscore = await redis.zScore(`post:${subredditId}:highscores`, userId)
 
 			const mappedStats = {
 				highscore: highscore ? Number(highscore) : 0,
@@ -65,12 +65,12 @@ export function createRedisService(context: Devvit.Context): RedisService {
 
 			if (!userId) return { communityScore: 0, communityAttempts: 0, topPlayer: mappedTopPlayer }
 
-			const currentTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
+			const currentTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
 				by: 'rank',
 				reverse: true,
 			})
 
-			await redis.zAdd(`post:${postId}:highscores`, { member: userId, score: stats.highscore })
+			await redis.zAdd(`post:${subredditId}:highscores`, { member: userId, score: stats.highscore })
 			const communityScore = await redis.hIncrBy(
 				`community:${context.subredditId}:score`,
 				context.subredditId,
@@ -82,9 +82,9 @@ export function createRedisService(context: Devvit.Context): RedisService {
 				1
 			)
 
-			await redis.hIncrBy(`post:${postId}:attempts`, userId, 1)
+			await redis.hIncrBy(`post:${subredditId}:attempts`, userId, 1)
 
-			const newTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
+			const newTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
 				by: 'rank',
 				reverse: true,
 			})
@@ -121,7 +121,7 @@ export function createRedisService(context: Devvit.Context): RedisService {
 		},
 
 		getTopPlayers: async () => {
-			const topPlayers = await redis.zRange(`post:${postId}:highscores`, 0, 9, {
+			const topPlayers = await redis.zRange(`post:${subredditId}:highscores`, 0, 9, {
 				by: 'rank',
 				reverse: true,
 			})
@@ -129,7 +129,7 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			const mappedBestPlayers = await Promise.all(
 				topPlayers.map(async ({ member, score }) => {
 					const userNameResponse = await context.reddit.getUserById(member)
-					const attempts = await redis.hGet(`post:${postId}:attempts`, member)
+					const attempts = await redis.hGet(`post:${subredditId}:attempts`, member)
 					return {
 						userId: member,
 						userName: userNameResponse ? userNameResponse.username : 'Anonymous',
@@ -180,7 +180,7 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			const communityAttempts =
 				(await redis.hGet(`community:${context.subredditId}:attempts`, context.subredditId)) ?? 0
 
-			const currentTopPlayer = await redis.zRange(`post:${postId}:highscores`, 0, 0, {
+			const currentTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
 				by: 'rank',
 				reverse: true,
 			})
