@@ -1,6 +1,9 @@
 import { Devvit, useAsync, useChannel, useInterval } from '@devvit/public-api'
 import { ChannelStatus } from '@devvit/public-api/types/realtime'
 import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
+import './jobs/firstFlapperComment'
+import './jobs/newHighscoreComment'
+import './jobs/welcomeUser'
 import { mappAppSettingsToMessage } from './redisMapper'
 import { createRedisService } from './redisService'
 
@@ -60,6 +63,18 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 
 				if (!currentPersonalStats) {
 					currentPersonalStats = { highscore: 0, attempts: 0 }
+
+					if (!context.userId) return
+					const username = (await context.reddit.getUserById(context.userId))?.username
+					if (!username) return
+					context.scheduler.runJob({
+						name: 'USER_WELCOME_JOB',
+						data: {
+							username,
+							score: newScore,
+						},
+						runAt: new Date(),
+					})
 				}
 
 				const isNewHighScore = newScore > currentPersonalStats.highscore

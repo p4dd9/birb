@@ -66,7 +66,7 @@ This project uses the following Devvit features:
 - Devvit API
 - Devvit Blocks
 - Menu Actions
-- Scheduler (TODO)
+- Scheduler
 - Triggers (TODO)
 
 ## Credits

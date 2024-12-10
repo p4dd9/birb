@@ -71,6 +71,7 @@ export function createRedisService(context: Devvit.Context): RedisService {
 			})
 
 			await redis.zAdd(`post:${subredditId}:highscores`, { member: userId, score: stats.highscore })
+
 			const communityScore = await redis.hIncrBy(
 				`community:${context.subredditId}:score`,
 				context.subredditId,
@@ -101,18 +102,15 @@ export function createRedisService(context: Devvit.Context): RedisService {
 				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
 
 				if (newTopUserName) {
-					try {
-						const comment = await context.reddit.submitComment({
-							id: postId,
-							text: `The early bird flaps to #1. u/${newTopUserName.username} was the first to score with "${newTopPlayer[0]?.score}" points!`,
-						})
-
-						if (comment) {
-							context.ui.showToast('Your highscore was shared as a comment!')
-						}
-					} catch (e) {
-						console.error('Failed to submit comment:', e)
-					}
+					context.scheduler.runJob({
+						name: 'FIRST_FLAPPER_COMMENT',
+						data: {
+							username: newTopUserName.username,
+							postId,
+							score: stats.score,
+						},
+						runAt: new Date(),
+					})
 				}
 			}
 
@@ -121,18 +119,15 @@ export function createRedisService(context: Devvit.Context): RedisService {
 				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
 
 				if (newTopUserName) {
-					try {
-						const comment = await context.reddit.submitComment({
-							id: postId,
-							text: `u/${newTopUserName.username} has taken the lead with "${newTopPlayer[0]?.score}" points!`,
-						})
-
-						if (comment) {
-							context.ui.showToast('Your highscore was shared as a comment!')
-						}
-					} catch (e) {
-						console.error('Failed to submit comment:', e)
-					}
+					context.scheduler.runJob({
+						name: 'NEW_HIGHSCORE_COMMENT',
+						data: {
+							username: newTopUserName.username,
+							postId,
+							score: stats.score,
+						},
+						runAt: new Date(),
+					})
 				}
 			}
 
