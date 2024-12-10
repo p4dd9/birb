@@ -116,11 +116,14 @@ export class Menu extends Phaser.Scene {
 	}
 
 	startBreakingTheNews() {
+		const speed = 400
+		const duration = (this.breakingNews.displayWidth / speed) * 1000
+
 		this.add.tween({
 			targets: this.breakingNews,
 			x: -this.breakingNews.displayWidth,
-			duration: 9000,
-			repeat: -1,
+			duration: duration,
+			repeat: 0,
 			onComplete: () => {
 				this.breakingNews.x = this.scale.width
 				this.startBreakingTheNews()
