@@ -6,9 +6,14 @@ import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
+const speedEarth = 0.44 * 3.5
+const speedPipes = 1.3 * 3.5
+
 export class Game extends Phaser.Scene {
 	player: Player
 	pipes: Phaser.GameObjects.Group
+	pipePairs: PipePair[] = []
+
 	score: MagoText
 	currentScore: number = 0
 
@@ -137,7 +142,10 @@ export class Game extends Phaser.Scene {
 			this.player.updateBird()
 		}
 
-		this.earth.setTilePosition(this.earth.tilePositionX + 1.3)
+		this.earth.setTilePosition(this.earth.tilePositionX + speedEarth)
+		for (let pipePair of this.pipePairs) {
+			pipePair.setX(pipePair.x - speedPipes)
+		}
 	}
 
 	start() {
@@ -171,7 +179,7 @@ export class Game extends Phaser.Scene {
 
 	addPipeRow() {
 		if (this.isGameStarted) {
-			new PipePair(this, this.cameras.main.width + 50)
+			this.pipePairs.push(new PipePair(this, this.cameras.main.width + 50))
 			this.pipeCount++
 		}
 	}
