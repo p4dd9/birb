@@ -26,7 +26,13 @@ export class GameOver extends Phaser.Scene {
 			this.sound.play('victory', { volume: 0.2 })
 		}
 
-		this.gameOverText = new MagoText(this, centerX, centerY - 100, 'Game Over', 172)
+		this.gameOverText = new MagoText(
+			this,
+			centerX,
+			centerY - 100,
+			isNewHighScore ? 'New Highscore' : 'Game Over',
+			172
+		)
 
 		this.replayButton = this.add
 			.image(centerX, this.gameOverText.y + 150, 'UI_Flat_Frame03a')
