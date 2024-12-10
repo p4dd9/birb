@@ -114,20 +114,24 @@ export function createRedisService(context: Devvit.Context): RedisService {
 				}
 			}
 
-			// new highscore on posting
-			if (newTopPlayer[0].member !== currentTopPlayer[0]?.member) {
-				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
+			// new highscore in community on posting
+			if (currentTopPlayer[0]) {
+				const currentCommunityhighscore = currentTopPlayer[0].score
+				const score = stats.score
+				if (score > currentCommunityhighscore) {
+					const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
 
-				if (newTopUserName) {
-					context.scheduler.runJob({
-						name: 'NEW_HIGHSCORE_COMMENT',
-						data: {
-							username: newTopUserName.username,
-							postId,
-							score: stats.score,
-						},
-						runAt: new Date(),
-					})
+					if (newTopUserName) {
+						context.scheduler.runJob({
+							name: 'NEW_HIGHSCORE_COMMENT',
+							data: {
+								username: newTopUserName.username,
+								postId,
+								score: stats.score,
+							},
+							runAt: new Date(),
+						})
+					}
 				}
 			}
 
