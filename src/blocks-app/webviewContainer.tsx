@@ -1,5 +1,5 @@
-import { Devvit, useAsync, useChannel, useState } from '@devvit/public-api'
-import type { PostMessageMessages, UpdateGameSettingMessage } from '../shared/messages'
+import { Devvit, useAsync, useChannel, useInterval, useState } from '@devvit/public-api'
+import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
 import { mappAppSettingsToMessage } from './redisMapper'
 import { createRedisService, type CommunityStats } from './redisService'
 
@@ -12,15 +12,33 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
 	const redisService = createRedisService(context)
 
-	const [communityScore, setCommunityScore] = useState<CommunityStats>(
-		async () => await redisService.getCommunityStats()
-	)
+	const emitUserPlaying = async () => {
+		const count = (await redisService.saveUserInteraction()) ?? 0
+		onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
+	}
+	useInterval(emitUserPlaying, 10000).start()
 
-	const channel = useChannel({
+	const [communityScore, setCommunityScore] = useState<CommunityStats>(async () => {
+		return await redisService.getCommunityStats()
+	})
+
+	const communityStatsChannel = useChannel({
 		name: 'community_score',
 		onMessage: (data: { type: string; scoreStats: CommunityStats }) => {
 			if (data.type === 'update') {
 				setCommunityScore(data.scoreStats)
+			}
+		},
+	})
+
+	const onlinePlayersChannel = useChannel({
+		name: 'online_player',
+		onMessage: (data: { type: string; count: number }) => {
+			if (data.type === 'updateOnlinePlayers') {
+				context.ui.webView.postMessage('game-webview', {
+					type: 'updateOnlinePlayers',
+					data: { count: data.count },
+				} as UpdateOnlinePlayersMessage)
 			}
 		},
 	})
@@ -34,6 +52,8 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					type: 'changeWorld',
 					data: mappedMessage,
 				} as UpdateGameSettingMessage)
+			} else {
+				emitUserPlaying()
 			}
 			return null
 		},
@@ -61,7 +81,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				if (isNewHighScore) {
 					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
 				}
-				await channel.send({ type: 'update', scoreStats })
+				await communityStatsChannel.send({ type: 'update', scoreStats })
 
 				context.ui.webView.postMessage('game-webview', {
 					type: 'gameOver',
@@ -102,7 +122,8 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 		}
 	}
 
-	channel.subscribe()
+	communityStatsChannel.subscribe()
+	onlinePlayersChannel.subscribe()
 
 	return (
 		<vstack grow={webviewVisible} height={webviewVisible ? '100%' : '0px'}>

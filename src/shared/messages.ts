@@ -37,6 +37,11 @@ export type UpdateGameSettingMessage = {
 	data: WorldSetting
 }
 
+export type UpdateOnlinePlayersMessage = {
+	type: 'updateOnlinePlayers'
+	data: { count: number }
+}
+
 export type Player = {
 	userId: string
 	userName: string

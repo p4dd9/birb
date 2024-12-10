@@ -16,9 +16,16 @@ export class Menu extends Phaser.Scene {
 	bestPlayer: MagoText
 
 	breakingNews: Phaser.GameObjects.BitmapText
+	playersOnline: Phaser.GameObjects.BitmapText
 
 	constructor() {
 		super('Menu')
+
+		globalEventEmitter.on('updateOnlinePlayers', (data: { count: number }) => {
+			if (this.playersOnline) {
+				this.playersOnline.setText(`Online: ${data.count}`)
+			}
+		})
 	}
 
 	create() {
@@ -64,6 +71,7 @@ export class Menu extends Phaser.Scene {
 			})
 
 		this.playButtonText = this.add.bitmapText(centerX, this.playButton.y, 'mago3_black', 'Play', 82).setOrigin(0.5)
+		this.playersOnline = new MagoText(this, 50, this.scale.height - 25, `Online: ?`, 72).setOrigin(0, 1)
 
 		this.muteButtonText = new MagoText(
 			this,
@@ -142,6 +150,7 @@ export class Menu extends Phaser.Scene {
 		this.playButtonText.setPosition(this.scale.width / 2, this.playButton.y)
 
 		this.muteButtonText.setPosition(this.scale.width - 50, this.scale.height - 25)
+		this.playersOnline.setPosition(50, this.scale.height - 25)
 
 		if (this.breakingNews) {
 			this.breakingNews.setPosition(this.scale.width, 20)

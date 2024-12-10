@@ -24,7 +24,11 @@ export type RedisService = {
 	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
 	getAppSettings: () => Promise<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>
 	getCommunityStats: () => Promise<CommunityStats>
+	saveUserInteraction: () => Promise<number | undefined>
 }
+
+const ACTIVE_PLAYERS_HASH = 'active_players'
+const ACTIVE_PLAYER_TTL = 30 * 1000
 
 export function createRedisService(context: Devvit.Context): RedisService {
 	const { redis, postId, userId } = context
@@ -138,6 +142,34 @@ export function createRedisService(context: Devvit.Context): RedisService {
 
 		getAppSettings: async () => {
 			return await context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
+		},
+
+		saveUserInteraction: async () => {
+			const userId = context.userId
+			if (!userId) return 0
+
+			const now = Date.now()
+
+			await context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
+
+			const records = await context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
+			if (records) {
+				const onlinePlayers = Object.entries(records).filter(([_, timestamp]) => {
+					return now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL
+				})
+
+				const stalePlayers = Object.keys(records).filter(
+					(userId) => !onlinePlayers.some(([validId]) => validId === userId)
+				)
+
+				for (const stalePlayer of stalePlayers) {
+					await context.redis.hDel(ACTIVE_PLAYERS_HASH, [stalePlayer])
+				}
+
+				return onlinePlayers.length
+			}
+
+			return 0
 		},
 
 		getCommunityStats: async () => {

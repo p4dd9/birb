@@ -43,6 +43,11 @@ export class WebviewEventManager {
 						globalEventEmitter.emit('updateBestPlayers', gameOverData)
 						break
 					}
+					case 'updateOnlinePlayers': {
+						const playersCountData = message.data as { count: number }
+						globalEventEmitter.emit('updateOnlinePlayers', playersCountData)
+						break
+					}
 					case 'changeWorld': {
 						const worldSetting = message.data as WorldSetting
 						const canvasParent = document.getElementById('game-container')
@@ -71,7 +76,7 @@ export class WebviewEventManager {
 	}
 
 	static registerGameInternalEvents() {
-		console.log('registerEvents')
+		console.log('registerGameInternalEvents')
 		globalEventEmitter.on('saveStats', (highscore: number) => {
 			console.log('saveStats')
 			let message: SaveStatsMessage = {
