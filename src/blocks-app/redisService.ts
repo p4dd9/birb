@@ -1,5 +1,5 @@
 import { Devvit, RichTextBuilder } from '@devvit/public-api'
-import type { Player } from '../shared/messages'
+import type { RedisPlayer } from '../shared/messages'
 
 export type SaveScoreData = {
 	highscore: number
@@ -20,7 +20,7 @@ export type CommunityStats = {
 export type RedisService = {
 	getPlayerStats: () => Promise<PlayerStats | null>
 	saveScore: (stats: SaveScoreData) => Promise<CommunityStats>
-	getTopPlayers: () => Promise<Array<Player>>
+	getTopPlayers: () => Promise<Array<RedisPlayer>>
 	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
 	getAppSettings: () => Promise<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>
 	getCommunityStats: () => Promise<CommunityStats>

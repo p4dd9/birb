@@ -1,4 +1,4 @@
-import type { Player, SaveStatsMessage, WorldSetting } from '../../shared/messages'
+import type { RedisPlayer, SaveStatsMessage, WorldSetting } from '../../shared/messages'
 import { addDebugMsg } from '../debug'
 import globalEventEmitter from './GlobalEventEmitter'
 
@@ -39,7 +39,7 @@ export class WebviewEventManager {
 						break
 					}
 					case 'updateBestPlayers': {
-						const gameOverData = message.data as Player[]
+						const gameOverData = message.data as RedisPlayer[]
 						globalEventEmitter.emit('updateBestPlayers', gameOverData)
 						break
 					}

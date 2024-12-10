@@ -32,6 +32,8 @@ Each player has their own highscore saved per Posting. So you beat the highscore
 
 Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your game rounds are acculumated into an "attempts" score!
 
+You find a leaderboard for games played and scores in the main menu using the arrows next to the title.
+
 ## Customization
 
 The game offers moderation tools to customize the Reddibirds visuals. Moderators can change the background, pipes and birds characters by their liking! All players will collectively play this theme designed by the moderators.

@@ -1,4 +1,4 @@
-import type { Player } from '../../shared/messages'
+import type { RedisPlayer } from '../../shared/messages'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 import globalEventEmitter from '../web/GlobalEventEmitter'
@@ -34,9 +34,10 @@ export class Menu extends Phaser.Scene {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
-		globalEventEmitter.once('updateBestPlayers', (bestPlayers: Player[]) => {
+		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
 			this.createBreakingNews(bestPlayers)
 			this.createBestPlayer(bestPlayers[0])
+			this.registry.set('bestPlayers', bestPlayers)
 		})
 		globalEventEmitter.emit('getBestPlayers')
 		// TODO: think about ui, customization per player + community goal
@@ -62,7 +63,7 @@ export class Menu extends Phaser.Scene {
 		this.scale.on('resize', this.resize, this)
 	}
 
-	createBreakingNews(players: Player[]) {
+	createBreakingNews(players: RedisPlayer[]) {
 		const topPlayers = players.map((player) => `"${player.userName}" ${player.score}`).join(',')
 		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
 		if (players.length < 1) {
@@ -74,7 +75,7 @@ export class Menu extends Phaser.Scene {
 		this.startBreakingTheNews()
 	}
 
-	createBestPlayer(bestPlayer?: Player) {
+	createBestPlayer(bestPlayer?: RedisPlayer) {
 		let text = `Let's play Reddibirds!!!`
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`

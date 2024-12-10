@@ -42,7 +42,7 @@ export type UpdateOnlinePlayersMessage = {
 	data: { count: number }
 }
 
-export type Player = {
+export type RedisPlayer = {
 	userId: string
 	userName: string
 	score: number

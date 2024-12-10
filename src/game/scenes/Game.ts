@@ -1,3 +1,5 @@
+import type { RedisPlayer } from '../../shared/messages'
+import { MOTIVATIONAL_QUOTES } from '../config/friend.config'
 import { PipeGaps } from '../config/pipe.config'
 import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
@@ -21,7 +23,7 @@ export class Game extends Phaser.Scene {
 	pipeGap: PipeGaps = PipeGaps.DEFAULT
 
 	earth: Phaser.GameObjects.TileSprite
-
+	friends: Phaser.GameObjects.Container[] = []
 	constructor() {
 		super('Game')
 	}
@@ -71,6 +73,63 @@ export class Game extends Phaser.Scene {
 			.setDepth(50)
 
 		this.resetScore()
+
+		this.cheeringBirdFriends()
+	}
+
+	byeFriends() {
+		this.tweens.add({
+			targets: this.friends,
+			x: -400,
+			y: -400,
+			duration: 5000,
+			angle: 25,
+			onComplete: () => {
+				for (let friend of this.friends) {
+					friend.destroy(true)
+				}
+			},
+		})
+	}
+
+	cheeringBirdFriends() {
+		const friends = (this.registry.get('bestPlayers') as RedisPlayer[]) ?? [
+			{ userId: 0, userName: 'Stranger', score: 0, attempts: 0 },
+		]
+		if (!friends || friends.length < 0) return
+
+		this.shuffleArray(friends)
+		for (let f = 0; f < 3; f++) {
+			const friend = friends[f]
+			if (!friend) return
+			const birdFrameIndex = Phaser.Math.Between(0, 6)
+			const rngSlot = [
+				[this.scale.width / 2, this.scale.height / 2],
+				[this.scale.width / 2 + 200, this.scale.height / 2 - 200],
+				[this.scale.width / 2 + 100, this.scale.height / 2 + 200],
+			]
+			const friendContainer = this.add.container(rngSlot[f]![0], rngSlot[f]![1])
+			const friendSprite = this.add.sprite(0, 0, 'birds', birdFrameIndex).setFlipX(true)
+			const friendName = new MagoText(this, 0, 60, friend.userName, 48)
+			const friendMessage = new MagoText(this, 0, -60, this.getRandomMotivationQuote(), 48)
+
+			friendSprite.play(`flap_${birdFrameIndex}_repeat`, true)
+			friendContainer.add([friendSprite, friendName, friendMessage])
+			this.friends.push(friendContainer)
+		}
+	}
+
+	shuffleArray(array: RedisPlayer[]) {
+		for (var i = array.length - 1; i >= 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1))
+			var temp = array[i]
+			array[i] = array[j]!
+			array[j] = temp!
+		}
+	}
+
+	getRandomMotivationQuote() {
+		return MOTIVATIONAL_QUOTES[Phaser.Math.Between(0, MOTIVATIONAL_QUOTES.length - 1)] ?? ''
 	}
 
 	update() {
@@ -86,7 +145,7 @@ export class Game extends Phaser.Scene {
 		this.isGameStarted = true
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
 		this.startPipeTimer()
-
+		this.byeFriends()
 		this.intro.destroy()
 		this.introText.destroy()
 	}
