@@ -5,8 +5,7 @@
 	"type": "module",
 	"dependencies": {
 		"@devvit/public-api": "^0.11.3",
-		"phaser": "^3.87.0",
-		"winston": "^3.17.0"
+		"phaser": "^3.87.0"
 	},
 	"devDependencies": {
 		"prettier": "^3.4.1",

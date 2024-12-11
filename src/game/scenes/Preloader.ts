@@ -1,5 +1,3 @@
-import globalEventEmitter from '../web/GlobalEventEmitter'
-
 export class Preloader extends Phaser.Scene {
 	constructor() {
 		super('Preloader')
@@ -7,8 +5,6 @@ export class Preloader extends Phaser.Scene {
 
 	preload() {
 		this.load.setPath('../assets/')
-
-		this.load.bitmapFont('mago3_black', 'font/mago3_black.png', 'font/mago3_black.xml')
 
 		this.load.image('UI_Flat_FrameSlot03b', 'gui/UI_Flat_FrameSlot03b.png')
 		this.load.image('UI_Flat_Frame03a', 'gui/UI_Flat_Frame03a.png')
@@ -53,11 +49,12 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
-		globalEventEmitter.emit('requestAppSettings')
 		this.sound.add('Junkala_Stake_2')
 		this.sound.add('Junkala_Select_2')
 		this.createAnimations()
+
 		this.scene.start('Menu')
+		this.scene.remove('Boot')
 	}
 
 	createAnimations() {

@@ -21,22 +21,15 @@ export class Menu extends Phaser.Scene {
 	}
 
 	create() {
-		this.cameras.main.postFX.clear()
-
-		this.updateOnlinePlayers = this.updateOnlinePlayers.bind(this)
-		globalEventEmitter.on('updateOnlinePlayers', this.updateOnlinePlayers)
+		if (this.cameras.main.postFX) {
+			this.cameras.main.postFX.clear()
+		}
 
 		this.sound.stopByKey('Junkala_Stake_2')
 		if (!this.sound.get('Junkala_Select_2')?.isPlaying) {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
-		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
-			this.createBreakingNews(bestPlayers)
-			this.createBestPlayer(bestPlayers[0])
-			this.registry.set('bestPlayers', bestPlayers)
-		})
-		globalEventEmitter.emit('getBestPlayers')
 		// TODO: think about ui, customization per player + community goal
 		this.playersOnline = new MagoText(this, 50, this.scale.height - 25, `Online: ?`, 72).setOrigin(0, 1)
 
@@ -50,21 +43,28 @@ export class Menu extends Phaser.Scene {
 			.setOrigin(1, 1)
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
+
+		this.menuContent = new MenuContent(this)
+
+		globalEventEmitter.on('updateOnlinePlayers', this.updateOnlinePlayers, this)
 		globalEventEmitter.once('startGame', () => {
 			this.sound.play('buttonclick1', { volume: 0.5 })
 			this.scale.off('resize', this.resize, this)
-			globalEventEmitter.off('updateOnlinePlayers', this.updateOnlinePlayers)
+			globalEventEmitter.off('updateOnlinePlayers', this.updateOnlinePlayers, this)
 
 			this.scene.start('Game')
 		})
+		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
+			this.createBreakingNews(bestPlayers)
+			this.createBestPlayer(bestPlayers[0])
+			this.registry.set('bestPlayers', bestPlayers)
+		})
+		globalEventEmitter.emit('getBestPlayers')
 
-		this.menuContent = new MenuContent(this)
 		this.scale.on('resize', this.resize, this)
 	}
 
 	updateOnlinePlayers(data: { count: number }) {
-		console.log('updateOnlinePlayers')
-		console.log(data)
 		if (this && this.playersOnline && data && data.count) {
 			this.playersOnline.setText(`Online: ${data.count}`)
 		}

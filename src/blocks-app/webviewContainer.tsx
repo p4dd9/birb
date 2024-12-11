@@ -1,10 +1,10 @@
 import { Devvit, useAsync, useChannel, useInterval } from '@devvit/public-api'
 import { ChannelStatus } from '@devvit/public-api/types/realtime'
+import { devvitLogger } from '../shared/logger'
 import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
 import './jobs/firstFlapperComment'
 import './jobs/newHighscoreComment'
 import './jobs/welcomeUser'
-import { logger } from './log/logger'
 import { mappAppSettingsToMessage } from './redisMapper'
 import { createRedisService } from './redisService'
 
@@ -55,7 +55,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	)
 
 	const handleMessage = async (ev: PostMessageMessages) => {
-		logger.info('Received postMessage (webviewcontainer)', ev)
+		devvitLogger.info('Received postMessage (webviewcontainer)' + ev.type)
 
 		switch (ev.type) {
 			case 'saveStats': {
@@ -87,7 +87,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
 				}
 
-				logger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
+				devvitLogger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'gameOver',
 					data: {
@@ -104,7 +104,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				const bestPlayers = await redisService.getTopPlayers()
 				if (!bestPlayers || bestPlayers.length < 0) return
 
-				logger.info(`Sending 'updateBestPlayers' postMessage (webviewcontainer)`)
+				devvitLogger.info(`Sending 'updateBestPlayers' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'updateBestPlayers',
 					data: bestPlayers,
@@ -116,7 +116,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				const appSettings = await redisService.getAppSettings()
 				const mappedMessage = mappAppSettingsToMessage(appSettings)
 
-				logger.info(`Sending 'requestAppSettings' postMessage (webviewcontainer)`)
+				devvitLogger.info(`Sending 'requestAppSettings' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'changeWorld',
 					data: mappedMessage,
@@ -124,8 +124,9 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 
 				break
 			}
+
 			default: {
-				logger.info(`Unknown message type "${(ev as unknown as any).type}" !`)
+				devvitLogger.info(`Unknown message type "${(ev as unknown as any).type}" !`)
 			}
 		}
 	}
