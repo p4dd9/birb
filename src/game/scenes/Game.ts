@@ -109,9 +109,9 @@ export class Game extends Phaser.Scene {
 		]
 		if (!friends || friends.length < 0) return
 
-		this.shuffleArray(friends)
+		const randomFriends = this.shuffleArray(friends)
 		for (let f = 0; f < 3; f++) {
-			const friend = friends[f]
+			const friend = randomFriends[f]
 			if (!friend) return
 			const birdFrameIndex = Phaser.Math.Between(0, 6)
 			const rngSlot = [
@@ -131,12 +131,14 @@ export class Game extends Phaser.Scene {
 	}
 
 	shuffleArray(array: RedisPlayer[]) {
-		for (var i = array.length - 1; i >= 0; i--) {
+		const arrayCopy = [...array]
+		for (var i = arrayCopy.length - 1; i >= 0; i--) {
 			var j = Math.floor(Math.random() * (i + 1))
-			var temp = array[i]
-			array[i] = array[j]!
-			array[j] = temp!
+			var temp = arrayCopy[i]
+			arrayCopy[i] = arrayCopy[j]!
+			arrayCopy[j] = temp!
 		}
+		return arrayCopy
 	}
 
 	getRandomMotivationQuote() {

@@ -17,14 +17,15 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 	}
 
 	create(bestPlayers: RedisPlayer[]) {
-		bestPlayers.sort((a, b) => b.attempts - a.attempts)
+		const copyOfBestPlayers = [...bestPlayers]
+		copyOfBestPlayers.sort((a, b) => b.attempts - a.attempts)
 		for (let i = 0; i < 5; i++) {
 			this.add(
 				new MagoText(
 					this.scene,
 					0,
 					i * 50 + 100,
-					`${i + 1}. ${bestPlayers[i]?.userName ?? 'This could be you!'} (${bestPlayers[i]?.attempts ?? '?'})`
+					`${i + 1}. ${copyOfBestPlayers[i]?.userName ?? 'This could be you!'} (${copyOfBestPlayers[i]?.attempts ?? '?'})`
 				).setOrigin(0.5, 0)
 			)
 		}
