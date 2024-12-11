@@ -26,7 +26,9 @@ export class Game extends Phaser.Scene {
 
 	pipeCount: number
 	pipeGap: PipeGaps = PipeGaps.DEFAULT
+
 	isPipeKeyActive: boolean = false
+	isLightsOut: boolean = false
 
 	earth: Phaser.GameObjects.TileSprite
 	friends: Phaser.GameObjects.Container[] = []
@@ -226,6 +228,8 @@ export class Game extends Phaser.Scene {
 		this.lights.enable()
 		this.lights.setAmbientColor(0x222222)
 
+		this.isLightsOut = true
+
 		this.pipes.getChildren().map((pipe) => {
 			;(pipe as Phaser.GameObjects.NineSlice).setPipeline('Light2D')
 		})
@@ -245,9 +249,12 @@ export class Game extends Phaser.Scene {
 		this.events.on('update', this.onPointerMoveLightsOuts, this)
 		this.time.delayedCall(6000, () => {
 			this.lights.disable()
+			this.isLightsOut = false
+
 			this.pipes.getChildren().map((pipe) => {
 				;(pipe as Phaser.GameObjects.NineSlice).resetPipeline()
 			})
+
 			this.earth.setPipeline('Light2D').resetPipeline()
 			if (canvasParent instanceof HTMLDivElement && currentBackground) {
 				canvasParent.style.background = `url('/assets/bg/${this.registry.get('background')}.png') center / auto 320px repeat-x`

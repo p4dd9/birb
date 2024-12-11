@@ -120,6 +120,11 @@ export class PipePair extends Phaser.GameObjects.Container {
 				this.gapTween()
 			})
 		}
+
+		if (scene.isLightsOut) {
+			this.topPipe.setPipeline('Light2D')
+			this.bottomPipe.setPipeline('Light2D')
+		}
 	}
 
 	gapTween() {
