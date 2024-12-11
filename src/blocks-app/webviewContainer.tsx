@@ -4,6 +4,7 @@ import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayers
 import './jobs/firstFlapperComment'
 import './jobs/newHighscoreComment'
 import './jobs/welcomeUser'
+import { logger } from './log/logger'
 import { mappAppSettingsToMessage } from './redisMapper'
 import { createRedisService } from './redisService'
 
@@ -54,7 +55,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	)
 
 	const handleMessage = async (ev: PostMessageMessages) => {
-		console.log('Received postMessage (webviewcontainer)', ev)
+		logger.info('Received postMessage (webviewcontainer)', ev)
 
 		switch (ev.type) {
 			case 'saveStats': {
@@ -86,6 +87,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
 				}
 
+				logger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'gameOver',
 					data: {
@@ -101,6 +103,8 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			case 'getBestPlayers': {
 				const bestPlayers = await redisService.getTopPlayers()
 				if (!bestPlayers || bestPlayers.length < 0) return
+
+				logger.info(`Sending 'updateBestPlayers' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'updateBestPlayers',
 					data: bestPlayers,
@@ -112,6 +116,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				const appSettings = await redisService.getAppSettings()
 				const mappedMessage = mappAppSettingsToMessage(appSettings)
 
+				logger.info(`Sending 'requestAppSettings' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'changeWorld',
 					data: mappedMessage,
@@ -120,7 +125,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				break
 			}
 			default: {
-				console.log(`Unknown message type "${(ev as unknown as any).type}" !`)
+				logger.info(`Unknown message type "${(ev as unknown as any).type}" !`)
 			}
 		}
 	}
