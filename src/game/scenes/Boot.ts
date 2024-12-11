@@ -27,6 +27,7 @@ export class Boot extends Phaser.Scene {
 	setWorldSettings(worldSetting: WorldSetting) {
 		this.game.registry.set('pipeFrame', worldSetting.pipeFrame)
 		this.game.registry.set('playerFrame', worldSetting.playerFrame)
+		this.game.registry.set('background', worldSetting.world)
 		globalEventEmitter.off('changeWorld', this.setWorldSettings, this)
 	}
 }

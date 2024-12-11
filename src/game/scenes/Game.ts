@@ -227,16 +227,32 @@ export class Game extends Phaser.Scene {
 		this.lights.setAmbientColor(0x222222)
 
 		this.pipes.getChildren().map((pipe) => {
-			;(pipe as Phaser.GameObjects.NineSlice).setPipeline('Light2D').setAlpha(0.4)
+			;(pipe as Phaser.GameObjects.NineSlice).setPipeline('Light2D')
 		})
+
+		this.earth.setPipeline('Light2D')
 		this.sound.play('lightsout', { volume: 0.3 })
+
+		const canvasParent = document.getElementById('game-container')
+		let currentBackground = null
+
+		if (canvasParent && canvasParent instanceof HTMLDivElement) {
+			currentBackground = window.getComputedStyle(canvasParent).background.toString()
+			const darkenBackground = 'linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),' + currentBackground
+			canvasParent.style.background = darkenBackground
+		}
+
 		this.events.on('update', this.onPointerMoveLightsOuts, this)
 		this.time.delayedCall(6000, () => {
 			this.lights.disable()
 			this.pipes.getChildren().map((pipe) => {
-				;(pipe as Phaser.GameObjects.NineSlice).setAlpha(1)
 				;(pipe as Phaser.GameObjects.NineSlice).resetPipeline()
 			})
+			this.earth.setPipeline('Light2D').resetPipeline()
+			if (canvasParent instanceof HTMLDivElement && currentBackground) {
+				canvasParent.style.background = `url('/assets/bg/${this.registry.get('background')}.png') center / auto 320px repeat-x`
+			}
+
 			this.events.off('update', this.onPointerMoveLightsOuts, this)
 		})
 	}
