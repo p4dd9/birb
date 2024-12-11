@@ -316,14 +316,6 @@ export class Game extends Phaser.Scene {
 	}
 
 	pickUpKey(key: 'bronze' | 'silver' | 'gold') {
-		const relativePan = Phaser.Math.Clamp((this.player.x / this.scale.width) * 2 - 1, -0.4, 0.4)
-		const randomPitch = Phaser.Math.FloatBetween(0.99, 1.01)
-		// TODO: new sfx for keys
-		this.sound.play(`Pickup_Coin_${Phaser.Math.Between(0, 3)}`, {
-			pan: relativePan,
-			rate: randomPitch,
-			volume: 0.2,
-		})
 		this.changePipeGap(key)
 	}
 

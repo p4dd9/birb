@@ -123,6 +123,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	gapTween() {
+		if (!this.scene) return
 		this.scene.tweens.add({
 			targets: this.topPipe,
 			y: this.topPipe.y + -this.scene.pipeGap / 2,
@@ -134,7 +135,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 			y: this.bottomPipe.y + this.scene.pipeGap / 2,
 			duration: 1000,
 		})
-
+		this.scene.sound.play('Pipes_Down1', { volume: 0.4 })
 		this.scoreZone.setScale(1, 4)
 	}
 
@@ -207,12 +208,15 @@ export class PipePair extends Phaser.GameObjects.Container {
 	}
 
 	invokeBronzeKey() {
+		this.scene.sound.play('PickupKey_1', { volume: 0.5 })
 		this.scene.pickUpKey('bronze')
 	}
 	invokeSilverKey() {
+		this.scene.sound.play('PickupKey_2', { volume: 0.5 })
 		this.scene.pickUpKey('silver')
 	}
 	invokeGoldKey() {
+		this.scene.sound.play('PickupKey_3', { volume: 0.5 })
 		this.scene.pickUpKey('gold')
 	}
 

@@ -36,6 +36,11 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('Pickup_Coin_2', 'audio/Pickup_Coin_2.wav')
 		this.load.audio('Pickup_Coin_3', 'audio/Pickup_Coin_3.wav')
 
+		this.load.audio('PickupKey_1', 'audio/PickupKey_1.mp3')
+		this.load.audio('PickupKey_2', 'audio/PickupKey_2.mp3')
+		this.load.audio('PickupKey_3', 'audio/PickupKey_3.mp3')
+		this.load.audio('Pipes_Down1', 'audio/Pipes_Down1.mp3')
+
 		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
 		this.load.spritesheet('birds2', 'birds2.png', { frameWidth: 64, frameHeight: 64 })
 
