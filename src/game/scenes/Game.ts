@@ -26,9 +26,11 @@ export class Game extends Phaser.Scene {
 
 	pipeCount: number
 	pipeGap: PipeGaps = PipeGaps.DEFAULT
+	isPipeKeyActive: boolean = false
 
 	earth: Phaser.GameObjects.TileSprite
 	friends: Phaser.GameObjects.Container[] = []
+
 	constructor() {
 		super('Game')
 	}
@@ -344,8 +346,14 @@ export class Game extends Phaser.Scene {
 				break
 			}
 		}
+		this.isPipeKeyActive = true
+
+		for (let pipePair of this.pipePairs) {
+			pipePair.gapTween()
+		}
 
 		this.time.delayedCall(5000, () => {
+			this.isPipeKeyActive = false
 			this.pipeGap = PipeGaps.DEFAULT
 		})
 	}

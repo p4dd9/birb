@@ -11,6 +11,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 	scoreZone: Phaser.GameObjects.Zone
 	scene: Game
 	pipeNumber: number
+	gapHeightMultiplier: number
 
 	constructor(scene: Game, x: number) {
 		super(scene, x, Phaser.Math.Between(MIN_Y_CENTER, MAX_Y_CENTER))
@@ -25,13 +26,13 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.invokeSilverKey = this.invokeSilverKey.bind(this)
 		this.invokeGoldKey = this.invokeGoldKey.bind(this)
 
-		const gapHeightMultiplier = scene.pipeCount < 5 ? 1.5 : 1
+		this.gapHeightMultiplier = scene.pipeCount < 5 ? 1.5 : 1
 
 		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
 			.nineslice(
 				0,
-				(-scene.pipeGap / 2) * gapHeightMultiplier,
+				(-scene.pipeGap / 2) * this.gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -47,7 +48,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.bottomPipe = scene.add
 			.nineslice(
 				0,
-				(scene.pipeGap / 2) * gapHeightMultiplier,
+				(scene.pipeGap / 2) * this.gapHeightMultiplier,
 				'pipes',
 				pipeFrame ?? 0,
 				PIPE_WIDTH,
@@ -113,6 +114,28 @@ export class PipePair extends Phaser.GameObjects.Container {
 				ease: 'Linear',
 			})
 		}
+
+		if (scene.isPipeKeyActive) {
+			scene.time.delayedCall(500, () => {
+				this.gapTween()
+			})
+		}
+	}
+
+	gapTween() {
+		this.scene.tweens.add({
+			targets: this.topPipe,
+			y: this.topPipe.y + -this.scene.pipeGap / 2,
+			duration: 1000,
+		})
+
+		this.scene.tweens.add({
+			targets: this.bottomPipe,
+			y: this.bottomPipe.y + this.scene.pipeGap / 2,
+			duration: 1000,
+		})
+
+		this.scoreZone.setScale(1, 4)
 	}
 
 	createPowerUp(item?: 'coin' | 'mystery_box' | 'emerald' | 'sapphire' | 'key') {
