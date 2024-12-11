@@ -18,7 +18,7 @@ Let's dive into the fun part. How to play, customize and score in Reddibirds.
 
 Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate through the pipes. If you hit one of them, it's back to start! Reddibirds is full responsive, hence, you can play it on mobile too.
 
-### Items
+### Powerups
 
 **Coin** adds one point to the score  
 **Emerald** adds five points to the score  
@@ -33,6 +33,10 @@ Each player has their own highscore saved per Posting. So you beat the highscore
 Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your game rounds are acculumated into an "attempts" score!
 
 You find a leaderboard for games played and scores in the main menu using the arrows next to the title.
+
+### Progression
+
+The has a varierty mechanics that makes the game incrementally harder. This can include moving pipes, smaller gaps, rain or flickering pipes .. or possibly .. invisible?
 
 ## Customization
 
@@ -82,7 +86,8 @@ It's a small project okay, nevertheless its a great way to say thanks to those p
 MysteryBox: https://dani-maccari.itch.io/platformer-metroidvania-pixel-items-free-assets CC0  
 Birds, Backgrounds and Pipes: https://megacrash.itch.io/flappy-bird-assets CC0  
 UI Elements: https://crusenho.itch.io/complete-ui-essential-pack CC4  
-Mago Font: https://nimblebeastscollective.itch.io/magosfonts CC0
+Mago Font: https://nimblebeastscollective.itch.io/magosfonts CC0  
+Weather: https://seliel-the-shaper.itch.io/weather-effects https://selieltheshaper.weebly.com/user-license.html
 
 ### Me
 

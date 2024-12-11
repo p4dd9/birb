@@ -12,6 +12,11 @@ export class Preloader extends Phaser.Scene {
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 		this.load.image('earth', 'foreground/earth.png')
 
+		this.load.spritesheet('rain_light_32x128', 'objects/rain_light_32x128.png', {
+			frameWidth: 32,
+			frameHeight: 128,
+		})
+
 		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.mp3')
 		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.mp3')
 

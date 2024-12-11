@@ -4,6 +4,7 @@ import { PipeGaps } from '../config/pipe.config'
 import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
+import { Rain } from '../weather/Rain'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
 const speedEarth = 0.26 * 3.5
@@ -33,6 +34,8 @@ export class Game extends Phaser.Scene {
 	earth: Phaser.GameObjects.TileSprite
 	friends: Phaser.GameObjects.Container[] = []
 
+	rain: Rain
+
 	constructor() {
 		super('Game')
 	}
@@ -40,6 +43,8 @@ export class Game extends Phaser.Scene {
 	create() {
 		this.isGameStarted = false
 		this.pipeCount = 0
+
+		this.rain = new Rain(this)
 
 		this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')
@@ -51,6 +56,7 @@ export class Game extends Phaser.Scene {
 			.tileSprite(this.scale.width, this.scale.height - 32, this.scale.width, 32, 'earth')
 			.setScale(5)
 			.setDepth(50)
+
 		this.physics.add.existing(this.earth)
 		;(this.earth.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 		;(this.earth.body as Phaser.Physics.Arcade.Body).setImmovable(true)
@@ -218,6 +224,7 @@ export class Game extends Phaser.Scene {
 		this.player.die()
 		this.pipeCount = 0
 		this.physics.pause()
+		this.rain.stop()
 
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(

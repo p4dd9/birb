@@ -26,7 +26,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		this.invokeSilverKey = this.invokeSilverKey.bind(this)
 		this.invokeGoldKey = this.invokeGoldKey.bind(this)
 
-		this.gapHeightMultiplier = scene.pipeCount < 5 ? 1.5 : 1
+		this.gapHeightMultiplier = scene.pipeCount < 15 ? 1.5 : 1
 
 		const pipeFrame = scene.game.registry.get('pipeFrame')
 		this.topPipe = scene.add
@@ -115,6 +115,10 @@ export class PipePair extends Phaser.GameObjects.Container {
 			})
 		}
 
+		if (this.pipeNumber > 0 && this.pipeNumber % 5 === 0) {
+			this.scene.rain.toggle()
+		}
+
 		if (scene.isPipeKeyActive) {
 			scene.time.delayedCall(500, () => {
 				this.gapTween()
@@ -125,6 +129,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 			this.topPipe.setPipeline('Light2D')
 			this.bottomPipe.setPipeline('Light2D')
 		}
+		this.setDepth(30)
 	}
 
 	gapTween() {

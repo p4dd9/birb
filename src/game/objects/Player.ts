@@ -28,6 +28,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 				this.setCollideWorldBounds(false)
 			}
 		})
+		this.setDepth(40)
 	}
 
 	flap() {
