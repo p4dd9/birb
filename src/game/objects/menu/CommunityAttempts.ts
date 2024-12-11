@@ -1,6 +1,5 @@
 import type { RedisPlayer } from '../../../shared/messages'
 import type { Menu } from '../../scenes/Menu'
-import globalEventEmitter from '../../web/GlobalEventEmitter'
 import { MagoText } from '../MagoText'
 
 export class CommunityAttempts extends Phaser.GameObjects.Container {
@@ -9,9 +8,7 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 
 		this.setName('r/ GAMES')
 
-		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
-			this.create(bestPlayers)
-		})
+		this.create(scene.registry.get('bestPlayers') ?? [])
 
 		scene.add.existing(this)
 	}

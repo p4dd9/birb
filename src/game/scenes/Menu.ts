@@ -44,8 +44,6 @@ export class Menu extends Phaser.Scene {
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
 
-		this.menuContent = new MenuContent(this)
-
 		globalEventEmitter.on('updateOnlinePlayers', this.updateOnlinePlayers, this)
 		globalEventEmitter.once('startGame', () => {
 			this.sound.play('buttonclick1', { volume: 0.5 })
@@ -55,9 +53,10 @@ export class Menu extends Phaser.Scene {
 			this.scene.start('Game')
 		})
 		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
+			this.registry.set('bestPlayers', bestPlayers)
+			this.menuContent = new MenuContent(this)
 			this.createBreakingNews(bestPlayers)
 			this.createBestPlayer(bestPlayers[0])
-			this.registry.set('bestPlayers', bestPlayers)
 		})
 		globalEventEmitter.emit('getBestPlayers')
 

@@ -86,7 +86,6 @@ export class Game extends Phaser.Scene {
 		})
 
 		this.resetScore()
-
 		this.cheeringBirdFriends()
 	}
 
