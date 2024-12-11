@@ -57,7 +57,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 					duration: 1200,
 					ease: 'Power1',
 					onComplete: () => {
-						this.destroy()
+						this.destroy(true)
 					},
 				})
 			},

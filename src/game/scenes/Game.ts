@@ -154,6 +154,12 @@ export class Game extends Phaser.Scene {
 		this.earth.setTilePosition(this.earth.tilePositionX + speedEarth)
 		for (let pipePair of this.pipePairs) {
 			pipePair.setX(pipePair.x - speedPipes)
+
+			if (pipePair.x < -50) {
+				pipePair.topPipe.destroy(true)
+				pipePair.bottomPipe.destroy(true)
+				pipePair.destroy(true)
+			}
 		}
 	}
 
@@ -163,8 +169,8 @@ export class Game extends Phaser.Scene {
 		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
 		this.startPipeTimer()
 		this.byeFriends()
-		this.intro.destroy()
-		this.introText.destroy()
+		this.intro.destroy(true)
+		this.introText.destroy(true)
 	}
 
 	resize() {

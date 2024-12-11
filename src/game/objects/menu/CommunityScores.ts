@@ -7,7 +7,6 @@ export class CommunityScores extends Phaser.GameObjects.Container {
 		super(scene, 0, 0)
 
 		this.setName('r/ SCORES')
-
 		this.create(scene.registry.get('bestPlayers') ?? [])
 
 		scene.add.existing(this)

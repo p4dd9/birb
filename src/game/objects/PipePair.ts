@@ -74,7 +74,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 
 		scene.physics.add.overlap(scene.player, this.scoreZone, () => {
 			scene.incrementScore()
-			this.scoreZone.destroy()
+			this.scoreZone.destroy(true)
 		})
 
 		scene.physics.add.existing(this.topPipe, false)
@@ -198,7 +198,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 		;(powerup.body as Phaser.Physics.Arcade.Body).setImmovable(true)
 
 		this.scene.physics.add.overlap(this.scene.player, powerup, () => {
-			powerup.destroy()
+			powerup.destroy(true)
 			cb()
 		})
 		this.add(powerup)
