@@ -1,12 +1,11 @@
 import { Devvit, useAsync, useChannel, useInterval } from '@devvit/public-api'
 import { ChannelStatus } from '@devvit/public-api/types/realtime'
 import { devvitLogger } from '../shared/logger'
-import type { PostMessageMessages, UpdateGameSettingMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
+import type { PostMessageMessages, UpdateAppDataMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
 import './jobs/firstFlapperComment'
 import './jobs/newHighscoreComment'
 import './jobs/welcomeUser'
-import { mappAppSettingsToMessage } from './redisMapper'
-import { createRedisService } from './redisService'
+import { RedisService } from './redisService'
 
 type WebviewContainerProps = {
 	context: Devvit.Context
@@ -15,7 +14,8 @@ type WebviewContainerProps = {
 
 export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
-	const redisService = createRedisService(context)
+	const redisService = new RedisService(context)
+	console.log('Hi')
 
 	const emitUserPlaying = async () => {
 		const count = (await redisService.saveUserInteraction()) ?? 0
@@ -39,14 +39,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 
 	useAsync(
 		async () => {
-			if (webviewVisible) {
-				const appSettings = await redisService.getAppSettings()
-				const mappedMessage = mappAppSettingsToMessage(appSettings)
-				context.ui.webView.postMessage('game-webview', {
-					type: 'changeWorld',
-					data: mappedMessage,
-				} as UpdateGameSettingMessage)
-			} else {
+			if (!webviewVisible) {
 				emitUserPlaying()
 			}
 			return null
@@ -112,15 +105,14 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				break
 			}
 
-			case 'requestAppSettings': {
-				const appSettings = await redisService.getAppSettings()
-				const mappedMessage = mappAppSettingsToMessage(appSettings)
+			case 'requestAppData': {
+				const appData = await redisService.getAppData()
 
-				devvitLogger.info(`Sending 'requestAppSettings' postMessage (webviewcontainer)`)
+				devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
-					type: 'changeWorld',
-					data: mappedMessage,
-				} as UpdateGameSettingMessage)
+					type: 'updateAppData',
+					data: appData,
+				} as UpdateAppDataMessage)
 
 				break
 			}

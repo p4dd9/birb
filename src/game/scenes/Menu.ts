@@ -21,6 +21,8 @@ export class Menu extends Phaser.Scene {
 	}
 
 	create() {
+		this.scene.remove('Boot')
+
 		if (this.cameras.main.postFX) {
 			this.cameras.main.postFX.clear()
 		}

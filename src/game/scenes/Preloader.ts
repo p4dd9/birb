@@ -61,10 +61,10 @@ export class Preloader extends Phaser.Scene {
 	create() {
 		this.sound.add('Junkala_Stake_2')
 		this.sound.add('Junkala_Select_2')
+
 		this.createAnimations()
 
 		this.scene.start('Menu')
-		this.scene.remove('Boot')
 	}
 
 	createAnimations() {

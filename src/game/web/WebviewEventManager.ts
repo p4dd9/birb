@@ -1,8 +1,8 @@
-import type { RedisPlayer, SaveStatsMessage, WorldSetting } from '../../shared/messages'
+import { webviewLogger } from '../../shared/logger'
+import type { SaveStatsMessage } from '../../shared/messages'
 import globalEventEmitter from './GlobalEventEmitter'
 
 export class WebviewEventManager {
-	// static allowedOrigins = ['https://www.reddit.com']
 	static allowedMessageType = 'devvit-message'
 
 	static targetOrigin = '*'
@@ -18,56 +18,34 @@ export class WebviewEventManager {
 			'message',
 			(ev) => {
 				const { type, data } = ev.data
-				console.log('Received postMessage (webviewEventManager)', ev.type)
 
 				if (type !== WebviewEventManager.allowedMessageType) {
+					webviewLogger.warn(`Received unknown event type ${type} (webviewEventManager)`)
 					return
 				}
 
 				const { message } = data
-				console.log('Received postMessage (webviewEventManager)', message.type)
+				webviewLogger.info(`Received postMessage ${message.type} (webviewEventManager)`)
 
 				switch (message.type) {
 					case 'gameOver': {
-						const gameOverData = message.data as {
-							isNewHighScore: boolean
-							newScore: number
-							highscore: number
-							attempts: number
-						}
-						globalEventEmitter.emit('gameOver', gameOverData)
+						globalEventEmitter.emit('gameOver', message.data)
 						break
 					}
 					case 'updateBestPlayers': {
-						const gameOverData = message.data as RedisPlayer[]
-						globalEventEmitter.emit('updateBestPlayers', gameOverData)
+						globalEventEmitter.emit('updateBestPlayers', message.data)
 						break
 					}
 					case 'updateOnlinePlayers': {
-						const playersCountData = message.data as { count: number }
-						globalEventEmitter.emit('updateOnlinePlayers', playersCountData)
+						globalEventEmitter.emit('updateOnlinePlayers', message.data)
 						break
 					}
-					case 'changeWorld': {
-						const worldSetting = message.data as WorldSetting
-						const canvasParent = document.getElementById('game-container')
-						if (canvasParent && canvasParent instanceof HTMLDivElement) {
-							// BUG/WEIRD: unreliable pixel dimension on window and body element in webviews, most likely as there are some resizing events fired (idk rly)
-							// ISSUE not showing repeating bg: body.style.background = `url('/assets/bg/${worldSetting.world}.png') 0% 0% / auto 320px repeat-x`
-							//
-							// these values evaluate to random numbers at some point, 0px in height,
-							// addDebugMsg(`innerHeight: ${window.innerHeight}px`)
-							// addDebugMsg(`innerWidth: ${window.innerWidth}px`)
-
-							// WORKAROUND: create a new canvas parent or use the canvas directly, centered and set the fixed height based on dimension (regular vs tall)
-							canvasParent.style.background = `url('/assets/bg/${worldSetting.world}.png') center / auto 320px repeat-x`
-						}
-
-						globalEventEmitter.emit('changeWorld', worldSetting)
+					case 'updateAppData': {
+						globalEventEmitter.emit('updateAppData', message.data)
 						break
 					}
 					default: {
-						console.log(`Unknown type ${message.type} for message ${message}.`)
+						webviewLogger.warn(`Unknown type ${message.type} for message ${message}.`)
 					}
 				}
 			},
@@ -76,9 +54,10 @@ export class WebviewEventManager {
 	}
 
 	static registerGameInternalEvents() {
-		console.log('registerGameInternalEvents')
+		webviewLogger.info('Register Internal Eventlisteners')
+
 		globalEventEmitter.on('saveStats', (highscore: number) => {
-			console.log('saveStats')
+			webviewLogger.info('saveStats')
 			let message: SaveStatsMessage = {
 				type: 'saveStats',
 				data: {
@@ -89,17 +68,17 @@ export class WebviewEventManager {
 		})
 
 		globalEventEmitter.on('getBestPlayers', () => {
-			console.log('getBestPlayers')
+			webviewLogger.info('getBestPlayers')
 			let message: { type: string } = {
 				type: 'getBestPlayers',
 			}
 			WebviewEventManager.postMessageToParent(message)
 		})
 
-		globalEventEmitter.on('requestAppSettings', () => {
-			console.log('requestAppSettings')
+		globalEventEmitter.on('requestAppData', () => {
+			webviewLogger.info('requestAppData')
 			let message: { type: string } = {
-				type: 'requestAppSettings',
+				type: 'requestAppData',
 			}
 			WebviewEventManager.postMessageToParent(message)
 		})
@@ -107,7 +86,9 @@ export class WebviewEventManager {
 
 	static postMessageToParent(message: any) {
 		if (!window.parent) {
-			console.warn(`App is not running in an embedded webview.`)
+			webviewLogger.warn(
+				`App is not running in an embedded webview. Cannot send postMessage to "${WebviewEventManager.targetOrigin}".`
+			)
 		}
 		window.parent.postMessage(message, WebviewEventManager.targetOrigin)
 	}

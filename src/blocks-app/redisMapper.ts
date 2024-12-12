@@ -1,6 +1,6 @@
-import type { WorldSetting } from '../shared/messages'
+import type { AppConfiguration } from '../shared/messages'
 
-export const mappAppSettingsToMessage = (settings: Record<'worldSelect' | 'playerSelect' | 'pipeSelect', string[]>) => {
+export const mapAppConfiguration = (settings: Record<'worldSelect' | 'playerSelect' | 'pipeSelect', string[]>) => {
 	const { worldSelect, playerSelect, pipeSelect } = settings
 	const mappedWorldSelect = !Array.isArray(worldSelect) || !worldSelect[0] ? 'sunset' : (worldSelect[0] as string)
 	const mappedPlayerFrame = !Array.isArray(playerSelect) ? 0 : Number(playerSelect[0])
@@ -10,5 +10,5 @@ export const mappAppSettingsToMessage = (settings: Record<'worldSelect' | 'playe
 		world: mappedWorldSelect,
 		playerFrame: mappedPlayerFrame,
 		pipeFrame: mappedPipeFrame,
-	} as WorldSetting
+	} as AppConfiguration
 }

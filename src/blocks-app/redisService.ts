@@ -1,217 +1,208 @@
-import { Devvit } from '@devvit/public-api'
-import type { RedisPlayer } from '../shared/messages'
+import { Devvit, type RedisClient } from '@devvit/public-api'
+import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
+import { mapAppConfiguration } from './redisMapper'
+import type { SaveScoreData } from './types/redis'
 
-export type SaveScoreData = {
-	highscore: number
-	score: number
-}
+export class RedisService {
+	context: Devvit.Context
+	redis: RedisClient
 
-export type PlayerStats = {
-	highscore: number
-	attempts: number
-}
+	subredditId: string
+	postId: string
+	userId: string
 
-export type CommunityStats = {
-	communityScore: number
-	communityAttempts: number
-	topPlayer: string
-}
+	constructor(context: Devvit.Context) {
+		this.context = context
+		this.redis = context.redis
 
-export type RedisService = {
-	getPlayerStats: () => Promise<PlayerStats | null>
-	saveScore: (stats: SaveScoreData) => Promise<CommunityStats>
-	getTopPlayers: () => Promise<Array<RedisPlayer>>
-	getPlayerByUserId: (userId: string) => Promise<PlayerStats | null>
-	getAppSettings: () => Promise<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>
-	getCommunityStats: () => Promise<CommunityStats>
-	saveUserInteraction: () => Promise<number | undefined>
-}
+		this.subredditId = context.subredditId
 
-const ACTIVE_PLAYERS_HASH = 'active_players'
-const ACTIVE_PLAYER_TTL = 30 * 1000
+		this.postId = context.postId!
+		this.userId = context.userId!
+	}
 
-export function createRedisService(context: Devvit.Context): RedisService {
-	const { redis, subredditId, postId, userId } = context
+	async getAppData() {
+		const appConfiguration = await this.getAppConfiguration()
+		const mappedMessage = mapAppConfiguration(appConfiguration)
 
-	return {
-		getPlayerStats: async () => {
-			if (!userId) return null
+		return {
+			config: mappedMessage,
+		}
+	}
 
-			const attempts = await redis.hGet(`post:${subredditId}:attempts`, userId)
-			const highscore = await redis.zScore(`post:${subredditId}:highscores`, userId)
+	async getPlayerStats() {
+		const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, this.userId)
+		const highscore = await this.redis.zScore(`post:${this.subredditId}:highscores`, this.userId)
 
-			const mappedStats = {
-				highscore: highscore ? Number(highscore) : 0,
-				attempts: attempts ? Number(attempts) : 0,
+		const mappedStats = {
+			highscore: highscore ? Number(highscore) : 0,
+			attempts: attempts ? Number(attempts) : 0,
+		}
+		return mappedStats
+	}
+
+	async getPlayerByUserId(userId: string) {
+		const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, userId)
+		const highscore = await this.redis.zScore(`post:${this.subredditId}:highscores`, userId)
+
+		const mappedStats = {
+			highscore: highscore ? Number(highscore) : 0,
+			attempts: attempts ? Number(attempts) : 0,
+		}
+		return mappedStats
+	}
+
+	async saveScore(stats: SaveScoreData) {
+		let mappedTopPlayer = '???'
+
+		if (!this.userId) return { communityScore: 0, communityAttempts: 0, topPlayer: mappedTopPlayer }
+
+		const currentTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
+			by: 'rank',
+			reverse: true,
+		})
+
+		await this.redis.zAdd(`post:${this.subredditId}:highscores`, { member: this.userId, score: stats.highscore })
+
+		const communityScore = await this.redis.hIncrBy(
+			`community:${this.context.subredditId}:score`,
+			this.context.subredditId,
+			stats.score
+		)
+		const communityAttempts = await this.redis.hIncrBy(
+			`community:${this.context.subredditId}:attempts`,
+			this.context.subredditId,
+			1
+		)
+
+		await this.redis.hIncrBy(`post:${this.subredditId}:attempts`, this.userId, 1)
+
+		const newTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
+			by: 'rank',
+			reverse: true,
+		})
+
+		const topPlayerUsername = currentTopPlayer[0]
+			? ((await this.context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
+			: `???`
+
+		if (!newTopPlayer || !newTopPlayer[0] || !this.postId) {
+			return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
+		}
+
+		if (!currentTopPlayer[0]?.member) {
+			const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
+
+			if (newTopUserName) {
+				this.context.scheduler.runJob({
+					name: 'FIRST_FLAPPER_COMMENT',
+					data: {
+						username: newTopUserName.username,
+						postId: this.postId,
+						score: stats.score,
+					},
+					runAt: new Date(),
+				})
 			}
-			return mappedStats
-		},
+		}
 
-		getPlayerByUserId: async (userId: string) => {
-			if (!userId) return null
-
-			const attempts = await redis.hGet(`post:${subredditId}:attempts`, userId)
-			const highscore = await redis.zScore(`post:${subredditId}:highscores`, userId)
-
-			const mappedStats = {
-				highscore: highscore ? Number(highscore) : 0,
-				attempts: attempts ? Number(attempts) : 0,
-			}
-			return mappedStats
-		},
-
-		saveScore: async (stats) => {
-			let mappedTopPlayer = '???'
-
-			if (!userId) return { communityScore: 0, communityAttempts: 0, topPlayer: mappedTopPlayer }
-
-			const currentTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
-				by: 'rank',
-				reverse: true,
-			})
-
-			await redis.zAdd(`post:${subredditId}:highscores`, { member: userId, score: stats.highscore })
-
-			const communityScore = await redis.hIncrBy(
-				`community:${context.subredditId}:score`,
-				context.subredditId,
-				stats.score
-			)
-			const communityAttempts = await redis.hIncrBy(
-				`community:${context.subredditId}:attempts`,
-				context.subredditId,
-				1
-			)
-
-			await redis.hIncrBy(`post:${subredditId}:attempts`, userId, 1)
-
-			const newTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
-				by: 'rank',
-				reverse: true,
-			})
-
-			const topPlayerUsername = currentTopPlayer[0]
-				? ((await context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
-				: `???`
-
-			if (!newTopPlayer || !newTopPlayer[0] || !postId) {
-				return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
-			}
-
-			if (!currentTopPlayer[0]?.member) {
-				const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
+		// new highscore in community on posting
+		if (currentTopPlayer[0]) {
+			const currentCommunityhighscore = currentTopPlayer[0].score
+			const score = stats.score
+			if (score > currentCommunityhighscore) {
+				const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
 
 				if (newTopUserName) {
-					context.scheduler.runJob({
-						name: 'FIRST_FLAPPER_COMMENT',
+					this.context.scheduler.runJob({
+						name: 'NEW_HIGHSCORE_COMMENT',
 						data: {
 							username: newTopUserName.username,
-							postId,
+							postId: this.postId,
 							score: stats.score,
 						},
 						runAt: new Date(),
 					})
 				}
 			}
+		}
 
-			// new highscore in community on posting
-			if (currentTopPlayer[0]) {
-				const currentCommunityhighscore = currentTopPlayer[0].score
-				const score = stats.score
-				if (score > currentCommunityhighscore) {
-					const newTopUserName = await context.reddit.getUserById(newTopPlayer[0].member)
+		return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
+	}
 
-					if (newTopUserName) {
-						context.scheduler.runJob({
-							name: 'NEW_HIGHSCORE_COMMENT',
-							data: {
-								username: newTopUserName.username,
-								postId,
-								score: stats.score,
-							},
-							runAt: new Date(),
-						})
-					}
+	async getTopPlayers() {
+		const topPlayers = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 9, {
+			by: 'rank',
+			reverse: true,
+		})
+
+		const mappedBestPlayers = await Promise.all(
+			topPlayers.map(async ({ member, score }) => {
+				const userNameResponse = await this.context.reddit.getUserById(member)
+				const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, member)
+				return {
+					userId: member,
+					userName: userNameResponse ? userNameResponse.username : 'Anonymous',
+					score: Number(score),
+					attempts: Number(attempts),
 				}
-			}
+			})
+		)
 
-			return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
-		},
+		return mappedBestPlayers
+	}
 
-		getTopPlayers: async () => {
-			const topPlayers = await redis.zRange(`post:${subredditId}:highscores`, 0, 9, {
-				by: 'rank',
-				reverse: true,
+	async getAppConfiguration() {
+		return await this.context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
+	}
+
+	async saveUserInteraction() {
+		const userId = this.userId
+		if (!userId) return 0
+
+		const now = Date.now()
+
+		await this.context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
+
+		const players = await this.context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
+		if (players) {
+			const onlinePlayers = Object.entries(players).filter(([_, timestamp]) => {
+				return now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL
 			})
 
-			const mappedBestPlayers = await Promise.all(
-				topPlayers.map(async ({ member, score }) => {
-					const userNameResponse = await context.reddit.getUserById(member)
-					const attempts = await redis.hGet(`post:${subredditId}:attempts`, member)
-					return {
-						userId: member,
-						userName: userNameResponse ? userNameResponse.username : 'Anonymous',
-						score: Number(score),
-						attempts: Number(attempts),
-					}
-				})
+			const stalePlayers = Object.keys(players).filter(
+				(userId) => !onlinePlayers.some(([validId]) => validId === userId)
 			)
 
-			return mappedBestPlayers
-		},
-
-		getAppSettings: async () => {
-			return await context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
-		},
-
-		saveUserInteraction: async () => {
-			const userId = context.userId
-			if (!userId) return 0
-
-			const now = Date.now()
-
-			await context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
-
-			const players = await context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
-			if (players) {
-				const onlinePlayers = Object.entries(players).filter(([_, timestamp]) => {
-					return now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL
-				})
-
-				const stalePlayers = Object.keys(players).filter(
-					(userId) => !onlinePlayers.some(([validId]) => validId === userId)
-				)
-
-				for (const stalePlayer of stalePlayers) {
-					await context.redis.hDel(ACTIVE_PLAYERS_HASH, [stalePlayer])
-				}
-
-				return onlinePlayers.length
+			for (const stalePlayer of stalePlayers) {
+				await this.context.redis.hDel(ACTIVE_PLAYERS_HASH, [stalePlayer])
 			}
 
-			return 0
-		},
+			return onlinePlayers.length
+		}
 
-		getCommunityStats: async () => {
-			const communityScore =
-				(await redis.hGet(`community:${context.subredditId}:score`, context.subredditId)) ?? 0
-			const communityAttempts =
-				(await redis.hGet(`community:${context.subredditId}:attempts`, context.subredditId)) ?? 0
+		return 0
+	}
 
-			const currentTopPlayer = await redis.zRange(`post:${subredditId}:highscores`, 0, 0, {
-				by: 'rank',
-				reverse: true,
-			})
+	async getCommunityStats() {
+		const communityScore =
+			(await this.redis.hGet(`community:${this.context.subredditId}:score`, this.context.subredditId)) ?? 0
+		const communityAttempts =
+			(await this.redis.hGet(`community:${this.context.subredditId}:attempts`, this.context.subredditId)) ?? 0
 
-			const topPlayerUsername = currentTopPlayer[0]
-				? ((await context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
-				: `???`
+		const currentTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
+			by: 'rank',
+			reverse: true,
+		})
 
-			return {
-				communityScore: Number(communityScore),
-				communityAttempts: Number(communityAttempts),
-				topPlayer: topPlayerUsername,
-			}
-		},
+		const topPlayerUsername = currentTopPlayer[0]
+			? ((await this.context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
+			: `???`
+
+		return {
+			communityScore: Number(communityScore),
+			communityAttempts: Number(communityAttempts),
+			topPlayer: topPlayerUsername,
+		}
 	}
 }
