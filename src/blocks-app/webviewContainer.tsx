@@ -1,7 +1,6 @@
-import { Devvit, useChannel, useInterval } from '@devvit/public-api'
-import { ChannelStatus } from '@devvit/public-api/types/realtime'
+import { Devvit, useInterval } from '@devvit/public-api'
 import { devvitLogger } from '../shared/logger'
-import type { PostMessageMessages, UpdateAppDataMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
+import type { PostMessageMessages, UpdateAppDataMessage } from '../shared/messages'
 import './jobs/firstFlapperComment'
 import './jobs/newHighscoreComment'
 import './jobs/welcomeUser'
@@ -17,12 +16,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const redisService = new RedisService(context)
 
 	const tickUpdateAppData = async () => {
-		const count = await redisService.getCommunityOnlinePlayers()
-		if (onlinePlayersChannel.status === ChannelStatus.Connected) {
-			onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
-		}
 		const appData = await redisService.getAppData()
-
 		devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 		context.ui.webView.postMessage('game-webview', {
 			type: 'updateAppData',
@@ -31,25 +25,13 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	}
 	useInterval(tickUpdateAppData, 10000).start()
 
-	const onlinePlayersChannel = useChannel({
-		name: 'online_player',
-		onMessage: (data: { type: string; count: number }) => {
-			if (data.type === 'updateOnlinePlayers') {
-				context.ui.webView.postMessage('game-webview', {
-					type: 'updateOnlinePlayers',
-					data: { count: data.count },
-				} as UpdateOnlinePlayersMessage)
-			}
-		},
-	})
-
 	const handleMessage = async (ev: PostMessageMessages) => {
 		devvitLogger.info('Received postMessage (webviewcontainer)' + ev.type)
 
 		switch (ev.type) {
 			case 'saveStats': {
 				const newScore = ev.data.personal.highscore
-				let currentPersonalStats = await redisService.getPlayerStats()
+				let currentPersonalStats = await redisService.getCurrentPlayerStats()
 
 				if (!currentPersonalStats) {
 					currentPersonalStats = { highscore: 0, attempts: 0 }
@@ -89,18 +71,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				break
 			}
 
-			case 'getBestPlayers': {
-				const bestPlayers = await redisService.getCommunityLeaderBoard()
-				if (!bestPlayers || bestPlayers.length < 0) return
-
-				devvitLogger.info(`Sending 'updateBestPlayers' postMessage (webviewcontainer)`)
-				context.ui.webView.postMessage('game-webview', {
-					type: 'updateBestPlayers',
-					data: bestPlayers,
-				})
-				break
-			}
-
 			case 'requestAppData': {
 				const appData = await redisService.getAppData()
 
@@ -118,8 +88,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			}
 		}
 	}
-
-	onlinePlayersChannel.subscribe()
 
 	return (
 		<vstack grow={webviewVisible} height={webviewVisible ? '100%' : '0px'}>

@@ -32,7 +32,6 @@ export class Menu extends Phaser.Scene {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
-		// TODO: think about ui, customization per player + community goal
 		this.playersOnline = new MagoText(
 			this,
 			50,
@@ -52,12 +51,10 @@ export class Menu extends Phaser.Scene {
 			.setInteractive({ cursor: 'pointer' })
 			.on('pointerdown', this.toggleMute, this)
 
-		globalEventEmitter.on('updateOnlinePlayers', this.updateOnlinePlayers, this)
 		globalEventEmitter.once('startGame', () => {
-			this.sound.play('buttonclick1', { volume: 0.5 })
-			this.scale.off('resize', this.resize, this)
-			globalEventEmitter.off('updateOnlinePlayers', this.updateOnlinePlayers, this)
 			globalEventEmitter.off('updateAppData', this.updateAppData, this)
+
+			this.scale.off('resize', this.resize, this)
 			this.scene.start('Game')
 		})
 
@@ -75,12 +72,7 @@ export class Menu extends Phaser.Scene {
 		this.menuContent.updateData(appData)
 		this.breakingNews.setText(this.getBreakingNewsText(appData.community.leaderboard))
 		this.bestPlayer.setText(this.getFeaturedPlayerText(appData.community.leaderboard[0]))
-	}
-
-	updateOnlinePlayers(data: { count: number }) {
-		if (this && this.playersOnline && data && data.count) {
-			this.playersOnline.setText(`Online: ${data.count}`)
-		}
+		this.playersOnline.setText(`Online: ${appData.community.online}`)
 	}
 
 	getBreakingNewsText(players: RedisPlayer[]) {

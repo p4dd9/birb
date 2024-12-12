@@ -45,28 +45,6 @@ export class RedisService {
 		}
 	}
 
-	async getPlayerStats() {
-		const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, this.userId)
-		const highscore = await this.redis.zScore(`post:${this.subredditId}:highscores`, this.userId)
-
-		const mappedStats = {
-			highscore: highscore ? Number(highscore) : 0,
-			attempts: attempts ? Number(attempts) : 0,
-		}
-		return mappedStats
-	}
-
-	async getPlayerByUserId(userId: string) {
-		const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, userId)
-		const highscore = await this.redis.zScore(`post:${this.subredditId}:highscores`, userId)
-
-		const mappedStats = {
-			highscore: highscore ? Number(highscore) : 0,
-			attempts: attempts ? Number(attempts) : 0,
-		}
-		return mappedStats
-	}
-
 	async saveScore(stats: SaveScoreData) {
 		let mappedTopPlayer = '???'
 
@@ -78,19 +56,10 @@ export class RedisService {
 		})
 
 		await this.redis.zAdd(`post:${this.subredditId}:highscores`, { member: this.userId, score: stats.highscore })
-
-		const communityScore = await this.redis.hIncrBy(
-			`community:${this.context.subredditId}:score`,
-			this.context.subredditId,
-			stats.score
-		)
-		const communityAttempts = await this.redis.hIncrBy(
-			`community:${this.context.subredditId}:attempts`,
-			this.context.subredditId,
-			1
-		)
-
 		await this.redis.hIncrBy(`post:${this.subredditId}:attempts`, this.userId, 1)
+
+		const communityScore = this.incrementCurrentCommunityScore(stats.score)
+		const communityAttempts = this.incrementCurrentCommunityAttempts()
 
 		const newTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
@@ -158,7 +127,7 @@ export class RedisService {
 				return {
 					userId: member,
 					userName: userNameResponse ? userNameResponse.username : 'Anonymous',
-					score: Number(score),
+					score,
 					attempts: Number(attempts),
 				}
 			})
@@ -167,55 +136,101 @@ export class RedisService {
 		return mappedBestPlayers
 	}
 
+	async getCommunityOnlinePlayers() {
+		const now = Date.now()
+
+		await this.context.redis.hSet(ACTIVE_PLAYERS_HASH, { [this.userId]: now.toString() })
+
+		const players = await this.context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
+
+		let onlinePlayersCount = 0
+		const stalePlayers = []
+
+		for (const [userId, timestamp] of Object.entries(players)) {
+			if (now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL) {
+				onlinePlayersCount += 1
+			} else {
+				stalePlayers.push(userId)
+			}
+		}
+
+		if (stalePlayers.length > 0) {
+			await this.context.redis.hDel(ACTIVE_PLAYERS_HASH, stalePlayers)
+		}
+
+		return onlinePlayersCount
+	}
+
+	async getCommunityStats() {
+		const [communityScore, communityAttempts, topPlayerUsername] = await Promise.all([
+			this.getCurrentCommunityScore(),
+			this.getCurrentCommunityAttempts(),
+			this.getCurrentCommunityHighScoreUsername(),
+		])
+
+		return {
+			communityScore,
+			communityAttempts,
+			topPlayer: topPlayerUsername,
+		}
+	}
+
+	/** COMMUNITY:USER */
+	async getCurrentUserHighscore() {
+		return (await this.redis.zScore(`post:${this.subredditId}:highscores`, this.userId)) ?? 0
+	}
+
+	async getCurrentUserAttempts() {
+		return Number(await this.redis.hGet(`post:${this.subredditId}:attempts`, this.userId)) ?? 0
+	}
+
+	async getCurrentPlayerStats() {
+		const [highscore, attempts] = await Promise.all([this.getCurrentUserHighscore(), this.getCurrentUserAttempts()])
+
+		return {
+			highscore,
+			attempts,
+		}
+	}
+
+	async getCurrentCommunityHighScoreUsername() {
+		const currentTopPlayer = await this.getCurrentCommunityTopPlayerScore()
+
+		if (currentTopPlayer.length < 1 || !currentTopPlayer[0]) return `???`
+		const topPlayerUser = await this.context.reddit.getUserById(currentTopPlayer[0].member)
+		if (!topPlayerUser) return `???`
+
+		return topPlayerUser.username
+	}
+
+	/** COMMUNITY */
 	async getAppConfiguration() {
 		return await this.context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
 	}
 
-	async getCommunityOnlinePlayers() {
-		const userId = this.userId
-		if (!userId) return 1
-
-		const now = Date.now()
-
-		await this.context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
-		const players = await this.context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
-		if (players) {
-			const onlinePlayers = Object.entries(players).filter(([_, timestamp]) => {
-				return now - parseInt(timestamp, 10) <= ACTIVE_PLAYER_TTL
-			})
-
-			const stalePlayers = Object.keys(players).filter(
-				(userId) => !onlinePlayers.some(([validId]) => validId === userId)
-			)
-
-			for (const stalePlayer of stalePlayers) {
-				await this.context.redis.hDel(ACTIVE_PLAYERS_HASH, [stalePlayer])
-			}
-
-			return onlinePlayers.length
-		}
-		return 1
+	async incrementCurrentCommunityScore(score: number) {
+		return await this.redis.hIncrBy(`community:${this.context.subredditId}:score`, this.context.subredditId, score)
 	}
 
-	async getCommunityStats() {
-		const communityScore =
-			(await this.redis.hGet(`community:${this.context.subredditId}:score`, this.context.subredditId)) ?? 0
-		const communityAttempts =
-			(await this.redis.hGet(`community:${this.context.subredditId}:attempts`, this.context.subredditId)) ?? 0
+	async incrementCurrentCommunityAttempts() {
+		return await this.redis.hIncrBy(`community:${this.context.subredditId}:attempts`, this.context.subredditId, 1)
+	}
 
-		const currentTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
+	async getCurrentCommunityScore() {
+		return (await this.redis.hGet(`community:${this.context.subredditId}:score`, this.context.subredditId)) ?? 0
+	}
+
+	async getCurrentCommunityAttempts() {
+		return (
+			Number(await this.redis.hGet(`community:${this.context.subredditId}:attempts`, this.context.subredditId)) ??
+			0
+		)
+	}
+
+	async getCurrentCommunityTopPlayerScore() {
+		return await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
 			reverse: true,
 		})
-
-		const topPlayerUsername = currentTopPlayer[0]
-			? ((await this.context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
-			: `???`
-
-		return {
-			communityScore: Number(communityScore),
-			communityAttempts: Number(communityAttempts),
-			topPlayer: topPlayerUsername,
-		}
 	}
 }

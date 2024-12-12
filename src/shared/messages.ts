@@ -54,11 +54,6 @@ export type UpdateAppDataMessage = {
 	data: AppData
 }
 
-export type UpdateOnlinePlayersMessage = {
-	type: 'updateOnlinePlayers'
-	data: { count: number }
-}
-
 export type RedisPlayer = {
 	userId: string
 	userName: string

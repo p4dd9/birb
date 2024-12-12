@@ -32,14 +32,6 @@ export class WebviewEventManager {
 						globalEventEmitter.emit('gameOver', message.data)
 						break
 					}
-					case 'updateBestPlayers': {
-						globalEventEmitter.emit('updateBestPlayers', message.data)
-						break
-					}
-					case 'updateOnlinePlayers': {
-						globalEventEmitter.emit('updateOnlinePlayers', message.data)
-						break
-					}
 					case 'updateAppData': {
 						globalEventEmitter.emit('updateAppData', message.data)
 						break
