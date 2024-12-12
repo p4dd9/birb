@@ -1,6 +1,7 @@
 import { Devvit, type RedisClient } from '@devvit/public-api'
 import type { AppData } from '../shared/messages'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
+import { type Challenge, DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX } from './jobs/dailyJob'
 import { mapAppConfiguration } from './redisMapper'
 import type { SaveScoreData } from './types/redis'
 
@@ -23,13 +24,16 @@ export class RedisService {
 	}
 
 	async getAppData(): Promise<AppData> {
-		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats, youStats] = await Promise.all([
-			this.getAppConfiguration(),
-			this.getCommunityLeaderBoard(),
-			this.getCommunityOnlinePlayers(),
-			this.getCommunityStats(),
-			this.getCurrentPlayerStats(),
-		])
+		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats, youStats, daily, dailyCompleted] =
+			await Promise.all([
+				this.getAppConfiguration(),
+				this.getCommunityLeaderBoard(),
+				this.getCommunityOnlinePlayers(),
+				this.getCommunityStats(),
+				this.getCurrentPlayerStats(),
+				this.getCurrentCommunityDaily(),
+				this.hasCurrentUserCompletedDaily(),
+			])
 
 		return {
 			config: mapAppConfiguration(appConfiguration),
@@ -39,6 +43,10 @@ export class RedisService {
 				leaderboard: leaderboard,
 				online: activeCommunityPlayers,
 				stats: communityStats,
+				daily: {
+					...daily,
+					completed: dailyCompleted,
+				},
 			},
 			// https://developers.reddit.com/docs/api/public-api/#-redisclient
 			// https://discord.com/channels/1050224141732687912/1242689538447507458/1316043291401125888
@@ -66,8 +74,18 @@ export class RedisService {
 			reverse: true,
 		})
 
+		let bonusPoints = 0
+		if (stats.isNewHighScore) {
+			this.setCurrentUserDailyCompleted()
+			const daily = await this.getCurrentCommunityDaily()
+			bonusPoints = daily.points
+		}
+
 		await this.savePlayerStats(stats.highscore)
-		await Promise.all([this.incrementCurrentCommunityScore(stats.score), this.incrementCurrentCommunityAttempts()])
+		await Promise.all([
+			this.incrementCurrentCommunityScore(stats.score + bonusPoints),
+			this.incrementCurrentCommunityAttempts(),
+		])
 
 		const newTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
@@ -177,6 +195,23 @@ export class RedisService {
 			communityAttempts: Number(communityAttempts ?? 0),
 			topPlayer: topPlayerUsername,
 		}
+	}
+
+	/** COMMUNITY:DAILY */
+	async getCurrentCommunityDaily(): Promise<Challenge> {
+		const challengeJson = await this.context.redis.get(DAILY_KEY)
+		return challengeJson
+			? JSON.parse(challengeJson)
+			: { title: 'No Daily ongoing', description: 'Please come back later!', reward: '' }
+	}
+
+	async hasCurrentUserCompletedDaily() {
+		return (await this.context.redis.get(`${USER_COMPLETION_PREFIX}${this.userId}`)) === 'completed'
+	}
+
+	async setCurrentUserDailyCompleted() {
+		await this.context.redis.set(`${USER_COMPLETION_PREFIX}${this.userId}`, 'completed')
+		await this.context.redis.expire(`${USER_COMPLETION_PREFIX}${this.userId}`, DAILY_TTL)
 	}
 
 	/** COMMUNITY:USER */

@@ -19,9 +19,9 @@ export class CommunityStats extends Phaser.GameObjects.Container {
 		this.score = new MagoText(this.scene, 0, 100, '').setOrigin(0.5, 0)
 		this.games = new MagoText(this.scene, 0, 200, '').setOrigin(0.5, 0)
 
-		this.updateText(stats)
-
 		this.add([this.score, this.games])
+
+		this.updateText(stats)
 	}
 
 	updateText(stats: Pick<AppCommunityStats, 'communityAttempts' | 'communityScore' | 'topPlayer'>) {

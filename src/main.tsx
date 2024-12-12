@@ -5,12 +5,18 @@ import { WebviewContainer } from './blocks-app/webviewContainer'
 import { PipeSelect } from './settings/pipe.select'
 import { PlayerSelect } from './settings/player.select'
 import { WorldSelect } from './settings/world.select'
-
 Devvit.configure({
 	redditAPI: true,
 	redis: true,
 	realtime: true,
 })
+
+import './blocks-app/jobs/dailyJob'
+import './blocks-app/jobs/firstFlapperComment'
+import './blocks-app/jobs/newHighscoreComment'
+import './blocks-app/jobs/welcomeUser'
+
+import './blocks-app/triggers/daily'
 
 Devvit.addMenuItem({
 	label: 'Create Reddibirds Game',

@@ -32,12 +32,21 @@ export type AppConfiguration = {
 	pipeFrame: number
 }
 
+export type AppCommunityDaily = {
+	title: string
+	description: string
+	reward: string
+	points: number
+	completed: boolean
+}
+
 export type AppCommunityData = {
 	name: string
 	you: AppCommunityYouStats
 	online: number
 	leaderboard: RedisPlayer[]
 	stats: AppCommunityStats
+	daily: AppCommunityDaily
 }
 
 export type AppGlobalData = {

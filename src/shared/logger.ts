@@ -5,7 +5,7 @@ class Logger {
 		this.context = context ? `[${context}] ` : ''
 	}
 
-	log(level: 'info' | 'warn' | 'error', message: string) {
+	private log(level: 'info' | 'warn' | 'error', message: string) {
 		const timestamp = new Date().toISOString()
 		const formattedMessage = `${timestamp} [${level.toUpperCase()}] ${this.context}${message}`
 

@@ -1,6 +1,7 @@
 export type SaveScoreData = {
 	highscore: number
 	score: number
+	isNewHighScore: boolean
 }
 
 export type PlayerStats = {

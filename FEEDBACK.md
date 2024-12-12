@@ -23,3 +23,4 @@
 - global score across installations/subreddits
 - add community icon/logo via context.reddit.getCurrentSubreddit()
 - scheduler to sent postmessage to all clients (context.ui.webview --> easier access)
+- organization for multiple accounts to publish and manage apps (teams)

@@ -1,9 +1,7 @@
 import { Devvit, useInterval } from '@devvit/public-api'
 import { devvitLogger } from '../shared/logger'
 import type { PostMessageMessages, UpdateAppDataMessage } from '../shared/messages'
-import './jobs/firstFlapperComment'
-import './jobs/newHighscoreComment'
-import './jobs/welcomeUser'
+
 import { RedisService } from './redisService'
 
 type WebviewContainerProps = {
@@ -20,6 +18,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const tickUpdateAppData = async () => {
 		const appData = await redisService.getAppData()
 
+		devvitLogger.info(JSON.stringify(appData.community.daily))
 		devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 		context.ui.webView.postMessage('game-webview', {
 			type: 'updateAppData',
@@ -56,6 +55,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				await redisService.saveScore({
 					highscore: isNewHighScore ? newScore : currentPersonalStats.highscore,
 					score: newScore,
+					isNewHighScore,
 				})
 				if (isNewHighScore) {
 					context.ui.showToast({ text: `Saved new personal Highscore ${newScore}!`, appearance: 'success' })
@@ -77,6 +77,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			case 'requestAppData': {
 				const appData = await redisService.getAppData()
 
+				devvitLogger.info(JSON.stringify(appData))
 				devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'updateAppData',

@@ -33,6 +33,7 @@ export class WebviewEventManager {
 						break
 					}
 					case 'updateAppData': {
+						webviewLogger.info(JSON.stringify(message.data))
 						globalEventEmitter.emit('updateAppData', message.data)
 						break
 					}

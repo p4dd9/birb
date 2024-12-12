@@ -28,6 +28,7 @@ export class Boot extends Phaser.Scene {
 		this.game.registry.set('community:online', appData.community.online)
 		this.game.registry.set('community:stats', appData.community.stats)
 		this.game.registry.set('community:you', appData.community.you)
+		this.game.registry.set('community:daily', appData.community.daily)
 
 		changeBackgroundStyle(appData.config.world)
 
