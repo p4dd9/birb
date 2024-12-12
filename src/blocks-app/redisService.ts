@@ -45,33 +45,33 @@ export class RedisService {
 		}
 	}
 
+	async savePlayerHighscore(score: number) {
+		return this.redis.zAdd(`post:${this.subredditId}:highscores`, { member: this.userId, score })
+	}
+	async incrementPlayerAttemptsCount() {
+		return this.redis.hIncrBy(`post:${this.subredditId}:attempts`, this.userId, 1)
+	}
+
+	async savePlayerStats(score: number) {
+		return Promise.all([this.savePlayerHighscore(score), this.incrementPlayerAttemptsCount()])
+	}
+
 	async saveScore(stats: SaveScoreData) {
-		let mappedTopPlayer = '???'
-
-		if (!this.userId) return { communityScore: 0, communityAttempts: 0, topPlayer: mappedTopPlayer }
-
 		const currentTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
 			reverse: true,
 		})
 
-		await this.redis.zAdd(`post:${this.subredditId}:highscores`, { member: this.userId, score: stats.highscore })
-		await this.redis.hIncrBy(`post:${this.subredditId}:attempts`, this.userId, 1)
-
-		const communityScore = this.incrementCurrentCommunityScore(stats.score)
-		const communityAttempts = this.incrementCurrentCommunityAttempts()
+		await this.savePlayerStats(stats.highscore)
+		await Promise.all([this.incrementCurrentCommunityScore(stats.score), this.incrementCurrentCommunityAttempts()])
 
 		const newTopPlayer = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
 			reverse: true,
 		})
 
-		const topPlayerUsername = currentTopPlayer[0]
-			? ((await this.context.reddit.getUserById(currentTopPlayer[0].member))?.username ?? '???')
-			: `???`
-
 		if (!newTopPlayer || !newTopPlayer[0] || !this.postId) {
-			return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
+			return
 		}
 
 		if (!currentTopPlayer[0]?.member) {
@@ -110,30 +110,30 @@ export class RedisService {
 				}
 			}
 		}
-
-		return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
 	}
 
 	async getCommunityLeaderBoard(limit: number = 10) {
-		const topPlayers = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, limit - 1, {
+		const communityLeaderboard = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, limit - 1, {
 			by: 'rank',
 			reverse: true,
 		})
 
-		const mappedBestPlayers = await Promise.all(
-			topPlayers.map(async ({ member, score }) => {
-				const userNameResponse = await this.context.reddit.getUserById(member)
-				const attempts = await this.redis.hGet(`post:${this.subredditId}:attempts`, member)
+		const mappedLeaderboard = await Promise.all(
+			communityLeaderboard.map(async ({ member, score }) => {
+				const [userNameResponse, attempts] = await Promise.all([
+					this.context.reddit.getUserById(member),
+					this.redis.hGet(`post:${this.subredditId}:attempts`, member),
+				])
 				return {
 					userId: member,
 					userName: userNameResponse ? userNameResponse.username : 'Anonymous',
 					score,
-					attempts: Number(attempts),
+					attempts: Number(attempts ?? 0),
 				}
 			})
 		)
 
-		return mappedBestPlayers
+		return mappedLeaderboard
 	}
 
 	async getCommunityOnlinePlayers() {
@@ -177,19 +177,19 @@ export class RedisService {
 
 	/** COMMUNITY:USER */
 	async getCurrentUserHighscore() {
-		return (await this.redis.zScore(`post:${this.subredditId}:highscores`, this.userId)) ?? 0
+		return this.redis.zScore(`post:${this.subredditId}:highscores`, this.userId)
 	}
 
 	async getCurrentUserAttempts() {
-		return Number(await this.redis.hGet(`post:${this.subredditId}:attempts`, this.userId)) ?? 0
+		return this.redis.hGet(`post:${this.subredditId}:attempts`, this.userId)
 	}
 
 	async getCurrentPlayerStats() {
 		const [highscore, attempts] = await Promise.all([this.getCurrentUserHighscore(), this.getCurrentUserAttempts()])
 
 		return {
-			highscore,
-			attempts,
+			highscore: Number(highscore ?? 0),
+			attempts: Number(attempts ?? 0),
 		}
 	}
 
@@ -205,30 +205,27 @@ export class RedisService {
 
 	/** COMMUNITY */
 	async getAppConfiguration() {
-		return await this.context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
+		return this.context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
 	}
 
 	async incrementCurrentCommunityScore(score: number) {
-		return await this.redis.hIncrBy(`community:${this.context.subredditId}:score`, this.context.subredditId, score)
+		return this.redis.hIncrBy(`community:${this.context.subredditId}:score`, this.context.subredditId, score)
 	}
 
 	async incrementCurrentCommunityAttempts() {
-		return await this.redis.hIncrBy(`community:${this.context.subredditId}:attempts`, this.context.subredditId, 1)
+		return this.redis.hIncrBy(`community:${this.context.subredditId}:attempts`, this.context.subredditId, 1)
 	}
 
 	async getCurrentCommunityScore() {
-		return (await this.redis.hGet(`community:${this.context.subredditId}:score`, this.context.subredditId)) ?? 0
+		return this.redis.hGet(`community:${this.context.subredditId}:score`, this.context.subredditId)
 	}
 
 	async getCurrentCommunityAttempts() {
-		return (
-			Number(await this.redis.hGet(`community:${this.context.subredditId}:attempts`, this.context.subredditId)) ??
-			0
-		)
+		return this.redis.hGet(`community:${this.context.subredditId}:attempts`, this.context.subredditId)
 	}
 
 	async getCurrentCommunityTopPlayerScore() {
-		return await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
+		return this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 0, {
 			by: 'rank',
 			reverse: true,
 		})

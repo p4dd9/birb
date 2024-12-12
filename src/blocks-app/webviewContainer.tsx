@@ -13,10 +13,13 @@ type WebviewContainerProps = {
 
 export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
+
+	// TODO: errrww ...
 	const redisService = new RedisService(context)
 
 	const tickUpdateAppData = async () => {
 		const appData = await redisService.getAppData()
+
 		devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 		context.ui.webView.postMessage('game-webview', {
 			type: 'updateAppData',
@@ -55,7 +58,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					score: newScore,
 				})
 				if (isNewHighScore) {
-					context.ui.showToast({ text: `Saved new Highscore ${newScore}!`, appearance: 'success' })
+					context.ui.showToast({ text: `Saved new personal Highscore ${newScore}!`, appearance: 'success' })
 				}
 
 				devvitLogger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
