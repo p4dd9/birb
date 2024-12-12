@@ -33,7 +33,13 @@ export class Menu extends Phaser.Scene {
 		}
 
 		// TODO: think about ui, customization per player + community goal
-		this.playersOnline = new MagoText(this, 50, this.scale.height - 25, `Online: ?`, 72).setOrigin(0, 1)
+		this.playersOnline = new MagoText(
+			this,
+			50,
+			this.scale.height - 25,
+			`Online: ${this.registry.get('community:online')}`,
+			72
+		).setOrigin(0, 1)
 
 		this.muteButtonText = new MagoText(
 			this,
@@ -55,7 +61,7 @@ export class Menu extends Phaser.Scene {
 			this.scene.start('Game')
 		})
 		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
-			this.registry.set('bestPlayers', bestPlayers)
+			this.registry.set('community:leaderboard', bestPlayers)
 			this.menuContent = new MenuContent(this)
 			this.createBreakingNews(bestPlayers)
 			this.createBestPlayer(bestPlayers[0])

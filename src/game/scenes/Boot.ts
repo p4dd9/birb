@@ -15,7 +15,7 @@ export class Boot extends Phaser.Scene {
 	}
 
 	create() {
-		new MagoText(this, this.scale.width / 2, this.scale.height / 2, '*BIRD UP*!', 172)
+		new MagoText(this, this.scale.width / 2, this.scale.height / 2, '*BIRD UP*', 172)
 
 		globalEventEmitter.on('updateAppData', this.setAppData, this)
 		globalEventEmitter.emit('requestAppData')
@@ -25,6 +25,9 @@ export class Boot extends Phaser.Scene {
 		this.game.registry.set('pipeFrame', appData.config.pipeFrame)
 		this.game.registry.set('playerFrame', appData.config.playerFrame)
 		this.game.registry.set('background', appData.config.world)
+
+		this.game.registry.set('community:leaderboard', appData.community.leaderboard)
+		this.game.registry.set('community:online', appData.community.online)
 
 		changeBackgroundStyle(appData.config.world)
 

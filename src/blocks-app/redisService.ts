@@ -1,4 +1,5 @@
 import { Devvit, type RedisClient } from '@devvit/public-api'
+import type { AppData } from '../shared/messages'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
 import { mapAppConfiguration } from './redisMapper'
 import type { SaveScoreData } from './types/redis'
@@ -21,12 +22,26 @@ export class RedisService {
 		this.userId = context.userId!
 	}
 
-	async getAppData() {
-		const appConfiguration = await this.getAppConfiguration()
-		const mappedMessage = mapAppConfiguration(appConfiguration)
+	async getAppData(): Promise<AppData> {
+		const [appConfiguration, leaderboard, activeCommunityPlayers] = await Promise.all([
+			this.getAppConfiguration(),
+			this.getCommunityLeaderBoard(),
+			this.getCommunityOnlinePlayers(),
+		])
 
 		return {
-			config: mappedMessage,
+			config: mapAppConfiguration(appConfiguration),
+			community: {
+				name: this.context.subredditName ?? 'REDDIBIRDS',
+				leaderboard: leaderboard,
+				online: activeCommunityPlayers,
+			},
+			// https://developers.reddit.com/docs/api/public-api/#-redisclient
+			// https://discord.com/channels/1050224141732687912/1242689538447507458/1316043291401125888
+			global: {
+				name: 'REDDIBIRDS GLOBAL',
+				leaderboard: [],
+			},
 		}
 	}
 
@@ -130,8 +145,8 @@ export class RedisService {
 		return { communityScore, communityAttempts, topPlayer: topPlayerUsername }
 	}
 
-	async getTopPlayers() {
-		const topPlayers = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, 9, {
+	async getCommunityLeaderBoard(limit: number = 10) {
+		const topPlayers = await this.redis.zRange(`post:${this.subredditId}:highscores`, 0, limit - 1, {
 			by: 'rank',
 			reverse: true,
 		})
@@ -156,14 +171,13 @@ export class RedisService {
 		return await this.context.settings.getAll<Record<'worldSelect' | 'playerSelect' | 'pipeSelect', any>>()
 	}
 
-	async saveUserInteraction() {
+	async getCommunityOnlinePlayers() {
 		const userId = this.userId
-		if (!userId) return 0
+		if (!userId) return 1
 
 		const now = Date.now()
 
 		await this.context.redis.hSet(ACTIVE_PLAYERS_HASH, { [userId]: now.toString() })
-
 		const players = await this.context.redis.hGetAll(ACTIVE_PLAYERS_HASH)
 		if (players) {
 			const onlinePlayers = Object.entries(players).filter(([_, timestamp]) => {
@@ -180,8 +194,7 @@ export class RedisService {
 
 			return onlinePlayers.length
 		}
-
-		return 0
+		return 1
 	}
 
 	async getCommunityStats() {

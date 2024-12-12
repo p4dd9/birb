@@ -32,8 +32,21 @@ export type AppConfiguration = {
 	pipeFrame: number
 }
 
+export type AppCommunityData = {
+	name: string
+	online: number
+	leaderboard: RedisPlayer[]
+}
+
+export type AppGlobalData = {
+	name: string
+	leaderboard: string[]
+}
+
 export type AppData = {
 	config: AppConfiguration
+	community: AppCommunityData
+	global: AppGlobalData
 }
 
 export type UpdateAppDataMessage = {

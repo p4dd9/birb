@@ -111,7 +111,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	cheeringBirdFriends() {
-		const friends = (this.registry.get('bestPlayers') as RedisPlayer[]) ?? [
+		const friends = (this.registry.get('community:leaderboard') as RedisPlayer[]) ?? [
 			{ userId: 0, userName: 'Stranger', score: 0, attempts: 0 },
 		]
 		if (!friends || friends.length < 0) return

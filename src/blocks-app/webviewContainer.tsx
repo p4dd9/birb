@@ -15,10 +15,9 @@ type WebviewContainerProps = {
 export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
 	const redisService = new RedisService(context)
-	console.log('Hi')
 
 	const emitUserPlaying = async () => {
-		const count = (await redisService.saveUserInteraction()) ?? 0
+		const count = await redisService.getCommunityOnlinePlayers()
 		if (onlinePlayersChannel.status === ChannelStatus.Connected) {
 			onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
 		}
@@ -94,7 +93,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			}
 
 			case 'getBestPlayers': {
-				const bestPlayers = await redisService.getTopPlayers()
+				const bestPlayers = await redisService.getCommunityLeaderBoard()
 				if (!bestPlayers || bestPlayers.length < 0) return
 
 				devvitLogger.info(`Sending 'updateBestPlayers' postMessage (webviewcontainer)`)

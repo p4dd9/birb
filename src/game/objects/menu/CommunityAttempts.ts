@@ -7,7 +7,7 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 		super(scene, 0, 0)
 
 		this.setName('r/ GAMES')
-		this.create(scene.registry.get('bestPlayers') ?? [])
+		this.create(scene.registry.get('community:leaderboard') ?? [])
 
 		scene.add.existing(this)
 	}
