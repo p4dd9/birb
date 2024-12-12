@@ -36,11 +36,18 @@ export type AppCommunityData = {
 	name: string
 	online: number
 	leaderboard: RedisPlayer[]
+	stats: AppCommunityStats
 }
 
 export type AppGlobalData = {
 	name: string
 	leaderboard: string[]
+}
+
+export type AppCommunityStats = {
+	communityScore: number
+	communityAttempts: number
+	topPlayer: string
 }
 
 export type AppData = {

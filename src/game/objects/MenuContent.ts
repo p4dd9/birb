@@ -3,6 +3,7 @@ import type { Menu } from '../scenes/Menu'
 import { MagoText } from './MagoText'
 import { CommunityAttempts } from './menu/CommunityAttempts'
 import { CommunityScores } from './menu/CommunityScores'
+import { CommunityStats } from './menu/CommunityStats'
 import { StartContent } from './menu/StartContent'
 
 export class MenuContent extends Phaser.GameObjects.Container {
@@ -15,7 +16,12 @@ export class MenuContent extends Phaser.GameObjects.Container {
 		super(scene, scene.scale.width / 2, scene.scale.height / 2 - 100)
 
 		this.create()
-		this.add([new StartContent(scene), new CommunityScores(scene), new CommunityAttempts(scene)])
+		this.add([
+			new StartContent(scene),
+			new CommunityScores(scene),
+			new CommunityAttempts(scene),
+			new CommunityStats(scene),
+		])
 		this.updateContent(this.currentIndex)
 		scene.add.existing(this)
 	}

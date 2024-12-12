@@ -23,10 +23,11 @@ export class RedisService {
 	}
 
 	async getAppData(): Promise<AppData> {
-		const [appConfiguration, leaderboard, activeCommunityPlayers] = await Promise.all([
+		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats] = await Promise.all([
 			this.getAppConfiguration(),
 			this.getCommunityLeaderBoard(),
 			this.getCommunityOnlinePlayers(),
+			this.getCommunityStats(),
 		])
 
 		return {
@@ -35,6 +36,7 @@ export class RedisService {
 				name: this.context.subredditName ?? 'REDDIBIRDS',
 				leaderboard: leaderboard,
 				online: activeCommunityPlayers,
+				stats: communityStats,
 			},
 			// https://developers.reddit.com/docs/api/public-api/#-redisclient
 			// https://discord.com/channels/1050224141732687912/1242689538447507458/1316043291401125888
@@ -169,8 +171,8 @@ export class RedisService {
 		])
 
 		return {
-			communityScore,
-			communityAttempts,
+			communityScore: Number(communityScore ?? 0),
+			communityAttempts: Number(communityAttempts ?? 0),
 			topPlayer: topPlayerUsername,
 		}
 	}
