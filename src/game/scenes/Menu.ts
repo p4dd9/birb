@@ -1,4 +1,5 @@
 import type { AppData, RedisPlayer } from '../../shared/messages'
+import { BREAKING_NEWS } from '../config/breakingnews'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 import globalEventEmitter from '../web/GlobalEventEmitter'
@@ -69,14 +70,18 @@ export class Menu extends Phaser.Scene {
 	}
 
 	updateAppData(appData: AppData) {
+		this.game.registry.set('community:leaderboard', appData.community.leaderboard)
+
 		this.menuContent.updateData(appData)
-		this.breakingNews.setText(this.getBreakingNewsText(appData.community.leaderboard))
 		this.bestPlayer.setText(this.getFeaturedPlayerText(appData.community.leaderboard[0]))
 		this.playersOnline.setText(`Online: ${appData.community.online}`)
 	}
 
 	getBreakingNewsText(players: RedisPlayer[]) {
-		const topPlayers = players.map((player) => `"${player.userName}" ${player.score}`).join(',')
+		const topPlayers = players
+			.slice(0, 3)
+			.map((player) => `"${player.userName}" ${player.score}`)
+			.join(',')
 		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
 		if (players.length < 1) {
 			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
@@ -90,6 +95,17 @@ export class Menu extends Phaser.Scene {
 		this.breakingNews = new MagoText(this, this.scale.width, 20, bannerText, 100).setOrigin(0, 0)
 
 		this.startBreakingTheNews()
+	}
+
+	setRandomBreakingNews() {
+		let news = ''
+		if (Phaser.Math.Between(0, 9) < 3) {
+			news = this.getBreakingNewsText(this.registry.get('community:leaderboard'))
+		} else {
+			news = BREAKING_NEWS[Phaser.Math.Between(0, BREAKING_NEWS.length)] ?? ''
+		}
+
+		this.breakingNews.setText(news)
 	}
 
 	getFeaturedPlayerText(bestPlayer?: RedisPlayer) {
@@ -122,6 +138,9 @@ export class Menu extends Phaser.Scene {
 
 	startBreakingTheNews() {
 		const speed = 400
+
+		this.setRandomBreakingNews()
+
 		const duration = (this.breakingNews.displayWidth / speed) * 1000
 
 		this.add.tween({
