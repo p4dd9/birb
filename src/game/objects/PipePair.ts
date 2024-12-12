@@ -94,7 +94,7 @@ export class PipePair extends Phaser.GameObjects.Container {
 			this.createPowerUp()
 		}
 
-		if (this.pipeNumber >= 100) {
+		if (this.pipeNumber >= 100 && this.pipeNumber < 500) {
 			scene.tweens.add({
 				targets: [this.topPipe, this.bottomPipe],
 				alpha: 0,
@@ -111,6 +111,15 @@ export class PipePair extends Phaser.GameObjects.Container {
 				y: this.y + 100 * (Phaser.Math.Between(0, 1) > 0 ? -1 : 1),
 				duration: 2000,
 				yoyo: true,
+				ease: 'Linear',
+			})
+		}
+
+		if (this.pipeNumber >= 500) {
+			scene.tweens.add({
+				targets: [this.topPipe, this.bottomPipe],
+				alpha: 0,
+				duration: 750,
 				ease: 'Linear',
 			})
 		}
