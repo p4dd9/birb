@@ -1,3 +1,4 @@
+import type { AppData } from '../../../shared/messages'
 import type { Menu } from '../../scenes/Menu'
 import globalEventEmitter from '../../web/GlobalEventEmitter'
 import { MagoText } from '../MagoText'
@@ -28,5 +29,9 @@ export class StartContent extends Phaser.GameObjects.Container {
 		this.playButtonText = new MagoText(this.scene, this.playButton.x, this.playButton.y, 'Play', 82)
 
 		this.add([this.playButton, this.playButtonText])
+	}
+
+	updateData(_appData: AppData) {
+		// silence is key
 	}
 }

@@ -1,4 +1,4 @@
-import { Devvit, useAsync, useChannel, useInterval } from '@devvit/public-api'
+import { Devvit, useChannel, useInterval } from '@devvit/public-api'
 import { ChannelStatus } from '@devvit/public-api/types/realtime'
 import { devvitLogger } from '../shared/logger'
 import type { PostMessageMessages, UpdateAppDataMessage, UpdateOnlinePlayersMessage } from '../shared/messages'
@@ -16,13 +16,20 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const { webviewVisible, context } = props
 	const redisService = new RedisService(context)
 
-	const emitUserPlaying = async () => {
+	const tickUpdateAppData = async () => {
 		const count = await redisService.getCommunityOnlinePlayers()
 		if (onlinePlayersChannel.status === ChannelStatus.Connected) {
 			onlinePlayersChannel.send({ type: 'updateOnlinePlayers', count: count })
 		}
+		const appData = await redisService.getAppData()
+
+		devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
+		context.ui.webView.postMessage('game-webview', {
+			type: 'updateAppData',
+			data: appData,
+		} as UpdateAppDataMessage)
 	}
-	useInterval(emitUserPlaying, 10000).start()
+	useInterval(tickUpdateAppData, 10000).start()
 
 	const onlinePlayersChannel = useChannel({
 		name: 'online_player',
@@ -35,16 +42,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			}
 		},
 	})
-
-	useAsync(
-		async () => {
-			if (!webviewVisible) {
-				emitUserPlaying()
-			}
-			return null
-		},
-		{ depends: [webviewVisible] }
-	)
 
 	const handleMessage = async (ev: PostMessageMessages) => {
 		devvitLogger.info('Received postMessage (webviewcontainer)' + ev.type)

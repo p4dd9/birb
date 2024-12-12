@@ -1,4 +1,4 @@
-import type { RedisPlayer } from '../../../shared/messages'
+import type { AppData, RedisPlayer } from '../../../shared/messages'
 import type { Menu } from '../../scenes/Menu'
 import { MagoText } from '../MagoText'
 
@@ -22,6 +22,19 @@ export class CommunityScores extends Phaser.GameObjects.Container {
 					`${i + 1}. ${bestPlayers[i]?.userName ?? 'This could be you!'} (${bestPlayers[i]?.score ?? '?'})`
 				).setOrigin(0.5, 0)
 			)
+		}
+	}
+
+	updateData(appData: AppData) {
+		const players = appData.community.leaderboard
+
+		for (let i = 0; i < this.getAll().length; i++) {
+			const child = players[i]
+			if (child instanceof MagoText) {
+				child.setText(
+					`${i + 1}. ${players[i]?.userName ?? 'This could be you!'} (${players[i]?.attempts ?? '?'})`
+				)
+			}
 		}
 	}
 }

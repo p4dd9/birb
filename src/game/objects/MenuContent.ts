@@ -1,3 +1,4 @@
+import type { AppData } from '../../shared/messages'
 import type { Menu } from '../scenes/Menu'
 import { MagoText } from './MagoText'
 import { CommunityAttempts } from './menu/CommunityAttempts'
@@ -102,9 +103,17 @@ export class MenuContent extends Phaser.GameObjects.Container {
 		}
 	}
 
-	private getNavigableChildren() {
+	getNavigableChildren() {
 		return this.list.filter(
 			(child) => child !== this.contentTitle && child !== this.arrowLeft && child !== this.arrowRight
 		) as Phaser.GameObjects.Container[]
+	}
+
+	updateData(appData: AppData) {
+		for (const menu of this.getNavigableChildren() as any) {
+			if (menu.updateData && typeof menu.updateData === 'function') {
+				menu.updateData(appData)
+			}
+		}
 	}
 }

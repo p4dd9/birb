@@ -1,4 +1,4 @@
-import type { RedisPlayer } from '../../shared/messages'
+import type { AppData, RedisPlayer } from '../../shared/messages'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 import globalEventEmitter from '../web/GlobalEventEmitter'
@@ -57,18 +57,24 @@ export class Menu extends Phaser.Scene {
 			this.sound.play('buttonclick1', { volume: 0.5 })
 			this.scale.off('resize', this.resize, this)
 			globalEventEmitter.off('updateOnlinePlayers', this.updateOnlinePlayers, this)
-
+			globalEventEmitter.off('updateAppData', this.updateAppData, this)
 			this.scene.start('Game')
 		})
-		globalEventEmitter.once('updateBestPlayers', (bestPlayers: RedisPlayer[]) => {
-			this.registry.set('community:leaderboard', bestPlayers)
-			this.menuContent = new MenuContent(this)
-			this.createBreakingNews(bestPlayers)
-			this.createBestPlayer(bestPlayers[0])
-		})
-		globalEventEmitter.emit('getBestPlayers')
+
+		this.menuContent = new MenuContent(this)
+
+		this.createBreakingNews()
+		this.createBestPlayer()
 
 		this.scale.on('resize', this.resize, this)
+
+		globalEventEmitter.on('updateAppData', this.updateAppData, this)
+	}
+
+	updateAppData(appData: AppData) {
+		this.menuContent.updateData(appData)
+		this.breakingNews.setText(this.getBreakingNewsText(appData.community.leaderboard))
+		this.bestPlayer.setText(this.getFeaturedPlayerText(appData.community.leaderboard[0]))
 	}
 
 	updateOnlinePlayers(data: { count: number }) {
@@ -77,24 +83,39 @@ export class Menu extends Phaser.Scene {
 		}
 	}
 
-	createBreakingNews(players: RedisPlayer[]) {
+	getBreakingNewsText(players: RedisPlayer[]) {
 		const topPlayers = players.map((player) => `"${player.userName}" ${player.score}`).join(',')
 		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
 		if (players.length < 1) {
 			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
 		}
+		return bannerText
+	}
+
+	createBreakingNews() {
+		const bannerText = this.getBreakingNewsText(this.registry.get('community:leaderboard'))
 
 		this.breakingNews = new MagoText(this, this.scale.width, 20, bannerText, 100).setOrigin(0, 0)
 
 		this.startBreakingTheNews()
 	}
 
-	createBestPlayer(bestPlayer?: RedisPlayer) {
+	getFeaturedPlayerText(bestPlayer?: RedisPlayer) {
 		let text = `Let's play Reddibirds!!!`
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`
 		}
-		this.bestPlayer = new MagoText(this, 450, this.scale.height - 200, text, 72)
+		return text
+	}
+
+	createBestPlayer() {
+		this.bestPlayer = new MagoText(
+			this,
+			450,
+			this.scale.height - 200,
+			this.getFeaturedPlayerText(this.registry.get('community:leaderboard')[0]),
+			72
+		)
 			.setAngle(10)
 			.setName('menu_bestplayer')
 
