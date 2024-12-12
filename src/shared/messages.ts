@@ -34,6 +34,7 @@ export type AppConfiguration = {
 
 export type AppCommunityData = {
 	name: string
+	you: AppCommunityYouStats
 	online: number
 	leaderboard: RedisPlayer[]
 	stats: AppCommunityStats
@@ -54,6 +55,11 @@ export type AppData = {
 	config: AppConfiguration
 	community: AppCommunityData
 	global: AppGlobalData
+}
+
+export type AppCommunityYouStats = {
+	highscore: number
+	attempts: number
 }
 
 export type UpdateAppDataMessage = {

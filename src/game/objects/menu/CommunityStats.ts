@@ -5,7 +5,6 @@ import { MagoText } from '../MagoText'
 export class CommunityStats extends Phaser.GameObjects.Container {
 	score: MagoText
 	games: MagoText
-	mvp: MagoText
 
 	constructor(scene: Menu) {
 		super(scene, 0, 0)
@@ -18,18 +17,16 @@ export class CommunityStats extends Phaser.GameObjects.Container {
 
 	create(stats: Pick<AppCommunityStats, 'communityAttempts' | 'communityScore' | 'topPlayer'>) {
 		this.score = new MagoText(this.scene, 0, 100, '').setOrigin(0.5, 0)
-		this.games = new MagoText(this.scene, 0, 150, '').setOrigin(0.5, 0)
-		this.mvp = new MagoText(this.scene, 0, 200, '').setOrigin(0.5, 0)
+		this.games = new MagoText(this.scene, 0, 200, '').setOrigin(0.5, 0)
 
 		this.updateText(stats)
 
-		this.add([this.score, this.games, this.mvp])
+		this.add([this.score, this.games])
 	}
 
 	updateText(stats: Pick<AppCommunityStats, 'communityAttempts' | 'communityScore' | 'topPlayer'>) {
 		this.updateScore(stats.communityScore)
 		this.updateGamesPlayed(stats.communityAttempts)
-		this.updateMvp(stats.topPlayer)
 	}
 
 	updateScore(score: number) {
@@ -37,11 +34,7 @@ export class CommunityStats extends Phaser.GameObjects.Container {
 	}
 
 	updateGamesPlayed(count: number) {
-		this.games.setText(`${count} games played!`)
-	}
-
-	updateMvp(name: string) {
-		this.mvp.setText(`1. ${name}`)
+		this.games.setText(`And ${count}x games played!`)
 	}
 
 	updateData(appData: AppData) {

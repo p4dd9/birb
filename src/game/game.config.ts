@@ -22,7 +22,7 @@ export const gameConfig: Types.Core.GameConfig = {
 	fps: {
 		target: 100,
 		limit: 120,
-		min: 30,
+		min: 40,
 	},
 	transparent: true,
 	scene: [Boot, Preloader, Menu, Game, GameOver],

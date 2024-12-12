@@ -5,6 +5,7 @@ import { CommunityAttempts } from './menu/CommunityAttempts'
 import { CommunityScores } from './menu/CommunityScores'
 import { CommunityStats } from './menu/CommunityStats'
 import { StartContent } from './menu/StartContent'
+import { YouStats } from './menu/YouStats'
 
 export class MenuContent extends Phaser.GameObjects.Container {
 	contentTitle: MagoText
@@ -18,6 +19,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 		this.create()
 		this.add([
 			new StartContent(scene),
+			new YouStats(scene),
 			new CommunityScores(scene),
 			new CommunityAttempts(scene),
 			new CommunityStats(scene),

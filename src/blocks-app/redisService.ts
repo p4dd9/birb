@@ -23,17 +23,19 @@ export class RedisService {
 	}
 
 	async getAppData(): Promise<AppData> {
-		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats] = await Promise.all([
+		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats, youStats] = await Promise.all([
 			this.getAppConfiguration(),
 			this.getCommunityLeaderBoard(),
 			this.getCommunityOnlinePlayers(),
 			this.getCommunityStats(),
+			this.getCurrentPlayerStats(),
 		])
 
 		return {
 			config: mapAppConfiguration(appConfiguration),
 			community: {
 				name: this.context.subredditName ?? 'REDDIBIRDS',
+				you: youStats,
 				leaderboard: leaderboard,
 				online: activeCommunityPlayers,
 				stats: communityStats,

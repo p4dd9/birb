@@ -1,5 +1,5 @@
 import type { AppData, RedisPlayer } from '../../shared/messages'
-import { BREAKING_NEWS } from '../config/breakingnews'
+import { BREAKING_NEWS } from '../config/breakingnews.config'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 import globalEventEmitter from '../web/GlobalEventEmitter'
