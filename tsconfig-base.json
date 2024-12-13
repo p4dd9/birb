@@ -32,5 +32,8 @@
 		"target": "ES2020",
 		"verbatimModuleSyntax": true
 	},
+
+	"files": [],
+	"references": [{ "path": "src" }, { "path": "src/game" }],
 	"exclude": ["dist", "node_modules", ".*/", "webroot"]
 }

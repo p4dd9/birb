@@ -1,13 +1,13 @@
 # Reddibirds
 
-Hi everyone, fancy you come across Reddibirds, my entry for the Devvit Hackathon!
+Hi everyone, fancy you come across Reddibirds, my entry for the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)!
 
-Reddibrids is a Reddit interactive Post that allows you and your community to play a Flappy-Birds inspired 2D Puzzle game where its goal is achieve as many points as possible. The twist, powerups and reddit community integration, you are not alone - collectively you and your community will contribute to a team score - _in your style_ (have a look at the upcoming _Customization_ chapter for details).
+Reddibrids is an interactive Reddit App that allows your community to play a Flappy-Birds inspired 2D Puzzle game where its goal is achieve as many points as possible, either individually or collectively. The twist: powerups, ranks, customizeability, daily's, weather and reddit integration.
 
 ![alt text](assets/splash-background.gif)
 
 ```
-⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completness and improved stability for webviews to make them more reliable and robust! Yey!
+⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completeness and improved stability for webviews to make them more reliable and robust! Yey!
 ```
 
 ## Gameplay
@@ -16,15 +16,19 @@ Let's dive into the fun part. How to play, customize and score in Reddibirds.
 
 ### Controls
 
-Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate through the pipes. If you hit one of them, it's back to start! Reddibirds is full responsive, hence, you can play it on mobile too.
+Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Reddibirds is full responsive, hence, you can play it on mobile too.
 
 ### Powerups
 
-**Coin** adds one point to the score  
-**Emerald** adds five points to the score  
-**Sapphire** adds then points to the score  
-**Keys (bronze, silver, gold)** increases the gap between the pipes to make it easier to navigate through  
-**Mystery Boxes** well, its a mystery! One will shrink, the other pixelates the game for a couple of seconds, the other turns off the lights.
+- Bonus Points
+    - **Coin** adds one point to the score
+    - **Emerald** adds five points to the score
+    - **Sapphire** adds then points to the score
+- Mystery Boxes contain on random effect of the following
+    - **Shrink** becometiny, making it easier flap through gaps
+    - **Pixleation unverse** vision is pixelated
+    - **Lights out** everything gets darker with impaired vision excpet the bird
+    - **Keys (bronze, silver, gold)** increases the gap between the pipes to make it easier to navigate through
 
 ### Highscores
 
@@ -32,11 +36,19 @@ Each player has their own highscore saved per Posting. So you beat the highscore
 
 Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your game rounds are acculumated into an "attempts" score!
 
-You find a leaderboard for games played and scores in the main menu using the arrows next to the title.
+You find a leaderboard for games played, community scores and community stats in the main menu using the arrows next to the title.
 
 ### Progression
 
 The has a varierty mechanics that makes the game incrementally harder. This can include moving pipes, smaller gaps, rain or flickering pipes .. or possibly .. invisible?
+
+- **Rainy Weather** it begins to rain lightly, obfuscating visibility
+- **Moving Pipes** pipes start to move up and down
+- **Smaller Gaps** the first couple of pipes have a wider gap to warm up
+- **Flickering Pipes** pipes start to fade out and fade back in
+- **Invisible Pipes** pipes fade out early on
+
+In the "You" section menu you find your current rank and how many more games you need to need to play to advance to the next one.
 
 ## Customization
 
@@ -54,44 +66,22 @@ Flix, Zippy, Dash, Sprig , Choco, Frost, Plum
 
 Green, Yellow, Red, Teal, White, Purple, Brown, Orange
 
-## Tech
+## What's next?
 
-Reddibirds is built with [PhaserJS](https://phaser.io/) and [Devvit](https://developers.reddit.com/docs) Webview.
-Please see the [Devvit documentation](https://developers.reddit.com/docs) or this [Youtube video](https://www.youtube.com/watch?v=BhbWn8TnXvo) (30min of insightful content!) to see how Devvit Webviews work.
+- Deeper leveling and ranking system that keeps track of your progress
+- Leveling and ranking system on a community basis that unlocks new features such as power ups and cosmetics
+- Advanced customizeability for players themselves in addition to the existing moderator pre-defined customization features in the App Configuration
+- Greater varierty of daily tasks with different challenges (beat another redditors, score)
+- Individual auto-generated posts for daily challenges
+- Additional weekly and monthly challenges
+- Yearls Reddibirds Stats Report inspired by Spotify's "Wrapped" feature as a Private Message
+- IAP to unlock new cosmetics, replay ability if daily tasks fai
+- Refinment for mobile usage
+- Introduce global features using future "global" redis scope to create competition and collaborative gameplay between communities
 
-It's all open-source https://github.com/p4dd9/reddibirds.
+### Credits
 
-This project uses the following Devvit features:
-
-- Realtime
-- App Configuration
-- Webview
-- Redis
-- Devvit API
-- Devvit Blocks
-- Menu Actions
-- Scheduler
-- Triggers (TODO)
-
-## Credits
-
-Created by Hammertime e.U.
-
-### Contributions
-
-It's a small project okay, nevertheless its a great way to say thanks to those people who listen to my ideas, playtest and add their honest opinion on it! Thanks to Flo, Jürgen, Drew, Sevi and Boris!
-
-### Assets
-
-MysteryBox: https://dani-maccari.itch.io/platformer-metroidvania-pixel-items-free-assets CC0  
-Birds, Backgrounds and Pipes: https://megacrash.itch.io/flappy-bird-assets CC0  
-UI Elements: https://crusenho.itch.io/complete-ui-essential-pack CC4  
-Mago Font: https://nimblebeastscollective.itch.io/magosfonts CC0  
-Weather: https://seliel-the-shaper.itch.io/weather-effects https://selieltheshaper.weebly.com/user-license.html
-
-### Me
-
-I am freelancer developer specialized on playful 2D web applications such as browser games, serious games and develop third party games on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
+I am a freelancer developer specialized on playful 2D web applications, such as browser games, serious games and third party integrations on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
 
 **Let's create games that are fun!**  
 https://hammertime.studio/en  
