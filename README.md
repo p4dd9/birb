@@ -4,8 +4,6 @@ Hi everyone, fancy you come across Reddibirds, my entry for the [Devvit Hackatho
 
 Reddibrids is an interactive Reddit App that allows your community to play a Flappy-Birds inspired 2D Puzzle game where its goal is achieve as many points as possible, either individually or collectively. The twist: powerups, ranks, customizeability, daily's, weather and reddit integration.
 
-![alt text](assets/splash-background.gif)
-
 ```
 ⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completeness and improved stability for webviews to make them more reliable and robust! Yey!
 ```
