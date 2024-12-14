@@ -25,7 +25,6 @@ export class WebviewEventManager {
 				}
 
 				const { message } = data
-				webviewLogger.info(`Received postMessage ${message.type} (webviewEventManager)`)
 
 				switch (message.type) {
 					case 'gameOver': {
@@ -33,7 +32,6 @@ export class WebviewEventManager {
 						break
 					}
 					case 'updateAppData': {
-						webviewLogger.info(JSON.stringify(message.data))
 						globalEventEmitter.emit('updateAppData', message.data)
 						break
 					}
@@ -47,10 +45,7 @@ export class WebviewEventManager {
 	}
 
 	static registerGameInternalEvents() {
-		webviewLogger.info('Register Internal Eventlisteners')
-
 		globalEventEmitter.on('saveStats', (highscore: number) => {
-			webviewLogger.info('saveStats')
 			let message: SaveStatsMessage = {
 				type: 'saveStats',
 				data: {
@@ -61,7 +56,6 @@ export class WebviewEventManager {
 		})
 
 		globalEventEmitter.on('getBestPlayers', () => {
-			webviewLogger.info('getBestPlayers')
 			let message: { type: string } = {
 				type: 'getBestPlayers',
 			}
@@ -69,7 +63,6 @@ export class WebviewEventManager {
 		})
 
 		globalEventEmitter.on('requestAppData', () => {
-			webviewLogger.info('requestAppData')
 			let message: { type: string } = {
 				type: 'requestAppData',
 			}
