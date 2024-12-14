@@ -1,7 +1,7 @@
 import { Devvit, type RedisClient } from '@devvit/public-api'
 import type { AppData } from '../shared/messages'
+import { DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX, type Challenge } from './config/daily.config'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
-import { type Challenge, DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX } from './jobs/dailyJob'
 import { mapAppConfiguration } from './redisMapper'
 import type { SaveScoreData } from './types/redis'
 
@@ -76,9 +76,12 @@ export class RedisService {
 
 		let bonusPoints = 0
 		if (stats.isNewHighScore) {
-			await this.setCurrentUserDailyCompleted()
 			const daily = await this.getCurrentCommunityDaily()
-			bonusPoints = daily.points
+
+			if (daily.points) {
+				await this.setCurrentUserDailyCompleted()
+				bonusPoints = daily.points
+			}
 		}
 
 		await this.savePlayerStats(stats.highscore)
