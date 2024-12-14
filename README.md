@@ -8,6 +8,8 @@ Reddibrids is an interactive Reddit App that allows your community to play a Fla
 ⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completeness and improved stability for webviews to make them more reliable and robust! Yey!
 ```
 
+![Demo](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXVmY2JwYnczM3NlY2JwZzFkbjdwNXI5cHpiemN4aW93bjB5bnNmaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jutaWB8M1uL8kipmZz/giphy.gif)
+
 ## Gameplay
 
 Let's dive into the fun part. How to play, customize and score in Reddibirds.
