@@ -39,16 +39,20 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 					currentPersonalStats = { highscore: 0, attempts: 0, rank: null }
 
 					if (!context.userId) return
-					const username = (await context.reddit.getUserById(context.userId))?.username
-					if (!username) return
-					context.scheduler.runJob({
-						name: 'USER_WELCOME_JOB',
-						data: {
-							username,
-							score: newScore,
-						},
-						runAt: new Date(),
-					})
+					try {
+						const username = (await context.reddit.getUserById(context.userId))?.username
+						if (!username) return
+						context.scheduler.runJob({
+							name: 'USER_WELCOME_JOB',
+							data: {
+								username,
+								score: newScore,
+							},
+							runAt: new Date(),
+						})
+					} catch (e) {
+						devvitLogger.error(`Error sending user welcome job. ${e}`)
+					}
 				}
 
 				const isNewHighScore = newScore > currentPersonalStats.highscore

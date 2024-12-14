@@ -1,4 +1,5 @@
 import { Devvit, type RedisClient } from '@devvit/public-api'
+import { devvitLogger } from '../shared/logger'
 import type { AppData } from '../shared/messages'
 import { DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX, type Challenge } from './config/daily.config'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
@@ -101,18 +102,22 @@ export class RedisService {
 		}
 
 		if (!currentTopPlayer[0]?.member) {
-			const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
+			try {
+				const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
 
-			if (newTopUserName) {
-				this.context.scheduler.runJob({
-					name: 'FIRST_FLAPPER_COMMENT',
-					data: {
-						username: newTopUserName.username,
-						postId: this.postId,
-						score: stats.score,
-					},
-					runAt: new Date(),
-				})
+				if (newTopUserName) {
+					this.context.scheduler.runJob({
+						name: 'FIRST_FLAPPER_COMMENT',
+						data: {
+							username: newTopUserName.username,
+							postId: this.postId,
+							score: stats.score,
+						},
+						runAt: new Date(),
+					})
+				}
+			} catch (e) {
+				devvitLogger.error(`Error fetching user by Id. ${e}`)
 			}
 		}
 
@@ -121,18 +126,22 @@ export class RedisService {
 			const currentCommunityhighscore = currentTopPlayer[0].score
 			const score = stats.score
 			if (score > currentCommunityhighscore) {
-				const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
+				try {
+					const newTopUserName = await this.context.reddit.getUserById(newTopPlayer[0].member)
 
-				if (newTopUserName) {
-					this.context.scheduler.runJob({
-						name: 'NEW_HIGHSCORE_COMMENT',
-						data: {
-							username: newTopUserName.username,
-							postId: this.postId,
-							score: stats.score,
-						},
-						runAt: new Date(),
-					})
+					if (newTopUserName) {
+						this.context.scheduler.runJob({
+							name: 'NEW_HIGHSCORE_COMMENT',
+							data: {
+								username: newTopUserName.username,
+								postId: this.postId,
+								score: stats.score,
+							},
+							runAt: new Date(),
+						})
+					}
+				} catch (e) {
+					devvitLogger.error(`Error fetching user by Id. ${e}`)
 				}
 			}
 		}
@@ -146,20 +155,26 @@ export class RedisService {
 
 		const mappedLeaderboard = await Promise.all(
 			communityLeaderboard.map(async ({ member, score }) => {
-				const [userNameResponse, attempts] = await Promise.all([
-					this.context.reddit.getUserById(member),
-					this.redis.hGet(`community:${this.subredditId}:attempts`, member),
-				])
-				return {
-					userId: member,
-					userName: userNameResponse ? userNameResponse.username : 'Anonymous',
-					score,
-					attempts: Number(attempts ?? 0),
+				try {
+					const [userNameResponse, attempts] = await Promise.all([
+						this.context.reddit.getUserById(member),
+						this.redis.hGet(`community:${this.subredditId}:attempts`, member),
+					])
+
+					return {
+						userId: member,
+						userName: userNameResponse ? userNameResponse.username : 'Anonymous',
+						score,
+						attempts: Number(attempts ?? 0),
+					}
+				} catch (e) {
+					devvitLogger.error(`Error creating communityLeaderboard. ${e}`)
+					return null
 				}
 			})
 		)
 
-		return mappedLeaderboard
+		return mappedLeaderboard.filter((el) => el !== null)
 	}
 
 	async getCommunityOnlinePlayers() {
@@ -259,10 +274,15 @@ export class RedisService {
 		const currentTopPlayer = await this.getCurrentCommunityTopPlayerScore()
 
 		if (currentTopPlayer.length < 1 || !currentTopPlayer[0]) return `???`
-		const topPlayerUser = await this.context.reddit.getUserById(currentTopPlayer[0].member)
-		if (!topPlayerUser) return `???`
+		try {
+			const topPlayerUser = await this.context.reddit.getUserById(currentTopPlayer[0].member)
+			if (!topPlayerUser) return `???`
 
-		return topPlayerUser.username
+			return topPlayerUser.username
+		} catch (e) {
+			devvitLogger.error(`Error fetching topPlayerUsername ${e}`)
+			return `???`
+		}
 	}
 
 	/** COMMUNITY */
