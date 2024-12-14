@@ -33,7 +33,7 @@ export class CommunityStats extends Phaser.GameObjects.Container {
 	}
 
 	updateScore(score: number) {
-		this.score.setText(`${score} community points scored.!`)
+		this.score.setText(`${score} community points scored!`)
 	}
 
 	updateGamesPlayed(count: number) {

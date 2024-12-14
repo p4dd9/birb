@@ -76,14 +76,15 @@ export class RedisService {
 
 		let bonusPoints = 0
 		if (stats.isNewHighScore) {
-			this.setCurrentUserDailyCompleted()
+			await this.setCurrentUserDailyCompleted()
 			const daily = await this.getCurrentCommunityDaily()
 			bonusPoints = daily.points
 		}
 
 		await this.savePlayerStats(stats.highscore)
+
 		await Promise.all([
-			this.incrementCurrentCommunityScore(stats.score + bonusPoints),
+			this.incrementCurrentCommunityScore(stats.score + (bonusPoints ?? 0)),
 			this.incrementCurrentCommunityAttempts(),
 		])
 
@@ -202,7 +203,7 @@ export class RedisService {
 		const challengeJson = await this.context.redis.get(DAILY_KEY)
 		return challengeJson
 			? JSON.parse(challengeJson)
-			: { title: 'No Daily ongoing', description: 'Please come back later!', reward: '' }
+			: { title: 'No Daily ongoing', description: 'Please come back later!', reward: '', points: 0 }
 	}
 
 	async hasCurrentUserCompletedDaily() {
