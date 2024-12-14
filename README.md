@@ -1,5 +1,7 @@
 # Reddibirds
 
+![Demo](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXVmY2JwYnczM3NlY2JwZzFkbjdwNXI5cHpiemN4aW93bjB5bnNmaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jutaWB8M1uL8kipmZz/giphy.gif)
+
 Hi everyone, fancy you come across Reddibirds, my entry for the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)!
 
 Reddibrids is an interactive Reddit App that allows your community to play a Flappy-Birds inspired 2D Puzzle game where its goal is achieve as many points as possible, either individually or collectively. The twist: powerups, ranks, customizeability, daily's, weather and reddit integration.
@@ -7,8 +9,6 @@ Reddibrids is an interactive Reddit App that allows your community to play a Fla
 ```
 ⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completeness and improved stability for webviews to make them more reliable and robust! Yey!
 ```
-
-![Demo](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXVmY2JwYnczM3NlY2JwZzFkbjdwNXI5cHpiemN4aW93bjB5bnNmaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jutaWB8M1uL8kipmZz/giphy.gif)
 
 ## Gameplay
 
@@ -32,6 +32,8 @@ Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate 
 
 ### Highscores
 
+![BreakingNewsDemo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1dWZoZXl5dnQ0Z2g5dGptamw1azVuOXlpaWUyYnppOG9tdXJhYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mG0wLY3AMqV8p5G7oe/giphy.gif)
+
 Each player has their own highscore saved per Posting. So you beat the highscore? Great! Now you will appear in the breaking news banner and highlighted spot in the menu. Additionally, everyone will know by an automated comment underneath the Reddibirds post.
 
 Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your games are accumulated to a community score and stats menu, which can be furtherly buffed by solving daily challenges!
@@ -52,7 +54,8 @@ In the "You" section menu you find your current rank and how many more games you
 
 ## Customization
 
-The game offers moderation tools to customize the Reddibirds visuals. Moderators can change the background, pipes and birds characters by their liking! All players will collectively play this theme designed by the moderators.
+Each community can change the city background, birds and pipes to match their style.
+![AppConfig Demo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3YxbzNqdmFobDRidjA2aXF5cW96OGZ4OTdlMXhyenUzc2diZ21pdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/b66WotkcFwlAKb9c1K/giphy.gif)
 
 ### Backgrounds
 
