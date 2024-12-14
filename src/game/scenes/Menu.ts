@@ -67,6 +67,7 @@ export class Menu extends Phaser.Scene {
 		this.scale.on('resize', this.resize, this)
 
 		globalEventEmitter.on('updateAppData', this.updateAppData, this)
+		globalEventEmitter.emit('requestAppData')
 	}
 
 	updateAppData(appData: AppData) {
