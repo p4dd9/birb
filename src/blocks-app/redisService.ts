@@ -184,16 +184,16 @@ export class RedisService {
 	}
 
 	async getCommunityStats() {
-		const [communityScore, communityAttempts, topPlayerUsername] = await Promise.all([
+		const [communityScore, communityAttempts, communityPlayers] = await Promise.all([
 			this.getCurrentCommunityScore(),
 			this.getCurrentCommunityAttempts(),
-			this.getCurrentCommunityHighScoreUsername(),
+			this.getCurrentCommunityPlayersCount(),
 		])
 
 		return {
 			communityScore: Number(communityScore ?? 0),
 			communityAttempts: Number(communityAttempts ?? 0),
-			topPlayer: topPlayerUsername,
+			communityPlayers,
 		}
 	}
 
@@ -223,12 +223,31 @@ export class RedisService {
 		return this.redis.hGet(`community:${this.subredditId}:attempts`, this.userId)
 	}
 
+	async getCurrentCommunityPlayersCount() {
+		return this.redis.zCard(`community:${this.subredditId}:highscores`)
+	}
+
+	async getCurrentUserRank() {
+		const [rank, total] = await Promise.all([
+			this.redis.zRank(`community:${this.subredditId}:highscores`, this.userId),
+			this.redis.zCard(`community:${this.subredditId}:highscores`),
+		])
+
+		if (rank === undefined) return null
+		return total - rank
+	}
+
 	async getCurrentPlayerStats() {
-		const [highscore, attempts] = await Promise.all([this.getCurrentUserHighscore(), this.getCurrentUserAttempts()])
+		const [highscore, attempts, rank] = await Promise.all([
+			this.getCurrentUserHighscore(),
+			this.getCurrentUserAttempts(),
+			this.getCurrentUserRank(),
+		])
 
 		return {
 			highscore: Number(highscore ?? 0),
 			attempts: Number(attempts ?? 0),
+			rank,
 		}
 	}
 

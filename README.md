@@ -32,9 +32,9 @@ Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate 
 
 Each player has their own highscore saved per Posting. So you beat the highscore? Great! Now you will appear in the breaking news banner and highlighted spot in the menu. Additionally, everyone will know by an automated comment underneath the Reddibirds post.
 
-Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your game rounds are acculumated into an "attempts" score!
+Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your games are accumulated to a community score and stats menu, which can be furtherly buffed by solving daily challenges!
 
-You find a leaderboard for games played, community scores and community stats in the main menu using the arrows next to the title.
+You find a leaderboard for games played, community scores, and interesting community stats in the main menu using the arrows next to the title.
 
 ### Progression
 

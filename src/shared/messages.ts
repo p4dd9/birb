@@ -57,7 +57,7 @@ export type AppGlobalData = {
 export type AppCommunityStats = {
 	communityScore: number
 	communityAttempts: number
-	topPlayer: string
+	communityPlayers: number
 }
 
 export type AppData = {
@@ -69,6 +69,7 @@ export type AppData = {
 export type AppCommunityYouStats = {
 	highscore: number
 	attempts: number
+	rank: number | null
 }
 
 export type UpdateAppDataMessage = {

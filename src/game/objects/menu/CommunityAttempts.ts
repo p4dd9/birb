@@ -2,6 +2,8 @@ import type { AppData, RedisPlayer } from '../../../shared/messages'
 import type { Menu } from '../../scenes/Menu'
 import { MagoText } from '../MagoText'
 
+const TOP_ATTEMPT_PLAYERS_COUNT = 3
+
 export class CommunityAttempts extends Phaser.GameObjects.Container {
 	constructor(scene: Menu) {
 		super(scene, 0, 0)
@@ -14,13 +16,13 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 
 	create(players: RedisPlayer[]) {
 		const sortedPlayers = this.sortByAttempts(players)
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < TOP_ATTEMPT_PLAYERS_COUNT; i++) {
 			this.add(
 				new MagoText(
 					this.scene,
 					0,
-					i * 50 + 100,
-					`${i + 1}. ${sortedPlayers[i]?.userName ?? 'This could be you!'} (${sortedPlayers[i]?.attempts ?? '?'})`
+					i * 100 + 100,
+					`#${i + 1} ${sortedPlayers[i]?.userName ?? 'This could be you!'} (${sortedPlayers[i]?.attempts ?? '?'})`
 				).setOrigin(0.5, 0)
 			)
 		}

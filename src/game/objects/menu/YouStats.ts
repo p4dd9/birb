@@ -32,14 +32,10 @@ export class YouStats extends Phaser.GameObjects.Container {
 	updateText(stats: AppCommunityYouStats) {
 		this.rankInfo = getRank(stats.attempts)
 
-		this.updateScore(stats.highscore)
+		this.updatedRankedPlacement(stats.highscore, stats.rank)
 
 		this.updateRank(stats.attempts)
 		this.updateNextRank()
-	}
-
-	updateScore(score: number) {
-		this.highscore.setText(`Your highscore is ${score}!`)
 	}
 
 	updateRank(attempts: number) {
@@ -51,6 +47,14 @@ export class YouStats extends Phaser.GameObjects.Container {
 			this.nextRank.setText(`${this.rankInfo.gamesToNextRank}x more to '${this.rankInfo.nextRank}'`)
 		} else {
 			this.nextRank.setText(`You've achieved the highest rank!`)
+		}
+	}
+
+	updatedRankedPlacement(score: number, rank: number | null) {
+		if (rank === null) {
+			this.rank.setText(`Play one game to get ranked.`)
+		} else {
+			this.highscore.setText(`You are ranked #${rank} (${score})!`)
 		}
 	}
 
