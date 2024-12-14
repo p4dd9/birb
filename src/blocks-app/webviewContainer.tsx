@@ -36,7 +36,7 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 				let currentPersonalStats = await redisService.getCurrentPlayerStats()
 
 				if (!currentPersonalStats) {
-					currentPersonalStats = { highscore: 0, attempts: 0 }
+					currentPersonalStats = { highscore: 0, attempts: 0, rank: null }
 
 					if (!context.userId) return
 					const username = (await context.reddit.getUserById(context.userId))?.username
