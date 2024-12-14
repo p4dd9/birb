@@ -18,7 +18,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	const tickUpdateAppData = async () => {
 		const appData = await redisService.getAppData()
 
-		devvitLogger.info(JSON.stringify(appData.community.daily))
 		devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 		context.ui.webView.postMessage('game-webview', {
 			type: 'updateAppData',
@@ -81,7 +80,6 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 			case 'requestAppData': {
 				const appData = await redisService.getAppData()
 
-				devvitLogger.info(JSON.stringify(appData))
 				devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
 				context.ui.webView.postMessage('game-webview', {
 					type: 'updateAppData',

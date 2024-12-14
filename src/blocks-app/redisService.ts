@@ -168,11 +168,15 @@ export class RedisService {
 						attempts: Number(attempts ?? 0),
 					}
 				} catch (e) {
-					devvitLogger.warn(`${member} does not exist anymore.`)
 					devvitLogger.error(`Error creating communityLeaderboard. ${e}`)
 
-					const entry = await this.redis.hGet(`community:${this.subredditId}:highscores`, member)
-					devvitLogger.info(entry ?? 'undefined')
+					try {
+						devvitLogger.info(`${member} does not exist anymore. Deleting member from highscores`)
+						await this.redis.zRem(`community:${this.subredditId}:highscores`, [member])
+						devvitLogger.info(`Successfully removed ${member}`)
+					} catch (e) {
+						devvitLogger.error(`Error deleting member from highscores. ${e}`)
+					}
 					return null
 				}
 			})

@@ -1,4 +1,3 @@
-import { webviewLogger } from '../../../shared/logger'
 import type { AppCommunityDaily, AppData } from '../../../shared/messages'
 import type { Menu } from '../../scenes/Menu'
 import { MagoText } from '../MagoText'
@@ -28,8 +27,6 @@ export class Daily extends Phaser.GameObjects.Container {
 	}
 
 	updateText(daily: AppCommunityDaily) {
-		webviewLogger.info(JSON.stringify(daily))
-
 		if (daily.completed) {
 			this.updateTitle('Daily Completed! YEY!')
 			this.updateDescription(daily.description)
