@@ -43,7 +43,7 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 			const child = leaderboardPlayers[i]
 			if (child instanceof MagoText) {
 				child.setText(
-					`${i + 1}. ${sortedPlayers[i]?.userName ?? 'This could be you!'} (${sortedPlayers[i]?.attempts ?? '?'})`
+					`#${i + 1} ${sortedPlayers[i]?.userName ?? 'This could be you!'} (${sortedPlayers[i]?.attempts ?? '?'})`
 				)
 			}
 		}
