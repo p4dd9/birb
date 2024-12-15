@@ -9,7 +9,7 @@ export const SplashScreen = (props: SplashScreenProps) => {
 
 	return (
 		<zstack grow height="100%">
-			<vstack grow height="100%" width="100%" alignment="middle center">
+			<zstack grow height="100%" width="100%" alignment="middle center">
 				<image
 					url="splash-background-4.gif"
 					height="100%"
@@ -18,12 +18,12 @@ export const SplashScreen = (props: SplashScreenProps) => {
 					imageHeight={`${context.dimensions!.height}px`}
 					resizeMode="cover"
 				/>
-			</vstack>
-			<vstack grow height="100%" width="100%" alignment="middle center">
+			</zstack>
+			<zstack grow height="100%" width="100%" alignment="middle center">
 				<button icon="play-fill" appearance="secondary" size="large" onPress={onLaunchApp}>
 					PLAY GAME
 				</button>
-			</vstack>
+			</zstack>
 		</zstack>
 	)
 }
