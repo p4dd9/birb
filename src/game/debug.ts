@@ -1,10 +1,3 @@
-export const addDebugMsg = (msg: string) => {
-	const debugWIndow = document.getElementById('debug')
-	const el = document.createElement('p')
-	el.innerText = JSON.stringify(msg)
-	debugWIndow?.prepend(el)
-}
-
 export class FPSDebugger {
 	scene: Phaser.Scene
 	text: Phaser.GameObjects.Text
