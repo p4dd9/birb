@@ -80,8 +80,10 @@ export class RedisService {
 			const daily = await this.getCurrentCommunityDaily()
 
 			if (daily.points) {
-				await this.setCurrentUserDailyCompleted()
-				bonusPoints = daily.points
+				const completed = await this.setCurrentUserDailyCompleted()
+				if (completed) {
+					bonusPoints = daily.points
+				}
 			}
 		}
 
@@ -237,8 +239,15 @@ export class RedisService {
 	}
 
 	async setCurrentUserDailyCompleted() {
-		await this.context.redis.set(`${USER_COMPLETION_PREFIX}${this.userId}`, 'completed')
-		await this.context.redis.expire(`${USER_COMPLETION_PREFIX}${this.userId}`, DAILY_TTL)
+		const isCompleted = await this.hasCurrentUserCompletedDaily()
+
+		if (!isCompleted) {
+			await this.context.redis.set(`${USER_COMPLETION_PREFIX}${this.userId}`, 'completed')
+			await this.context.redis.expire(`${USER_COMPLETION_PREFIX}${this.userId}`, DAILY_TTL)
+
+			return true
+		}
+		return false
 	}
 
 	/** COMMUNITY:USER */

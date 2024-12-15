@@ -29,8 +29,8 @@ export class Daily extends Phaser.GameObjects.Container {
 	updateText(daily: AppCommunityDaily) {
 		if (daily.completed) {
 			this.updateTitle('Daily Completed! YEY!')
-			this.updateDescription(daily.description)
-			this.updateReward(daily.reward)
+			this.updateDescription('Come back later for more!')
+			this.updateReward('')
 		} else {
 			this.updateTitle(daily.title)
 			this.updateDescription(daily.description)

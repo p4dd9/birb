@@ -18,15 +18,15 @@ class Logger {
 		}
 	}
 
-	info(message: string | number) {
+	info(message: string | number | boolean) {
 		this.log('info', message.toString())
 	}
 
-	warn(message: string | number) {
+	warn(message: string | number | boolean) {
 		this.log('warn', message.toString())
 	}
 
-	error(message: string | number) {
+	error(message: string | number | boolean) {
 		this.log('error', message.toString())
 	}
 }
