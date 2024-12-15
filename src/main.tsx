@@ -17,7 +17,7 @@ import { SplashScreen } from './app/SplashScreen'
 import { WebviewContainer } from './app/WebviewContainer'
 
 Devvit.addCustomPostType({
-	name: `Let's play Reddibirds!`,
+	name: `Let's play Reddibirds!🐦`,
 	height: 'regular',
 	render: (context: Devvit.Context) => {
 		const [webviewVisible, setWebviewVisible] = useState(false)

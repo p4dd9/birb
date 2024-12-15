@@ -13,6 +13,6 @@ export interface Challenge {
 export const DAILY: Challenge = {
 	title: `Daily Quest`,
 	description: 'Beat your highscore',
-	reward: '50 community points!',
+	reward: '+50 community points!',
 	points: 50,
 }
