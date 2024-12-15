@@ -39,7 +39,7 @@ export class CommunityAttempts extends Phaser.GameObjects.Container {
 		const sortedPlayers = this.sortByAttempts(players)
 		const leaderboardPlayers = this.getAll()
 
-		for (let i = 0; i < this.getAll().length; i++) {
+		for (let i = 0; i < leaderboardPlayers.length; i++) {
 			const child = leaderboardPlayers[i]
 			if (child instanceof MagoText) {
 				child.setText(
