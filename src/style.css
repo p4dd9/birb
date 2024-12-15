@@ -9,12 +9,6 @@ body {
 	height: 100%;
 }
 
-p {
-	margin: 0 0 2px 0;
-	font-size: 12px;
-	border-bottom: 1px solid brown;
-}
-
 #game-container {
 	animation: parallaxScroll 7s linear infinite;
 }
