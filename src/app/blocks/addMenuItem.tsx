@@ -1,6 +1,6 @@
 import { Devvit, type MenuItemOnPressEvent } from '@devvit/public-api'
 
-export const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Context) => {
+const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Context) => {
 	const { reddit, ui } = context
 	const subreddit = await reddit.getCurrentSubreddit()
 	await reddit.submitPost({
@@ -14,3 +14,10 @@ export const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Conte
 	})
 	ui.showToast({ text: 'Created post!' })
 }
+
+Devvit.addMenuItem({
+	label: 'Create Reddibirds Game',
+	location: 'subreddit',
+	forUserType: 'moderator',
+	onPress: addMenuItem,
+})

@@ -1,8 +1,0 @@
-{
-	"extends": "../tsconfig-base.json",
-	"compilerOptions": {
-		"lib": ["ES2020", "WebWorker"]
-	},
-	"include": ["app/**/*", "app/settings/**/*", "main.tsx"],
-	"references": [{ "path": "shared" }]
-}

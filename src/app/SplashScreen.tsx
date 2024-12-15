@@ -1,20 +1,14 @@
 import { Devvit } from '@devvit/public-api'
 
-type SplashScreenProps = {
-	context: Devvit.Context
-	webviewVisible: boolean
-	setWebviewVisible: (visible: boolean) => void
-}
-
 export const SplashScreen = (props: SplashScreenProps) => {
-	const { webviewVisible, setWebviewVisible, context } = props
+	const { setWebviewVisible, context } = props
 
-	const onLaunchApp = () => {
+	const onLaunchApp = (): any => {
 		setWebviewVisible(true)
 	}
 
 	return (
-		<zstack grow={!webviewVisible} height={webviewVisible ? '0%' : '100%'}>
+		<zstack grow height="100%">
 			<vstack grow height="100%" width="100%" alignment="middle center">
 				<image
 					url="splash-background-4.gif"
@@ -32,4 +26,9 @@ export const SplashScreen = (props: SplashScreenProps) => {
 			</vstack>
 		</zstack>
 	)
+}
+
+type SplashScreenProps = {
+	context: Devvit.Context
+	setWebviewVisible: (visible: boolean) => void
 }

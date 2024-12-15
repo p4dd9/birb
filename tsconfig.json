@@ -1,6 +1,8 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig.json",
 	"compilerOptions": {
+		"lib": ["DOM", "ESNext", "WebWorker"],
+
 		"composite": true,
 		"allowUnreachableCode": false,
 		"allowUnusedLabels": false,
@@ -14,6 +16,7 @@
 		"resolveJsonModule": true,
 		"strict": true,
 		"strictPropertyInitialization": false,
+		"noImplicitAny": true,
 
 		"jsx": "react",
 		"jsxFactory": "Devvit.createElement",
@@ -33,7 +36,6 @@
 		"verbatimModuleSyntax": true
 	},
 
-	"files": [],
-	"references": [{ "path": "src" }, { "path": "src/game" }],
-	"exclude": ["dist", "node_modules", ".*/", "webroot"]
+	"include": ["src/**/*"],
+	"exclude": ["dist", "node_modules", "webroot"]
 }
