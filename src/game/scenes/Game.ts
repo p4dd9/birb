@@ -249,10 +249,10 @@ export class Game extends Phaser.Scene {
 		this.earth.setPipeline('Light2D')
 		this.sound.play('lightsout', { volume: 0.3 })
 
-		const canvasParent = document.getElementById('game-container')
+		const canvasParent = document.querySelector('#game-container > canvas')
 		let currentBackground = null
 
-		if (canvasParent && canvasParent instanceof HTMLDivElement) {
+		if (canvasParent && canvasParent instanceof HTMLCanvasElement) {
 			currentBackground = window.getComputedStyle(canvasParent).background.toString()
 			const darkenBackground = 'linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),' + currentBackground
 			canvasParent.style.background = darkenBackground
@@ -269,7 +269,7 @@ export class Game extends Phaser.Scene {
 
 			this.earth.setPipeline('Light2D').resetPipeline()
 			if (canvasParent instanceof HTMLDivElement && currentBackground) {
-				canvasParent.style.background = `url('/assets/bg/${this.registry.get('background')}.png') center / auto 320px repeat-x`
+				canvasParent.style.background = `url('/assets/bg/${this.registry.get('background')}.png') center / auto 100% repeat-x`
 			}
 
 			this.events.off('update', this.onPointerMoveLightsOuts, this)

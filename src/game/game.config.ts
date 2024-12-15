@@ -21,7 +21,7 @@ export const gameConfig: Types.Core.GameConfig = {
 	},
 	fps: {
 		target: 100,
-		limit: 120,
+		limit: 100,
 		min: 40,
 	},
 	transparent: true,
