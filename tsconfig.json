@@ -4,21 +4,21 @@
 		"lib": ["DOM", "ESNext", "WebWorker"],
 
 		"composite": true,
-		"allowUnreachableCode": false,
-		"allowUnusedLabels": false,
 		"exactOptionalPropertyTypes": true,
 		"forceConsistentCasingInFileNames": true,
-		"noImplicitOverride": false,
+
+		"resolveJsonModule": true,
+
 		"noUncheckedIndexedAccess": true,
 		"noUncheckedSideEffectImports": true,
+		"noImplicitOverride": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"resolveJsonModule": true,
 		"strict": true,
 		"strictPropertyInitialization": false,
 		"noImplicitAny": true,
 
-		"jsx": "react",
+		"jsx": "react", // "react-jsx" will require runtime to be imported
 		"jsxFactory": "Devvit.createElement",
 		"jsxFragmentFactory": "Devvit.Fragment",
 
@@ -32,7 +32,7 @@
 
 		"sourceMap": false,
 
-		"target": "ES2020",
+		"target": "ES2018",
 		"verbatimModuleSyntax": true
 	},
 
