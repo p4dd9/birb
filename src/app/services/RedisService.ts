@@ -1,10 +1,10 @@
 import { Devvit, type RedisClient } from '@devvit/public-api'
-import { devvitLogger } from '../shared/logger'
-import type { AppData } from '../shared/messages'
-import { DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX, type Challenge } from './config/daily.config'
-import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from './config/redis.config'
-import { mapAppConfiguration } from './redisMapper'
-import type { SaveScoreData } from './types/redis'
+import { devvitLogger } from '../../shared/logger'
+import type { AppData } from '../../shared/messages'
+import { type Challenge, DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX } from '../config/daily.config'
+import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from '../config/redis.config'
+import type { SaveScoreData } from '../types/redis'
+import { mapAppConfiguration } from '../util/redisMapper'
 
 export class RedisService {
 	context: Devvit.Context

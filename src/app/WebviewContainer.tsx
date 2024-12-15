@@ -1,16 +1,10 @@
 import { Devvit, useInterval } from '@devvit/public-api'
 import { devvitLogger } from '../shared/logger'
 import type { PostMessageMessages, UpdateAppDataMessage } from '../shared/messages'
+import { RedisService } from './services/RedisService'
 
-import { RedisService } from './redisService'
-
-type WebviewContainerProps = {
-	context: Devvit.Context
-	webviewVisible: boolean
-}
-
-export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
-	const { webviewVisible, context } = props
+export const WebviewContainer = (props: WebviewContainerProps) => {
+	const { context } = props
 
 	// TODO: errrww ...
 	const redisService = new RedisService(context)
@@ -96,15 +90,16 @@ export function WebviewContainer(props: WebviewContainerProps): JSX.Element {
 	}
 
 	return (
-		<vstack grow={webviewVisible} height={webviewVisible ? '100%' : '0px'}>
-			<webview
-				id="game-webview"
-				url="index.html"
-				grow
-				width="100%"
-				minWidth="100%"
-				onMessage={(msg) => handleMessage(msg as PostMessageMessages)}
-			/>
-		</vstack>
+		<webview
+			id="game-webview"
+			url="index.html"
+			grow
+			width="100%"
+			onMessage={(msg) => handleMessage(msg as PostMessageMessages)}
+		/>
 	)
+}
+
+type WebviewContainerProps = {
+	context: Devvit.Context
 }

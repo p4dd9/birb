@@ -6,7 +6,7 @@ type SplashScreenProps = {
 	setWebviewVisible: (visible: boolean) => void
 }
 
-export function SplashScreen(props: SplashScreenProps): JSX.Element {
+export const SplashScreen = (props: SplashScreenProps) => {
 	const { webviewVisible, setWebviewVisible, context } = props
 
 	const onLaunchApp = () => {

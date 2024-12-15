@@ -3,6 +3,6 @@
 	"compilerOptions": {
 		"lib": ["ES2020", "WebWorker"]
 	},
-	"include": ["blocks-app/**/*", "settings/**/*", "main.tsx"],
+	"include": ["app/**/*", "app/settings/**/*", "main.tsx"],
 	"references": [{ "path": "shared" }]
 }

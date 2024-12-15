@@ -1,4 +1,4 @@
-import type { AppConfiguration } from '../shared/messages'
+import type { AppConfiguration } from '../../shared/messages'
 
 export const mapAppConfiguration = (settings: Record<'worldSelect' | 'playerSelect' | 'pipeSelect', string[]>) => {
 	const { worldSelect, playerSelect, pipeSelect } = settings

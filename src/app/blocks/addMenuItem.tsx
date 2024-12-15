@@ -1,6 +1,6 @@
 import { Devvit, type MenuItemOnPressEvent } from '@devvit/public-api'
 
-export async function addMenuItem(_: MenuItemOnPressEvent, context: Devvit.Context): Promise<void> {
+export const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Context) => {
 	const { reddit, ui } = context
 	const subreddit = await reddit.getCurrentSubreddit()
 	await reddit.submitPost({
