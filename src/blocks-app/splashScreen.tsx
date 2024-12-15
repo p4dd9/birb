@@ -17,7 +17,7 @@ export function SplashScreen(props: SplashScreenProps): JSX.Element {
 		<zstack grow={!webviewVisible} height={webviewVisible ? '0%' : '100%'}>
 			<vstack grow height="100%" width="100%" alignment="middle center">
 				<image
-					url="splash-background-2.gif"
+					url="splash-background-4.gif"
 					height="100%"
 					width="100%"
 					imageWidth={`${context.dimensions!.width}px`}
