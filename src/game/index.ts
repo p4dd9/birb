@@ -1,8 +1,6 @@
-import { ReddiBirdsGame } from './game'
+import { Game } from 'phaser'
 import { gameConfig } from './game.config'
 import { WebviewEventManager } from './web/WebviewEventManager'
 
 WebviewEventManager.registerEvents()
-
-const game = new ReddiBirdsGame(gameConfig)
-game.scene.start('Boot', { ...gameConfig })
+new Game(gameConfig)

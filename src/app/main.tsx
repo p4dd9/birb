@@ -5,16 +5,16 @@ Devvit.configure({
 	// realtime: true,
 })
 
-import './app/blocks/addAppSettings'
-import './app/blocks/addMenuItem'
-import './app/jobs/dailyJob'
-import './app/jobs/firstFlapperComment'
-import './app/jobs/newHighscoreComment'
-import './app/jobs/welcomeUser'
-import './app/triggers/daily'
+import './blocks/addAppSettings'
+import './blocks/addMenuItem'
+import './jobs/dailyJob'
+import './jobs/firstFlapperComment'
+import './jobs/newHighscoreComment'
+import './jobs/welcomeUser'
+import './triggers/daily'
 
-import { SplashScreen } from './app/SplashScreen'
-import { WebviewContainer } from './app/WebviewContainer'
+import { SplashScreen } from './SplashScreen'
+import { WebviewContainer } from './WebviewContainer'
 
 Devvit.addCustomPostType({
 	name: `Let's play Reddibirds!`,

@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
 	appType: 'spa',
-	root: resolve(__dirname, './src'),
+	root: resolve(__dirname, './src/game/'),
 	build: {
 		copyPublicDir: true,
 		outDir: resolve(__dirname, 'webroot'),
