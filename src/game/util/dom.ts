@@ -1,6 +1,5 @@
 export const changeBackgroundStyle = (backgroundName: string) => {
 	const canvasParent = document.querySelector('#game-container > canvas')
-	console.log(canvasParent)
 	if (canvasParent && canvasParent instanceof HTMLCanvasElement) {
 		// BUG/WEIRD: unreliable pixel dimension on window and body element in webviews, most likely as there are some resizing events fired (idk rly)
 		// ISSUE not showing repeating bg: body.style.background = `url('/assets/bg/${worldSetting.world}.png') 0% 0% / auto 320px repeat-x`
