@@ -174,8 +174,8 @@ export class RedisService {
 
 					try {
 						devvitLogger.info(`${member} does not exist anymore. Deleting member from highscores`)
-						await this.redis.zRem(`community:${this.subredditId}:highscores`, [member])
-						devvitLogger.info(`Successfully removed ${member}`)
+						// await this.redis.zRem(`community:${this.subredditId}:highscores`, [member])
+						// devvitLogger.info(`Successfully removed ${member}`)
 					} catch (e) {
 						devvitLogger.error(`Error deleting member from highscores. ${e}`)
 					}
