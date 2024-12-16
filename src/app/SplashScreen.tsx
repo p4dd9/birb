@@ -14,8 +14,8 @@ export const SplashScreen = (props: SplashScreenProps) => {
 					url="splash-background-4.gif"
 					height="100%"
 					width="100%"
-					imageWidth={`${context.dimensions!.width}px`}
-					imageHeight={`${context.dimensions!.height}px`}
+					imageWidth={`${context.dimensions?.width ?? 670}px`}
+					imageHeight={`${context.dimensions?.height ?? 320}px`}
 					resizeMode="cover"
 				/>
 			</zstack>
