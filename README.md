@@ -1,93 +1,88 @@
-# Reddibirds
+# Reddibirds 🐦
 
-![Demo](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXVmY2JwYnczM3NlY2JwZzFkbjdwNXI5cHpiemN4aW93bjB5bnNmaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/jutaWB8M1uL8kipmZz/giphy.gif)
+Bird up with Reddibirds! Reddibirds is a remix of the original Flappy Bird game that ships with its own community-driven Twists.
 
-Hi everyone, fancy you come across Reddibirds, my entry for the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)!
+This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
 
-Reddibrids is an interactive Reddit App that allows your community to play a Flappy-Birds inspired 2D Puzzle game where its goal is achieve as many points as possible, either individually or collectively. The twist: powerups, ranks, customizeability, daily's, weather and reddit integration.
+## 👾 What it does
 
-```
-⚠️ ATTENTION ⚠️ "Webviews" used in this game are considered experimental, this means, you might run into the one or other buggy behaviour. The good news, Reddit is working on feature-completeness and improved stability for webviews to make them more reliable and robust! Yey!
-```
+Tap or click to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Reddibirds is a remix of the original Flappy Bird game that ships with its own Twists.
 
-## Gameplay
+## ⚡ Items
 
-Let's dive into the fun part. How to play, customize and score in Reddibirds.
+Bonus Points
 
-### Controls
+- Coin
+- Emerald
+- Sapphire
 
-Tippy-Tappy, tap or click on the game screen to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Reddibirds is full responsive, hence, you can play it on mobile too.
+Mystery Box
 
-### Powerups
+- Shrink
+- Pixleation-Verse
+- Lights out
 
-- Bonus Points
-    - **Coin** adds one point to the score
-    - **Emerald** adds five points to the score
-    - **Sapphire** adds then points to the score
-- Mystery Boxes contain on random effect of the following
-    - **Shrink** becometiny, making it easier flap through gaps
-    - **Pixleation unverse** vision is pixelated
-    - **Lights out** everything gets darker with impaired vision excpet the bird
-    - **Keys (bronze, silver, gold)** increases the gap between the pipes to make it easier to navigate through
+Keys
 
-### Highscores
+- Bronze
+- Silver
+- Gold
+
+## 💯 Leaderboards
 
 ![BreakingNewsDemo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHp1dWZoZXl5dnQ0Z2g5dGptamw1azVuOXlpaWUyYnppOG9tdXJhYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mG0wLY3AMqV8p5G7oe/giphy.gif)
 
-Each player has their own highscore saved per Posting. So you beat the highscore? Great! Now you will appear in the breaking news banner and highlighted spot in the menu. Additionally, everyone will know by an automated comment underneath the Reddibirds post.
+You can find all leaderboards and stats in the main menu in the game. There are _currently_ two types of leaderboards: Scores and Games played. Each type is scoped to the community the game has been installed.
 
-Collaboratively, you and your community want to be best in the game. Work together and push each other to become the highest score leading community amoungst the Reddibird communities. Add Reddibirds to your community to automatically create your own community highscore. Ohh, and all your games are accumulated to a community score and stats menu, which can be furtherly buffed by solving daily challenges!
+If a player scores a new highscore within the community leaderboard, it is sticky commented on the posting itself.  
+_Currently there is no global leaderboard or cross-play for communities (yet)._
 
-You find a leaderboard for games played, community scores, and interesting community stats in the main menu using the arrows next to the title.
+Most importantly, players' scores and games played are accumulated to a community score! This score is planned to be featured with new perks, ranks and stats in the future on a community scope to allow cross-community gameplay and leaderboards.
 
-### Progression
+## 🏅 Ranks
 
-The has a varierty mechanics that makes the game incrementally harder. This can include moving pipes, smaller gaps, rain or flickering pipes .. or possibly .. invisible?
+There are currently 9+ ranks to be claimed as an individual player that is based on your games played. Each Redditors sees their current rank and how many games are left for the next rank in the main menu.
 
-- **Rainy Weather** it begins to rain lightly, obfuscating visibility
-- **Moving Pipes** pipes start to move up and down
-- **Smaller Gaps** the first couple of pipes have a wider gap to warm up
-- **Flickering Pipes** pipes start to fade out and fade back in
-- **Invisible Pipes** pipes fade out early on
+## 🧝 Dailys
 
-In the "You" section menu you find your current rank and how many more games you need to need to play to advance to the next one.
+Dailys are currently in active development.
+Each Daily is available for 24hrs and resets if not completed. They can be achieved one time. Currently, the daily quests are limited to a +50 bonus for beating your own highscore, that will be added to the community score.
 
-## Customization
+## 💪 Difficulty
 
-Each community can change the city background, birds and pipes to match their style.
-![AppConfig Demo](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3YxbzNqdmFobDRidjA2aXF5cW96OGZ4OTdlMXhyenUzc2diZ21pdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/b66WotkcFwlAKb9c1K/giphy.gif)
+The game gets harder, the longer you play in one run. This can include:
 
-### Backgrounds
+- Rainy Weather
+- Moving Pipes
+- Smaller Gaps
+- Flickering Pipes
+- Invisible Pipes
 
-Daylight, Evening, Midnight, Night, Sunset
+## 🎨 Customization
 
-### Birds
+Moderators can change the city background, birds and pipes to match their community's style.
 
-Flix, Zippy, Dash, Sprig , Choco, Frost, Plum
+- 4+ city backgrounds
+- 6+ brid characters
+- 7+ pipe visuals
 
-### Pipes
+## 🐦 What's next for Reddibirds by Hammertime
 
-Green, Yellow, Red, Teal, White, Purple, Brown, Orange
+- Update Reddibirds' level and progression systems for both communities and individuals
+- Add seasonal content to keep the gameplay fresh
+- Introduce a brand-new Black Market where Redditors can exchange points and Reddit Gold to unlock exclusive cosmetics and consumables that affect gameplay
+- Go global! Once Devvit's Redis supports global data for apps, I plan to add global leaderboards and Versus mode to connect communities
+- Expand daily, weekly, and yearly quests with fun and unique challenges
+- Leverage Devvit's real-time features to implement a real-time multiplayer experience
 
-## What's next?
+⚠️ Disclaimer: Devvit Webviews are considered experimental. You might run into unexpected behaviour on Mobile!⚠️
 
-- Deeper leveling and ranking system that keeps track of your progress
-- Leveling and ranking system on a community basis that unlocks new features such as power ups and cosmetics
-- Advanced customizeability for players themselves in addition to the existing moderator pre-defined customization features in the App Configuration
-- Greater varierty of daily tasks with different challenges (beat another redditors, score)
-- Individual auto-generated posts for daily challenges
-- Additional weekly and monthly challenges
-- Yearls Reddibirds Stats Report inspired by Spotify's "Wrapped" feature as a Private Message
-- IAP to unlock new cosmetics, replay ability if daily tasks fai
-- Refinment for mobile usage
-- Introduce global features using future "global" redis scope to create competition and collaborative gameplay between communities
+## 🖥️ Credits
 
-### Credits
-
-I am a freelancer developer specialized on playful 2D web applications, such as browser games, serious games and third party integrations on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
+I am a freelancer developer working on playful 2D web applications, such as browser games, serious games and third party integrations on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
 
 **Let's create games that are fun!**  
 https://hammertime.studio/en  
 hello@hammertime.studio
 
-_Do not contact me for gigs that incorporate NFT, Crypto, Web3, Gambling or unecessarily violent games._
+_Do not contact me for gigs that relate to NFT, Crypto, Web3, Gambling or unecessarily violent games._
