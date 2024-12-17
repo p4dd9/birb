@@ -66,6 +66,10 @@ Moderators can change the city background, birds and pipes to match their commun
 - 6+ brid characters
 - 7+ pipe visuals
 
+## 📝 Changelog
+
+- Not much to see here. Initial game created!
+
 ## 🐦 What's next for Reddibirds by Hammertime
 
 - Update Reddibirds' level and progression systems for both communities and individuals
