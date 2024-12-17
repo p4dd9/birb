@@ -3,8 +3,6 @@
 I want to say thanks to those people who listen to my ideas, playtest and add their honest opinion on it!  
 Thanks to Flo, Jürgen (https://www.ilikescifi.com/), Drew, Sevi and Boris!
 
-![alt text](splash-background.gif)
-
 ## Assets
 
 You may not use assets from this project freely if you do not understand the licensing of those for your hobby or commercial project. Please read them carefully or get in touch with the creator.

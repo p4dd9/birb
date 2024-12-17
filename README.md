@@ -1,8 +1,10 @@
 # Reddibirds 🐦
 
-Bird up with Reddibirds! Reddibirds is a remix of the original Flappy Bird game that ships with its own community-driven Twists.
+Bird up with Reddibirds! Reddibirds is a remix of the original Flappy Bird game that ships with its own community-driven Twists. This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
 
-This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
+## 🆕 Beta Note
+
+This is a brandnew App that is currently in active development. If you run into any issues or have feedback you want to share, you are most welcome to send me a [DM](https://www.reddit.com/message/compose/?to=hammertimestudio&subject=Reddibirds+Feedback&message=You+can+find+my+subreddit+with+Reddibirds+here:+r/).
 
 ## 👾 What it does
 
@@ -10,23 +12,11 @@ Tap or click to boost your bird up and navigate through the pipes. If you hit a 
 
 ## ⚡ Items
 
-Bonus Points
-
-- Coin
-- Emerald
-- Sapphire
-
-Mystery Box
-
-- Shrink
-- Pixleation-Verse
-- Lights out
-
-Keys
-
-- Bronze
-- Silver
-- Gold
+| **Category** | **Items**                            |
+| ------------ | ------------------------------------ |
+| Bonus Points | Coin, Emerald, Sapphire              |
+| Mystery Box  | Shrink, Pixelation-Verse, Lights Out |
+| Keys         | Bronze, Silver, Gold                 |
 
 ## 💯 Leaderboards
 
@@ -66,9 +56,18 @@ Moderators can change the city background, birds and pipes to match their commun
 - 6+ brid characters
 - 7+ pipe visuals
 
+## ❓ Questions and Answers
+
+- **Which platforms are supported?**  
+   You can play it on both mobile (ios, android) and web.
+- **Can I add this Game to my community?**  
+   Absolutely!
+- **How can I reset leaderboards and scores?**  
+   Uninstalling the App clears all data related to that community
+
 ## 📝 Changelog
 
-**v0.0.85**
+**v0.0.X**
 
 - Not much to see here. Initial game created!
 
