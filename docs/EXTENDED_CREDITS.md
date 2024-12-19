@@ -13,3 +13,4 @@ You may not use assets from this project freely if you do not understand the lic
 - Mago Font: https://nimblebeastscollective.itch.io/magosfonts CC0
 - Weather: https://seliel-the-shaper.itch.io/weather-effects https://selieltheshaper.weebly.com/user-license.html
 - SFX: https://www.ilikescifi.com
+- Music: https://juhanijunkala.com CC0
