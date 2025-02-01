@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"type": "module",
 	"dependencies": {
-		"@devvit/public-api": "^0.11.3",
+		"@devvit/public-api": "0.11.6",
 		"phaser": "^3.87.0"
 	},
 	"devDependencies": {
@@ -17,8 +17,8 @@
 		"vite": "vite",
 		"dev": "vite build --watch",
 		"build": "vite build --config ./vite.config.ts",
-		"playtest": "devvit playtest HammertimeStudio",
-		"logs": "devvit logs r/hammertimestudio",
+		"playtest": "devvit playtest reddibirds",
+		"logs": "devvit logs r/reddibirds",
 		"upload": "devvit upload"
 	}
 }

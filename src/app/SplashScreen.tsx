@@ -1,11 +1,7 @@
 import { Devvit } from '@devvit/public-api'
 
 export const SplashScreen = (props: SplashScreenProps) => {
-	const { setWebviewVisible, context } = props
-
-	const onLaunchApp = (): any => {
-		setWebviewVisible(true)
-	}
+	const { onPress, context } = props
 
 	return (
 		<zstack grow height="100%">
@@ -20,7 +16,7 @@ export const SplashScreen = (props: SplashScreenProps) => {
 				/>
 			</zstack>
 			<zstack grow height="100%" width="100%" alignment="middle center">
-				<button icon="play-fill" appearance="secondary" size="large" onPress={onLaunchApp}>
+				<button icon="play-fill" appearance="secondary" size="large" onPress={onPress}>
 					PLAY GAME
 				</button>
 			</zstack>
@@ -30,5 +26,5 @@ export const SplashScreen = (props: SplashScreenProps) => {
 
 type SplashScreenProps = {
 	context: Devvit.Context
-	setWebviewVisible: (visible: boolean) => void
+	onPress: () => void
 }

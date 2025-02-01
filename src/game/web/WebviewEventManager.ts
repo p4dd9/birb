@@ -17,6 +17,7 @@ export class WebviewEventManager {
 		window.addEventListener(
 			'message',
 			(ev) => {
+				console.log(`MESSAGE: ${ev}`)
 				const { type, data } = ev.data
 
 				if (type !== WebviewEventManager.allowedMessageType) {
