@@ -26,8 +26,6 @@ Devvit.addCustomPostType({
 
 		const tickUpdateAppData = async () => {
 			const appData = await redisService.getAppData()
-
-			devvitLogger.info(`Sending 'updateAppData' postMessage ${appData.config.world}, ${context.ui.webView}`)
 			postMessage({
 				type: 'updateAppData',
 				data: appData,
@@ -36,8 +34,6 @@ Devvit.addCustomPostType({
 		useInterval(tickUpdateAppData, 10000).start()
 
 		const handleMessage = async (ev: PostMessageMessages, _hook: UseWebViewResult) => {
-			devvitLogger.info('Received postMessage from WebView: ' + JSON.stringify(ev.type))
-
 			switch (ev.type) {
 				case 'saveStats': {
 					const newScore = ev.data.personal.highscore
@@ -75,8 +71,6 @@ Devvit.addCustomPostType({
 							appearance: 'success',
 						})
 					}
-
-					devvitLogger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
 					postMessage({
 						type: 'gameOver',
 						data: {
@@ -91,8 +85,6 @@ Devvit.addCustomPostType({
 
 				case 'requestAppData': {
 					const appData = await redisService.getAppData()
-
-					devvitLogger.info(`Sending 'updateAppData' postMessage to WebView ${JSON.stringify(appData)}`)
 					postMessage({
 						type: 'updateAppData',
 						data: appData,
