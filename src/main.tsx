@@ -32,6 +32,13 @@ Devvit.addCustomPostType({
 		const payments = usePayments(async (result: OnPurchaseResult) => {
 			if (result.status === OrderResultStatus.Success) {
 				context.ui.showToast('Thanks for supporting Reddibirds!❤️')
+
+				window.setTimeout(() => {
+					postMessage({
+						type: 'purchaseSuccess',
+						data: {},
+					})
+				}, 1000)
 			} else if (result.status === OrderResultStatus.Error) {
 				context.ui.showToast('Whoops, something went wrong. Please try again.')
 			}

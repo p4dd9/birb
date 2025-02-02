@@ -30,6 +30,7 @@ export class WebviewEventManager {
 						globalEventEmitter.emit('gameOver', message.data)
 						break
 					}
+					case 'purchaseSuccess':
 					case 'updateAppData': {
 						globalEventEmitter.emit('updateAppData', message.data)
 						break
