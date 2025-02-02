@@ -2,7 +2,6 @@ import { Devvit, useInterval, useWebView, type UseWebViewResult } from '@devvit/
 Devvit.configure({
 	redditAPI: true,
 	redis: true,
-	// realtime: true,
 })
 
 import './app/blocks/addAppSettings'

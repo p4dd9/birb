@@ -15,7 +15,7 @@ export const gameConfig: Types.Core.GameConfig = {
 	physics: {
 		default: 'arcade',
 		arcade: {
-			gravity: { y: 790, x: 0 },
+			gravity: { y: 990, x: 0 },
 			debug: false,
 		},
 	},

@@ -32,7 +32,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	flap() {
-		this.setVelocityY(-300)
+		this.setVelocityY(-400)
 		this.playFlapAnimation()
 
 		const relativePan = Phaser.Math.Clamp((this.scene.player.x / this.scene.scale.width) * 2 - 1, -0.4, 0.4)
