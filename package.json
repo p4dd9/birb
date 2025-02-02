@@ -20,6 +20,9 @@
 		"build": "vite build --config ./vite.config.ts",
 		"playtest": "devvit playtest reddibirds",
 		"logs": "devvit logs r/reddibirds",
-		"upload": "devvit upload"
+		"publish": "devvit publish",
+		"upload": "devvit upload",
+		"upload:minor": "devvit upload --bump minor",
+		"upload:patch": "devvit upload --bump patch"
 	}
 }

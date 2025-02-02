@@ -72,8 +72,10 @@ v1.0.0
 - Add Core Game
 - Add Ranking
 - Add Customization
-- Add Supporter Flair
+- Add VIP/Flair Shop
 - Add Dailys
+- Add Stats
+- Add Leaderboards
 - Add Fullscreen WebView
 
 ## 🐦 What's next for Reddibirds by Hammertime
