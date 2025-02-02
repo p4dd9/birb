@@ -67,9 +67,14 @@ Moderators can change the city background, birds and pipes to match their commun
 
 ## 📝 Changelog
 
-**v0.0.X**
+v1.0.0
 
-- Not much to see here. Initial game created!
+- Add Core Game
+- Add Ranking
+- Add Customization
+- Add Supporter Flair
+- Add Dailys
+- Add Fullscreen WebView
 
 ## 🐦 What's next for Reddibirds by Hammertime
 
