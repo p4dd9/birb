@@ -36,13 +36,13 @@ export const manageSupporterFlairs = Devvit.addSchedulerJob({
 
 		devvitLogger.info(`Checking cursor: "${scanResult.cursor}", "${scanResult.fieldValues.length}"`)
 
-		for (const { field: userId, value: purchaseStatus } of scanResult.fieldValues) {
+		for (const { field: userId, value: purchaseDateInMillis } of scanResult.fieldValues) {
 			try {
 				devvitLogger.info(
-					`User ${userId} has an active purchase. Runs out at ${convertMillisToDate(purchaseStatus)}.`
+					`User ${userId} has an active purchase. Runs out at ${convertMillisToDate(purchaseDateInMillis)}.`
 				)
 
-				if (isPurchaseOlderThan30Days(purchaseStatus)) {
+				if (isPurchaseOlderThan30Days(purchaseDateInMillis)) {
 					const [user, subreddit] = await Promise.all([
 						context.reddit.getUserById(userId),
 						context.reddit.getCurrentSubredditName(),
@@ -54,7 +54,7 @@ export const manageSupporterFlairs = Devvit.addSchedulerJob({
 
 					try {
 						devvitLogger.info(
-							`Removing supporter flair and supporter purchase from user ${user.username}. Expired on ${convertMillisToDate(purchaseStatus)}.`
+							`Removing supporter flair and supporter purchase from user ${user.username}. Expired on ${convertMillisToDate(purchaseDateInMillis)}.`
 						)
 
 						await Promise.all([

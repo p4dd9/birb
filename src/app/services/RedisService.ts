@@ -6,7 +6,7 @@ import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from '../config/redis.config'
 import { convertMillisToDateShort } from '../jobs/manageSupporterFlairs'
 import type { SaveScoreData } from '../types/redis'
 import { mapAppConfiguration } from '../util/redisMapper'
-import { purchaseKey } from './purchaseService'
+import { purchaseKey, thirtyDaysInMillis } from './purchaseService'
 
 export class RedisService {
 	context: Devvit.Context
@@ -73,8 +73,9 @@ export class RedisService {
 	async getCurrentIapData() {
 		const hasPurchase = await this.redis.hGet(purchaseKey, this.userId)
 		if (hasPurchase) {
+			const supporterActiveUntil = new Date(parseInt(hasPurchase, 10) + thirtyDaysInMillis).getTime()
 			return {
-				supporterActiveUntil: convertMillisToDateShort(hasPurchase),
+				supporterActiveUntil: convertMillisToDateShort(supporterActiveUntil.toString()),
 			}
 		} else {
 			return {
