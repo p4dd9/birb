@@ -113,11 +113,7 @@ Devvit.addCustomPostType({
 			onUnmount: () => context.ui.showToast('Thanks for playing! See you soon!'),
 		})
 
-		return (
-			<vstack grow height="100%">
-				<SplashScreen context={context} onPress={mount} />
-			</vstack>
-		)
+		return <SplashScreen context={context} onPress={mount} />
 	},
 })
 
