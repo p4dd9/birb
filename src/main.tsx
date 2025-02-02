@@ -9,9 +9,13 @@ import './app/blocks/addMenuItem'
 import './app/jobs/dailyJob'
 import './app/jobs/firstFlapperComment'
 import './app/jobs/newHighscoreComment'
+import './app/jobs/setFlair'
 import './app/jobs/welcomeUser'
 import './app/triggers/daily'
 
+import './paymentsHandler'
+
+import { usePayments, type OnPurchaseResult } from '@devvit/payments'
 import { SplashScreen } from './app/SplashScreen'
 import { RedisService } from './app/services/RedisService'
 import { devvitLogger } from './shared/logger'
@@ -23,6 +27,10 @@ Devvit.addCustomPostType({
 	render: (context: Devvit.Context) => {
 		// TODO: errrww ...
 		const redisService = new RedisService(context)
+
+		const payments = usePayments(async (result: OnPurchaseResult) => {
+			devvitLogger.info(`Tried to buy: ${result.sku}; result: ${result.status}; userId: ${context.userId}`)
+		})
 
 		const tickUpdateAppData = async () => {
 			const appData = await redisService.getAppData()
@@ -90,6 +98,16 @@ Devvit.addCustomPostType({
 						data: appData,
 					} as UpdateAppDataMessage)
 
+					break
+				}
+
+				case 'purchase': {
+					console.log(ev.data.sku)
+					try {
+						payments.purchase(ev.data.sku)
+					} catch (e) {
+						devvitLogger.error(`Error starting purchase. ${e}`)
+					}
 					break
 				}
 

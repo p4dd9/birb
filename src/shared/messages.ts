@@ -1,4 +1,4 @@
-export type PostMessageMessages = SaveStatsMessage | GetBestPlayersMessage | RequestAppData
+export type PostMessageMessages = SaveStatsMessage | GetBestPlayersMessage | RequestAppData | IapPurchaseMessage
 export type SaveScoreData = {
 	highscore: number
 }
@@ -7,6 +7,13 @@ export type SaveStatsMessage = {
 	type: 'saveStats'
 	data: {
 		personal: Pick<SaveScoreData, 'highscore'>
+	}
+}
+
+export type IapPurchaseMessage = {
+	type: 'purchase'
+	data: {
+		sku: string
 	}
 }
 
@@ -40,6 +47,10 @@ export type AppCommunityDaily = {
 	completed: boolean
 }
 
+export type AppIAP = {
+	supporter: boolean
+}
+
 export type AppCommunityData = {
 	name: string
 	you: AppCommunityYouStats
@@ -47,6 +58,7 @@ export type AppCommunityData = {
 	leaderboard: RedisPlayer[]
 	stats: AppCommunityStats
 	daily: AppCommunityDaily
+	iap: AppIAP
 }
 
 export type AppGlobalData = {

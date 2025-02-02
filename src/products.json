@@ -1,0 +1,17 @@
+{
+	"$schema": "https://developers.reddit.com/schema/products.json",
+	"products": [
+		{
+			"sku": "supporter-flair-30d",
+			"displayName": "Supporter Flair",
+			"description": "Enables a unique Flair that shows your support towards Reddibirds for 30 days.",
+			"price": 100,
+			"metadata": {
+				"category": "supporter",
+				"orderNumber": "0",
+				"days": "30"
+			},
+			"accountingType": "VALID_FOR_30D"
+		}
+	]
+}

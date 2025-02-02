@@ -1,5 +1,5 @@
 import { webviewLogger } from '../../shared/logger'
-import type { SaveStatsMessage } from '../../shared/messages'
+import type { IapPurchaseMessage, SaveStatsMessage } from '../../shared/messages'
 import globalEventEmitter from './GlobalEventEmitter'
 
 export class WebviewEventManager {
@@ -50,6 +50,14 @@ export class WebviewEventManager {
 				data: {
 					personal: { highscore },
 				},
+			}
+			WebviewEventManager.postMessageToParent(message)
+		})
+
+		globalEventEmitter.on('purchase', (purchase: { sku: string }) => {
+			let message: IapPurchaseMessage = {
+				type: 'purchase',
+				data: purchase,
 			}
 			WebviewEventManager.postMessageToParent(message)
 		})

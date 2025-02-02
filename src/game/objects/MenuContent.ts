@@ -6,6 +6,7 @@ import { CommunityScores } from './menu/CommunityScores'
 import { CommunityStats } from './menu/CommunityStats'
 import { Daily } from './menu/Daily'
 import { StartContent } from './menu/StartContent'
+import { Supporter } from './menu/Supporter'
 import { YouStats } from './menu/YouStats'
 
 export class MenuContent extends Phaser.GameObjects.Container {
@@ -22,6 +23,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 			new StartContent(scene),
 			new Daily(scene),
 			new YouStats(scene),
+			new Supporter(scene),
 			new CommunityScores(scene),
 			new CommunityAttempts(scene),
 			new CommunityStats(scene),
