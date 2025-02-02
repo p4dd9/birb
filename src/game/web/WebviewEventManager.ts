@@ -6,7 +6,6 @@ export class WebviewEventManager {
 	static allowedMessageType = 'devvit-message'
 
 	static targetOrigin = '*'
-	static targetEmbeddedWebviewId = 'game-webview'
 
 	static registerEvents() {
 		WebviewEventManager.registerGameInternalEvents()
@@ -17,7 +16,6 @@ export class WebviewEventManager {
 		window.addEventListener(
 			'message',
 			(ev) => {
-				console.log(`MESSAGE: ${ev}`)
 				const { type, data } = ev.data
 
 				if (type !== WebviewEventManager.allowedMessageType) {

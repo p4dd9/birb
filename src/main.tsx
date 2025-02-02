@@ -1,4 +1,4 @@
-import { Devvit, useInterval, useWebView } from '@devvit/public-api'
+import { Devvit, useInterval, useWebView, type UseWebViewResult } from '@devvit/public-api'
 Devvit.configure({
 	redditAPI: true,
 	redis: true,
@@ -28,16 +28,16 @@ Devvit.addCustomPostType({
 		const tickUpdateAppData = async () => {
 			const appData = await redisService.getAppData()
 
-			devvitLogger.info(`Sending 'updateAppData' postMessage`)
-			context.ui.webView.postMessage('game-webview', {
+			devvitLogger.info(`Sending 'updateAppData' postMessage ${appData.config.world}, ${context.ui.webView}`)
+			postMessage({
 				type: 'updateAppData',
 				data: appData,
 			} as UpdateAppDataMessage)
 		}
 		useInterval(tickUpdateAppData, 10000).start()
 
-		const handleMessage = async (ev: PostMessageMessages) => {
-			devvitLogger.info('Received postMessage (webviewcontainer)' + ev.type)
+		const handleMessage = async (ev: PostMessageMessages, _hook: UseWebViewResult) => {
+			devvitLogger.info('Received postMessage from WebView: ' + JSON.stringify(ev.type))
 
 			switch (ev.type) {
 				case 'saveStats': {
@@ -78,7 +78,7 @@ Devvit.addCustomPostType({
 					}
 
 					devvitLogger.info(`Sending 'gameOver' postMessage (webviewcontainer)`)
-					context.ui.webView.postMessage('game-webview', {
+					postMessage({
 						type: 'gameOver',
 						data: {
 							isNewHighScore,
@@ -93,8 +93,8 @@ Devvit.addCustomPostType({
 				case 'requestAppData': {
 					const appData = await redisService.getAppData()
 
-					devvitLogger.info(`Sending 'updateAppData' postMessage (webviewcontainer)`)
-					context.ui.webView.postMessage('game-webview', {
+					devvitLogger.info(`Sending 'updateAppData' postMessage to WebView ${JSON.stringify(appData)}`)
+					postMessage({
 						type: 'updateAppData',
 						data: appData,
 					} as UpdateAppDataMessage)
@@ -107,26 +107,15 @@ Devvit.addCustomPostType({
 				}
 			}
 		}
-		const { mount } = useWebView({
-			// URL of your webview content
+		const { mount, postMessage } = useWebView({
 			url: 'index.html',
-
-			// Message handler
-			onMessage: async (message, webView) => {
-				console.log(message)
-				console.log(webView)
-				handleMessage(message as PostMessageMessages)
-			},
-
-			// Cleanup when webview is closed
-			onUnmount: () => {
-				context.ui.showToast('Web view closed!')
-			},
+			onMessage: handleMessage,
+			onUnmount: () => context.ui.showToast('Thanks for playing! See you soon!'),
 		})
 
 		return (
 			<vstack grow height="100%">
-				{<SplashScreen context={context} onPress={mount} />}
+				<SplashScreen context={context} onPress={mount} />
 			</vstack>
 		)
 	},
