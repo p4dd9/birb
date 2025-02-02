@@ -4,6 +4,7 @@ import { PipeGaps } from '../config/pipe.config'
 import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
+import { changeBackgroundStyle } from '../util/dom'
 import { Rain } from '../weather/Rain'
 import globalEventEmitter from '../web/GlobalEventEmitter'
 
@@ -225,6 +226,7 @@ export class Game extends Phaser.Scene {
 		this.pipeCount = 0
 		this.physics.pause()
 		this.rain.stop()
+		this.cleanUpLightsOutEffects()
 
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(
@@ -259,21 +261,21 @@ export class Game extends Phaser.Scene {
 		}
 
 		this.events.on('update', this.onPointerMoveLightsOuts, this)
-		this.time.delayedCall(6000, () => {
-			this.lights.disable()
-			this.isLightsOut = false
+		this.time.delayedCall(6000, this.cleanUpLightsOutEffects, undefined, this)
+	}
 
-			this.pipes.getChildren().map((pipe) => {
-				;(pipe as Phaser.GameObjects.NineSlice).resetPipeline()
-			})
+	cleanUpLightsOutEffects() {
+		this.lights.disable()
+		this.isLightsOut = false
 
-			this.earth.setPipeline('Light2D').resetPipeline()
-			if (canvasParent instanceof HTMLDivElement && currentBackground) {
-				canvasParent.style.background = `url('/assets/bg/${this.registry.get('background')}.png') center / auto 100% repeat-x`
-			}
-
-			this.events.off('update', this.onPointerMoveLightsOuts, this)
+		this.pipes.getChildren().map((pipe) => {
+			;(pipe as Phaser.GameObjects.NineSlice).resetPipeline()
 		})
+
+		this.earth.setPipeline('Light2D').resetPipeline()
+		changeBackgroundStyle(this.registry.get('background'))
+
+		this.events.off('update', this.onPointerMoveLightsOuts, this)
 	}
 
 	onPointerMoveLightsOuts() {
