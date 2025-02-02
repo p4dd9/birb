@@ -3,8 +3,10 @@ import { devvitLogger } from '../../shared/logger'
 import type { AppData } from '../../shared/messages'
 import { type Challenge, DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX } from '../config/daily.config'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from '../config/redis.config'
+import { convertMillisToDateShort } from '../jobs/manageSupporterFlairs'
 import type { SaveScoreData } from '../types/redis'
 import { mapAppConfiguration } from '../util/redisMapper'
+import { purchaseKey } from './purchaseService'
 
 export class RedisService {
 	context: Devvit.Context
@@ -25,16 +27,25 @@ export class RedisService {
 	}
 
 	async getAppData(): Promise<AppData> {
-		const [appConfiguration, leaderboard, activeCommunityPlayers, communityStats, youStats, daily, dailyCompleted] =
-			await Promise.all([
-				this.getAppConfiguration(),
-				this.getCommunityLeaderBoard(),
-				this.getCommunityOnlinePlayers(),
-				this.getCommunityStats(),
-				this.getCurrentPlayerStats(),
-				this.getCurrentCommunityDaily(),
-				this.hasCurrentUserCompletedDaily(),
-			])
+		const [
+			appConfiguration,
+			leaderboard,
+			activeCommunityPlayers,
+			communityStats,
+			youStats,
+			daily,
+			dailyCompleted,
+			iapData,
+		] = await Promise.all([
+			this.getAppConfiguration(),
+			this.getCommunityLeaderBoard(),
+			this.getCommunityOnlinePlayers(),
+			this.getCommunityStats(),
+			this.getCurrentPlayerStats(),
+			this.getCurrentCommunityDaily(),
+			this.hasCurrentUserCompletedDaily(),
+			this.getCurrentIapData(),
+		])
 
 		return {
 			config: mapAppConfiguration(appConfiguration),
@@ -48,6 +59,7 @@ export class RedisService {
 					...daily,
 					completed: dailyCompleted,
 				},
+				iap: iapData,
 			},
 			// https://developers.reddit.com/docs/api/public-api/#-redisclient
 			// https://discord.com/channels/1050224141732687912/1242689538447507458/1316043291401125888
@@ -55,6 +67,19 @@ export class RedisService {
 				name: 'REDDIBIRDS GLOBAL',
 				leaderboard: [],
 			},
+		}
+	}
+
+	async getCurrentIapData() {
+		const hasPurchase = await this.redis.hGet(purchaseKey, this.userId)
+		if (hasPurchase) {
+			return {
+				supporterActiveUntil: convertMillisToDateShort(hasPurchase),
+			}
+		} else {
+			return {
+				supporterActiveUntil: null,
+			}
 		}
 	}
 

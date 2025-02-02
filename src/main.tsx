@@ -8,14 +8,15 @@ import './app/blocks/addAppSettings'
 import './app/blocks/addMenuItem'
 import './app/jobs/dailyJob'
 import './app/jobs/firstFlapperComment'
+import './app/jobs/manageSupporterFlairs'
 import './app/jobs/newHighscoreComment'
-import './app/jobs/setFlair'
+import './app/jobs/setSupporterFlair'
 import './app/jobs/welcomeUser'
-import './app/triggers/daily'
+import './app/triggers/appInstall'
 
 import './paymentsHandler'
 
-import { usePayments, type OnPurchaseResult } from '@devvit/payments'
+import { OrderResultStatus, usePayments, type OnPurchaseResult } from '@devvit/payments'
 import { SplashScreen } from './app/SplashScreen'
 import { RedisService } from './app/services/RedisService'
 import { devvitLogger } from './shared/logger'
@@ -29,7 +30,11 @@ Devvit.addCustomPostType({
 		const redisService = new RedisService(context)
 
 		const payments = usePayments(async (result: OnPurchaseResult) => {
-			devvitLogger.info(`Tried to buy: ${result.sku}; result: ${result.status}; userId: ${context.userId}`)
+			if (result.status === OrderResultStatus.Success) {
+				context.ui.showToast('Thanks for supporting Reddibirds!❤️')
+			} else if (result.status === OrderResultStatus.Error) {
+				context.ui.showToast('Whoops, something went wrong. Please try again.')
+			}
 		})
 
 		const tickUpdateAppData = async () => {

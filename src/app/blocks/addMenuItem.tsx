@@ -21,3 +21,27 @@ Devvit.addMenuItem({
 	forUserType: 'moderator',
 	onPress: addMenuItem,
 })
+
+Devvit.addMenuItem({
+	label: 'Run Supporter Flair Check Manually',
+	location: 'subreddit',
+	forUserType: 'moderator',
+	onPress: (_e, context) => {
+		context.scheduler.runJob({
+			name: 'MANAGE_SUPPORTER_FLAIRS',
+			runAt: new Date(Date.now() + 1000),
+		})
+	},
+})
+
+Devvit.addMenuItem({
+	label: 'Start Supporter Flair 30d Job',
+	location: 'subreddit',
+	forUserType: 'moderator',
+	onPress: (_e, context) => {
+		context.scheduler.runJob({
+			name: 'MANAGE_SUPPORTER_FLAIRS',
+			cron: '0 0 * * *',
+		})
+	},
+})

@@ -31,8 +31,9 @@ addPaymentHandler({
 					context.scheduler.runJob({
 						name: 'SET_FLAIR',
 						data: {
+							userid: user.id,
 							username: user.username,
-							subreddit: subredditName,
+							subredditname: subredditName,
 							sku,
 						},
 						runAt: new Date(),
@@ -54,7 +55,6 @@ addPaymentHandler({
 		devvitLogger.info(`Trying to refund order ${order.id}, ${order.products.map(({ sku }) => sku).join(', ')}.`)
 
 		const supporterProducts = order.products.find(({ metadata }) => metadata.category === 'supporter')
-
 		if (!context.userId) {
 			return
 		}
@@ -69,6 +69,7 @@ addPaymentHandler({
 					return
 				}
 				await context.reddit.removeUserFlair(subreddit.name, user.username)
+				devvitLogger.info(`Removed flair from user ${user.username} in subreddit ${subreddit.name}`)
 			} catch (error) {
 				devvitLogger.error(
 					`Error refund ${supporterProducts.sku} flair for user ${user?.username} ${user?.id}: ${error}`

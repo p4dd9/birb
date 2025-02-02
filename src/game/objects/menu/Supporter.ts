@@ -5,6 +5,8 @@ import { MagoText } from '../MagoText'
 
 export class Supporter extends Phaser.GameObjects.Container {
 	info: MagoText
+
+	purchaseActiveText: MagoText
 	purchaseButton: Phaser.GameObjects.Image
 	purchaseButtonText: MagoText
 
@@ -13,14 +15,18 @@ export class Supporter extends Phaser.GameObjects.Container {
 	constructor(scene: Menu) {
 		super(scene, 0, 0)
 
-		this.setName('User Flair')
+		this.setName('Supporter')
 		this.create(scene.registry.get('community:iap'))
 
 		scene.add.existing(this)
 	}
 
 	create(appIap: AppIAP) {
-		this.info = new MagoText(this.scene, 0, 100, 'Use Gold to unlock a \n unique Flair').setOrigin(0.5, 0)
+		this.info = new MagoText(this.scene, 0, 100, 'Use Gold to unlock a \nunique Flair to show off!').setOrigin(
+			0.5,
+			0
+		)
+		this.purchaseActiveText = new MagoText(this.scene, 0, 300, '')
 		this.purchaseButton = this.scene.add
 			.image(0, 300, 'UI_Flat_Frame03a')
 			.setDisplaySize(719 / 2, 100)
@@ -32,16 +38,25 @@ export class Supporter extends Phaser.GameObjects.Container {
 			})
 
 		this.purchaseButtonText = new MagoText(this.scene, this.purchaseButton.x, this.purchaseButton.y, 'Purchase', 82)
-
-		this.add([this.purchaseButton, this.purchaseButtonText])
+		this.add([this.info, this.purchaseButton, this.purchaseButtonText, this.purchaseActiveText])
 
 		this.updateText(appIap)
-
-		this.add([this.info, this.purchaseButton, this.purchaseButtonText])
 	}
 
 	updateText(stats: AppIAP) {
-		// todo
+		if (stats.supporterActiveUntil) {
+			this.purchaseButton.setVisible(false)
+			this.purchaseButtonText.setVisible(false)
+
+			this.info.setText(`Hooray Active Supporter! Your Flair\n runs out on:`)
+			this.purchaseActiveText.setText(`${stats.supporterActiveUntil}.`)
+		} else {
+			this.purchaseButton.setVisible(true)
+			this.purchaseButtonText.setVisible(true)
+			this.info.setText('Use Gold to unlock a \nunique Flair to show off!')
+
+			this.purchaseActiveText.setText('')
+		}
 	}
 
 	updateData(appData: AppData) {

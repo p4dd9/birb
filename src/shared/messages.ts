@@ -48,7 +48,7 @@ export type AppCommunityDaily = {
 }
 
 export type AppIAP = {
-	supporter: boolean
+	supporterActiveUntil: null | string
 }
 
 export type AppCommunityData = {
