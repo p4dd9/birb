@@ -24,7 +24,9 @@ export const setSupporterFlair = Devvit.addSchedulerJob({
 					context.reddit.setUserFlair({
 						subredditName: subredditname,
 						username: username,
-						flairTemplateId: 'eba02e00-e159-11ef-8328-425855bb6f79',
+						backgroundColor: '#FE9A14',
+						text: 'VIP',
+						textColor: 'dark',
 					}),
 				])
 

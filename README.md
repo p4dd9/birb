@@ -67,7 +67,11 @@ Moderators can change the city background, birds and pipes to match their commun
 
 ## 📝 Changelog
 
-v1.0.0
+v0.3.0
+
+- Fix flair for public app
+
+v0.1.0
 
 - Add Core Game
 - Add Ranking
