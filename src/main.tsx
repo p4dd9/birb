@@ -23,7 +23,7 @@ import { devvitLogger } from './shared/logger'
 import type { PostMessageMessages, UpdateAppDataMessage } from './shared/messages'
 
 Devvit.addCustomPostType({
-	name: `Let's play Reddibirds!🐦`,
+	name: `Let's play Birb!🐦`,
 	height: 'regular',
 	render: (context: Devvit.Context) => {
 		// TODO: errrww ...
@@ -31,7 +31,7 @@ Devvit.addCustomPostType({
 
 		const payments = usePayments(async (result: OnPurchaseResult) => {
 			if (result.status === OrderResultStatus.Success) {
-				context.ui.showToast('Thanks for supporting Reddibirds!❤️')
+				context.ui.showToast('Thanks for supporting Birb!❤️')
 
 				window.setTimeout(() => {
 					postMessage({

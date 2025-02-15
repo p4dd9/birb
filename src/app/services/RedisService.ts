@@ -50,7 +50,7 @@ export class RedisService {
 		return {
 			config: mapAppConfiguration(appConfiguration),
 			community: {
-				name: this.context.subredditName ?? 'REDDIBIRDS',
+				name: this.context.subredditName ?? 'BIRB',
 				you: youStats,
 				leaderboard: leaderboard,
 				online: activeCommunityPlayers,
@@ -64,7 +64,7 @@ export class RedisService {
 			// https://developers.reddit.com/docs/api/public-api/#-redisclient
 			// https://discord.com/channels/1050224141732687912/1242689538447507458/1316043291401125888
 			global: {
-				name: 'REDDIBIRDS GLOBAL',
+				name: 'BIRB GLOBAL',
 				leaderboard: [],
 			},
 		}

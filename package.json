@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "reddibirds",
+	"name": "birb",
 	"version": "0.0.0",
 	"type": "module",
 	"dependencies": {

@@ -110,7 +110,7 @@ export class Menu extends Phaser.Scene {
 	}
 
 	getFeaturedPlayerText(bestPlayer?: RedisPlayer) {
-		let text = `Let's play Reddibirds!!!`
+		let text = `Let's play Birb!!!`
 		if (bestPlayer) {
 			text = `${bestPlayer.userName}: ${bestPlayer.score}`
 		}

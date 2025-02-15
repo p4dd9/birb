@@ -16,11 +16,8 @@ export const userWelcomeJob = Devvit.addSchedulerJob({
 			try {
 				context.reddit.sendPrivateMessage({
 					to: username,
-					subject: `Welcome to Reddibirds!`,
-					text: `🎉 **You scored ${score} on your first Reddibirds run!** 🎉
-
-                            Visit r/reddibirds for latest versions, updates and feedback!
-                        `,
+					subject: `Welcome to Birb!`,
+					text: `🎉 **You scored ${score} on your first Birb run!** 🎉`,
 				})
 			} catch (error) {
 				console.error(`Failed to send USER_WELCOME_JOB welcome message to ${username}`, error)

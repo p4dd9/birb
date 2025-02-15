@@ -6,7 +6,7 @@ export const RANKS = [
 	{ threshold: 200, name: 'Sky Commander' },
 	{ threshold: 500, name: 'Legend' },
 	{ threshold: 1000, name: 'Conqueror' },
-	{ threshold: 2000, name: 'Reddibird' },
+	{ threshold: 2000, name: 'Birb' },
 	{ threshold: 5000, name: 'God' },
 	{ threshold: 10000, name: '???' },
 ]

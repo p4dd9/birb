@@ -1,14 +1,14 @@
-# Reddibirds 🐦
+# Birb 🐦
 
-Bird up with Reddibirds! Reddibirds is a remix of the original Flappy Bird game that ships with its own community-driven Twists. This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
+Bird up with Birb! Birb is a remix of the original Flappy Bird game that ships with its own community-driven Twists. This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
 
 ## 🆕 Beta Note
 
-This is a brandnew App that is currently in active development. If you run into any issues or have feedback you want to share, you are most welcome to send me a [DM](https://www.reddit.com/message/compose/?to=hammertimestudio&subject=Reddibirds+Feedback&message=You+can+find+my+subreddit+with+Reddibirds+here:+r/).
+This is a brandnew App that is currently in active development. If you run into any issues or have feedback you want to share, you are most welcome to send me a [DM](https://www.reddit.com/message/compose/?to=hammertimestudio&subject=Birb+Feedback).
 
 ## 👾 What it does
 
-Tap or click to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Reddibirds is a remix of the original Flappy Bird game that ships with its own Twists.
+Tap or click to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Birb is a remix of the original Flappy Bird game that ships with its own Twists.
 
 ## ⚡ Items
 
@@ -67,6 +67,10 @@ Moderators can change the city background, birds and pipes to match their commun
 
 ## 📝 Changelog
 
+v0.4.0
+
+- Change: Rest In Peace "Reddibirds", Reddibirds is now known as "Birb"
+
 v0.3.0
 
 - Fix flair for public app
@@ -82,9 +86,9 @@ v0.1.0
 - Add Leaderboards
 - Add Fullscreen WebView
 
-## 🐦 What's next for Reddibirds by Hammertime
+## 🐦 What's next for Birb by Hammertime
 
-- Update Reddibirds' level and progression systems for both communities and individuals
+- Update Birb' level and progression systems for both communities and individuals
 - Add seasonal content to keep the gameplay fresh
 - Introduce a brand-new Black Market where Redditors can exchange points and Reddit Gold to unlock exclusive cosmetics and consumables that affect gameplay
 - Go global! Once Devvit's Redis supports global data for apps, I plan to add global leaderboards and Versus mode to connect communities

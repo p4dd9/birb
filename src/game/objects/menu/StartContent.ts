@@ -9,7 +9,7 @@ export class StartContent extends Phaser.GameObjects.Container {
 	constructor(scene: Menu) {
 		super(scene, 0, 0)
 
-		this.setName('REDDIBIRDS')
+		this.setName('BIRB')
 		this.create()
 
 		scene.add.existing(this)

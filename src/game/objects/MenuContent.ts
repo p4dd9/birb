@@ -33,7 +33,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 	}
 
 	create() {
-		this.contentTitle = new MagoText(this.scene, 0, 0, 'REDDIBIRDS', 172)
+		this.contentTitle = new MagoText(this.scene, 0, 0, 'BIRB', 172)
 
 		this.arrowLeft = this.scene.add
 			.sprite(

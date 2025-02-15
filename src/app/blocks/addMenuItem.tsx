@@ -4,7 +4,7 @@ const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Context) => 
 	const { reddit, ui } = context
 	const subreddit = await reddit.getCurrentSubreddit()
 	await reddit.submitPost({
-		title: `Let's play Reddibirds!`,
+		title: `Let's play Birb!`,
 		subredditName: subreddit.name,
 		preview: (
 			<vstack height="100%" width="100%" alignment="middle center">
@@ -16,7 +16,7 @@ const addMenuItem = async (_: MenuItemOnPressEvent, context: Devvit.Context) => 
 }
 
 Devvit.addMenuItem({
-	label: 'Create Reddibirds Game',
+	label: 'Create Birb Post',
 	location: 'subreddit',
 	forUserType: 'moderator',
 	onPress: addMenuItem,
