@@ -2,12 +2,12 @@
 	"$schema": "https://developers.reddit.com/schema/products.json",
 	"products": [
 		{
-			"sku": "supporter-flair-30d",
-			"displayName": "Supporter Flair",
-			"description": "Enables a unique Flair that shows your support towards Birb for 30 days.",
+			"sku": "birb-club-member-flair-30d",
+			"displayName": "Birb Club Member",
+			"description": "Unlocks a unique Birb Club Member Flair that shows up for 30 days.",
 			"price": 100,
 			"metadata": {
-				"category": "supporter",
+				"category": "flair",
 				"orderNumber": "0",
 				"days": "30"
 			},

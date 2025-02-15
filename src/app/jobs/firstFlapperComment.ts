@@ -17,7 +17,7 @@ export const firstFlapperCommentJob = Devvit.addSchedulerJob({
 			try {
 				const comment = await context.reddit.submitComment({
 					id: postId,
-					text: `The early bird flaps to #1. u/${username} was the first to score with ${score} points!`,
+					text: `The early birb flaps to #1. u/${username} was the first to score with ${score} points!`,
 				})
 				comment.distinguish(true)
 			} catch (error) {

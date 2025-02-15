@@ -93,7 +93,7 @@ export class Game extends Phaser.Scene {
 		})
 
 		this.resetScore()
-		this.cheeringBirdFriends()
+		this.cheeringBirbs()
 	}
 
 	byeFriends() {
@@ -111,7 +111,7 @@ export class Game extends Phaser.Scene {
 		})
 	}
 
-	cheeringBirdFriends() {
+	cheeringBirbs() {
 		const friends = (this.registry.get('community:leaderboard') as RedisPlayer[]) ?? [
 			{ userId: 0, userName: 'Stranger', score: 0, attempts: 0 },
 		]
@@ -121,18 +121,18 @@ export class Game extends Phaser.Scene {
 		for (let f = 0; f < 3; f++) {
 			const friend = randomFriends[f]
 			if (!friend) return
-			const birdFrameIndex = Phaser.Math.Between(0, 6)
+			const birbFrameIndex = Phaser.Math.Between(0, 6)
 			const rngSlot = [
 				[this.scale.width / 2, this.scale.height / 2],
 				[this.scale.width / 2 + 200, this.scale.height / 2 - 200],
 				[this.scale.width / 2 + 100, this.scale.height / 2 + 200],
 			]
 			const friendContainer = this.add.container(rngSlot[f]![0], rngSlot[f]![1])
-			const friendSprite = this.add.sprite(0, 0, 'birds', birdFrameIndex).setFlipX(true)
+			const friendSprite = this.add.sprite(0, 0, 'birbs', birbFrameIndex).setFlipX(true)
 			const friendName = new MagoText(this, 0, 60, friend.userName, 48)
 			const friendMessage = new MagoText(this, 0, -60, this.getRandomMotivationQuote(), 48)
 
-			friendSprite.play(`flap_${birdFrameIndex}_repeat`, true)
+			friendSprite.play(`flap_${birbFrameIndex}_repeat`, true)
 			friendContainer.add([friendSprite, friendName, friendMessage])
 			this.friends.push(friendContainer)
 		}
@@ -155,7 +155,7 @@ export class Game extends Phaser.Scene {
 
 	update() {
 		if (this.isGameStarted) {
-			this.player.updateBird()
+			this.player.updateBirb()
 		}
 
 		this.earth.setTilePosition(this.earth.tilePositionX + speedEarth)

@@ -46,8 +46,8 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('PickupKey_3', 'audio/PickupKey_3.mp3')
 		this.load.audio('Pipes_Down1', 'audio/Pipes_Down1.mp3')
 
-		this.load.spritesheet('birds', 'birds.png', { frameWidth: 64, frameHeight: 64 })
-		this.load.spritesheet('birds2', 'birds2.png', { frameWidth: 64, frameHeight: 64 })
+		this.load.spritesheet('birbs', 'birbs.png', { frameWidth: 64, frameHeight: 64 })
+		this.load.spritesheet('birbs2', 'birbs2.png', { frameWidth: 64, frameHeight: 64 })
 
 		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
@@ -71,7 +71,7 @@ export class Preloader extends Phaser.Scene {
 		for (let row = 0; row < 8; row++) {
 			this.anims.create({
 				key: `flap_${row}`,
-				frames: this.anims.generateFrameNumbers('birds', {
+				frames: this.anims.generateFrameNumbers('birbs', {
 					start: row * 4,
 					end: row * 4 + 3,
 				}),
@@ -81,7 +81,7 @@ export class Preloader extends Phaser.Scene {
 
 			this.anims.create({
 				key: `flap_${row}_repeat`,
-				frames: this.anims.generateFrameNumbers('birds', {
+				frames: this.anims.generateFrameNumbers('birbs', {
 					start: row * 4,
 					end: row * 4 + 3,
 				}),

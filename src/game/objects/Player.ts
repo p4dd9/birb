@@ -6,11 +6,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	velocityThreshold: number = 0
 
 	isAnimating: boolean = false
-	currentBirdSprite: number = 0
+	currentBirbSprite: number = 0
 	scene: Game
 
 	constructor(scene: Game, x: number, y: number) {
-		super(scene, x, y, 'birds', Number((scene.game.registry.get('playerFrame') ?? 0) * 4))
+		super(scene, x, y, 'birbs', Number((scene.game.registry.get('playerFrame') ?? 0) * 4))
 		this.scene = scene
 		this.changePlayerFrame(Number(scene.game.registry.get('playerFrame') ?? 0))
 
@@ -65,7 +65,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		})
 	}
 
-	updateBird() {
+	updateBirb() {
 		if (!this.body) return
 		const velocityY = (this.body as Phaser.Physics.Arcade.Body).velocity.y
 
@@ -79,7 +79,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 	playFlapAnimation() {
 		if (!this.isAnimating) {
 			this.isAnimating = true
-			this.play(`flap_${this.currentBirdSprite}`, true)
+			this.play(`flap_${this.currentBirbSprite}`, true)
 			this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
 				this.isAnimating = false
 			})
@@ -88,14 +88,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
 	changePlayerFrame(forcedFrame?: number) {
 		if (typeof forcedFrame === 'number') {
-			this.currentBirdSprite = forcedFrame
+			this.currentBirbSprite = forcedFrame
 			return
 		}
 		let newRow
 		do {
 			newRow = Phaser.Math.Between(0, 6)
-		} while (newRow === this.currentBirdSprite)
+		} while (newRow === this.currentBirbSprite)
 
-		this.currentBirdSprite = newRow
+		this.currentBirbSprite = newRow
 	}
 }

@@ -33,7 +33,7 @@ export class Boot extends Phaser.Scene {
 
 		changeBackgroundStyle(appData.config.world)
 
-		new MagoText(this, this.scale.width / 2, this.scale.height / 2, '*BIRD UP*', 172)
+		new MagoText(this, this.scale.width / 2, this.scale.height / 2, '*BIRB UP*', 172)
 
 		this.time.delayedCall(400, () => {
 			this.scene.run('Preloader')

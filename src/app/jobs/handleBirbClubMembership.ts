@@ -29,8 +29,8 @@ export const convertMillisToDateShort = (timeInMillis: string): string => {
 	})
 }
 
-export const manageSupporterFlairs = Devvit.addSchedulerJob({
-	name: 'MANAGE_SUPPORTER_FLAIRS',
+export const manageMemembershipFlairs = Devvit.addSchedulerJob({
+	name: 'MANAGE_MEMBERSHIP_FLAIRS',
 	onRun: async (_event, context) => {
 		const scanResult = await context.redis.hScan(purchaseKey, 0)
 
@@ -54,7 +54,7 @@ export const manageSupporterFlairs = Devvit.addSchedulerJob({
 
 					try {
 						devvitLogger.info(
-							`Removing supporter flair and supporter purchase from user ${user.username}. Expired on ${convertMillisToDate(purchaseDateInMillis)}.`
+							`Removing membership flair and membership purchase from user ${user.username}. Expired on ${convertMillisToDate(purchaseDateInMillis)}.`
 						)
 
 						await Promise.all([

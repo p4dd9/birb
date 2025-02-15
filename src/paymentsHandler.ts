@@ -22,7 +22,7 @@ addPaymentHandler({
 
 		order.products.map(async (productOrder) => {
 			const { metadata, sku } = productOrder
-			if (metadata.category === 'supporter') {
+			if (metadata.category === 'flair') {
 				if (!subredditName || !user?.username) {
 					return
 				}
@@ -54,7 +54,7 @@ addPaymentHandler({
 	refundOrder: async (order: Order, context: Context) => {
 		devvitLogger.info(`Trying to refund order ${order.id}, ${order.products.map(({ sku }) => sku).join(', ')}.`)
 
-		const supporterProducts = order.products.find(({ metadata }) => metadata.category === 'supporter')
+		const flairProducts = order.products.find(({ metadata }) => metadata.category === 'flair')
 		if (!context.userId) {
 			return
 		}
@@ -63,7 +63,7 @@ addPaymentHandler({
 			context.reddit.getSubredditInfoById(context.subredditId),
 		])
 
-		if (supporterProducts) {
+		if (flairProducts) {
 			try {
 				if (!subreddit?.name || !user?.username) {
 					return
@@ -72,7 +72,7 @@ addPaymentHandler({
 				devvitLogger.info(`Removed flair from user ${user.username} in subreddit ${subreddit.name}`)
 			} catch (error) {
 				devvitLogger.error(
-					`Error refund ${supporterProducts.sku} flair for user ${user?.username} ${user?.id}: ${error}`
+					`Error refund ${flairProducts.sku} flair for user ${user?.username} ${user?.id}: ${error}`
 				)
 			}
 		}

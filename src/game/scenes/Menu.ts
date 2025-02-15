@@ -85,7 +85,7 @@ export class Menu extends Phaser.Scene {
 			.join(',')
 		let bannerText = `*LIVE* BREAKING SCORES! ${topPlayers} *LIVE*`
 		if (players.length < 1) {
-			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRD UP! GOOD LUCK! *LIVE*`
+			bannerText = `*LIVE* OHH BOI! STRANGER IS FIRST IN LINE TO BIRB UP! GOOD LUCK! *LIVE*`
 		}
 		return bannerText
 	}

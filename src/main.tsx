@@ -8,9 +8,9 @@ import './app/blocks/addAppSettings'
 import './app/blocks/addMenuItem'
 import './app/jobs/dailyJob'
 import './app/jobs/firstFlapperComment'
-import './app/jobs/manageSupporterFlairs'
+import './app/jobs/handleBirbClubMembership'
 import './app/jobs/newHighscoreComment'
-import './app/jobs/setSupporterFlair'
+import './app/jobs/setBirbClubMemberFlair'
 import './app/jobs/welcomeUser'
 import './app/triggers/appInstall'
 
@@ -31,7 +31,7 @@ Devvit.addCustomPostType({
 
 		const payments = usePayments(async (result: OnPurchaseResult) => {
 			if (result.status === OrderResultStatus.Success) {
-				context.ui.showToast('Thanks for supporting Birb!❤️')
+				context.ui.showToast('Welcome to the Birb Club!❤️')
 
 				window.setTimeout(() => {
 					postMessage({

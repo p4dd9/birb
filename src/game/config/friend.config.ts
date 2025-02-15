@@ -1,6 +1,6 @@
 export const MOTIVATIONAL_QUOTES = [
 	"Flap those wings, you've got this!",
-	'Fly high, little birdy friend!',
+	'Fly high, little birby friend!',
 	"You're soaring to greatness!",
 	"Keep flapping, don't look down!",
 	'Reddi-tastic!',

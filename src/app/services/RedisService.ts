@@ -3,7 +3,7 @@ import { devvitLogger } from '../../shared/logger'
 import type { AppData } from '../../shared/messages'
 import { type Challenge, DAILY_KEY, DAILY_TTL, USER_COMPLETION_PREFIX } from '../config/daily.config'
 import { ACTIVE_PLAYERS_HASH, ACTIVE_PLAYER_TTL } from '../config/redis.config'
-import { convertMillisToDateShort } from '../jobs/manageSupporterFlairs'
+import { convertMillisToDateShort } from '../jobs/handleBirbClubMembership'
 import type { SaveScoreData } from '../types/redis'
 import { mapAppConfiguration } from '../util/redisMapper'
 import { purchaseKey, thirtyDaysInMillis } from './purchaseService'
@@ -73,13 +73,13 @@ export class RedisService {
 	async getCurrentIapData() {
 		const hasPurchase = await this.redis.hGet(purchaseKey, this.userId)
 		if (hasPurchase) {
-			const supporterActiveUntil = new Date(parseInt(hasPurchase, 10) + thirtyDaysInMillis).getTime()
+			const membershipActiveUntil = new Date(parseInt(hasPurchase, 10) + thirtyDaysInMillis).getTime()
 			return {
-				supporterActiveUntil: convertMillisToDateShort(supporterActiveUntil.toString()),
+				membershipActiveUntil: convertMillisToDateShort(membershipActiveUntil.toString()),
 			}
 		} else {
 			return {
-				supporterActiveUntil: null,
+				membershipActiveUntil: null,
 			}
 		}
 	}

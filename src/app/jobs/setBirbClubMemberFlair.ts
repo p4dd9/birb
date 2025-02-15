@@ -2,7 +2,7 @@ import { Devvit } from '@devvit/public-api'
 import { devvitLogger } from '../../shared/logger'
 import { storePurchase } from '../services/purchaseService'
 
-export const setSupporterFlair = Devvit.addSchedulerJob({
+export const setBirbClubMemberFlair = Devvit.addSchedulerJob({
 	name: 'SET_FLAIR',
 	onRun: async (
 		event: {
@@ -25,17 +25,17 @@ export const setSupporterFlair = Devvit.addSchedulerJob({
 						subredditName: subredditname,
 						username: username,
 						backgroundColor: '#FE9A14',
-						text: 'VIP',
+						text: 'Birb Club Member',
 						textColor: 'dark',
 					}),
 				])
 
 				devvitLogger.info(
-					`Handling Supporter Job-Purchase "SET_FLAIR" "${subredditname}" "${username}" ${sku}".`
+					`Handling membership Job-Purchase "SET_FLAIR" "${subredditname}" "${username}" ${sku}".`
 				)
 			} catch (error) {
 				devvitLogger.error(
-					`Handling Supporter Job-Purchase "SET_FLAIR" "${subredditname}" "${username}" ${sku}": ${error}.`
+					`Handling membership Job-Purchase "SET_FLAIR" "${subredditname}" "${username}" ${sku}": ${error}.`
 				)
 			}
 		}

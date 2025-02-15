@@ -59,7 +59,7 @@ Moderators can change the city background, birds and pipes to match their commun
 ## ❓ Questions and Answers
 
 - **Which platforms are supported?**  
-   You can play it on both mobile (ios, android) and web.
+   You can play it on mobile (ios, android) and web.
 - **Can I add this Game to my community?**  
    Absolutely!
 - **How can I reset leaderboards and scores?**  
@@ -69,16 +69,18 @@ Moderators can change the city background, birds and pipes to match their commun
 
 v0.1.0
 
+- Change: Rest In Peace "Reddibirds", Reddibirds is now known as "Birb"
+- Change: rename VIP flair to Bird Club Member text
+- Chore: tweak UI arrows and mobile responsiveness
 - Chore: bump phaser to latest
 - Chore: bump devvit 0.11.6 to 0.11.7
-- Change: Rest In Peace "Reddibirds", Reddibirds is now known as "Birb"
 
 ## 🐦 What's next for Birb by Hammertime
 
 - Update Birb' level and progression systems for both communities and individuals
 - Add seasonal content to keep the gameplay fresh
 - Introduce a brand-new Black Market where Redditors can exchange points and Reddit Gold to unlock exclusive cosmetics and consumables that affect gameplay
-- Go global! Once Devvit's Redis supports global data for apps, I plan to add global leaderboards and Versus mode to connect communities
+- Go global! I plan to add global leaderboards and Versus mode to connect communities
 - Expand daily, weekly, and yearly quests with fun and unique challenges
 - Leverage Devvit's real-time features to implement a real-time multiplayer experience
 
