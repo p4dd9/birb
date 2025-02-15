@@ -67,9 +67,32 @@ Moderators can change the city background, birds and pipes to match their commun
 
 ## 📝 Changelog
 
-v0.4.0
+v0.1.0
 
+- Chore: bump phaser to latest
+- Chore: bump devvit 0.11.6 to 0.11.7
 - Change: Rest In Peace "Reddibirds", Reddibirds is now known as "Birb"
+
+## 🐦 What's next for Birb by Hammertime
+
+- Update Birb' level and progression systems for both communities and individuals
+- Add seasonal content to keep the gameplay fresh
+- Introduce a brand-new Black Market where Redditors can exchange points and Reddit Gold to unlock exclusive cosmetics and consumables that affect gameplay
+- Go global! Once Devvit's Redis supports global data for apps, I plan to add global leaderboards and Versus mode to connect communities
+- Expand daily, weekly, and yearly quests with fun and unique challenges
+- Leverage Devvit's real-time features to implement a real-time multiplayer experience
+
+## 🖥️ Credits
+
+I am a freelancer developer working on playful 2D web applications, such as browser games, serious games and third party integrations on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
+
+**Let's create games that are fun!**  
+https://hammertime.studio/en  
+hello@hammertime.studio
+
+_Do not contact me for gigs that relate to NFT, Crypto, Web3, Gambling or unecessarily violent games._
+
+## 📝 Former Reddibirds Changelog
 
 v0.3.0
 
@@ -85,24 +108,3 @@ v0.1.0
 - Add Stats
 - Add Leaderboards
 - Add Fullscreen WebView
-
-## 🐦 What's next for Birb by Hammertime
-
-- Update Birb' level and progression systems for both communities and individuals
-- Add seasonal content to keep the gameplay fresh
-- Introduce a brand-new Black Market where Redditors can exchange points and Reddit Gold to unlock exclusive cosmetics and consumables that affect gameplay
-- Go global! Once Devvit's Redis supports global data for apps, I plan to add global leaderboards and Versus mode to connect communities
-- Expand daily, weekly, and yearly quests with fun and unique challenges
-- Leverage Devvit's real-time features to implement a real-time multiplayer experience
-
-⚠️ Disclaimer: Devvit Webviews are considered experimental. You might run into unexpected behaviour on Mobile!⚠️
-
-## 🖥️ Credits
-
-I am a freelancer developer working on playful 2D web applications, such as browser games, serious games and third party integrations on platforms like Discord (Activities, Bots), Twitch (Extensions, Apps and Bots) and Reddit (Devvit).
-
-**Let's create games that are fun!**  
-https://hammertime.studio/en  
-hello@hammertime.studio
-
-_Do not contact me for gigs that relate to NFT, Crypto, Web3, Gambling or unecessarily violent games._
