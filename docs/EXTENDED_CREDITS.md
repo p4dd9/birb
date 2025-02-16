@@ -8,7 +8,7 @@ Thanks to Flo, Jürgen (https://www.ilikescifi.com/), Drew, Sevi and Boris!
 You may not use assets from this project freely if you do not understand the licensing of those for your hobby or commercial project. Please read them carefully or get in touch with the creator.
 
 - MysteryBox: https://dani-maccari.itch.io/platformer-metroidvania-pixel-items-free-assets CC0
-- Birds, Backgrounds and Pipes: https://megacrash.itch.io/flappy-bird-assets CC0
+- Birbs, Backgrounds and Pipes: https://megacrash.itch.io/flappy-bird-assets CC0
 - UI Elements: https://crusenho.itch.io/complete-ui-essential-pack CC4
 - Mago Font: https://nimblebeastscollective.itch.io/magosfonts CC0
 - Weather: https://seliel-the-shaper.itch.io/weather-effects https://selieltheshaper.weebly.com/user-license.html

@@ -1,6 +1,6 @@
 # Birb 🐦
 
-Bird up with Birb! Birb is a remix of the original Flappy Bird game that ships with its own community-driven Twists. This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
+Birb up with Birb! Birb is a remix of the original Flappy Birb game that ships with its own community-driven Twists. This game was developed during the [Devvit Hackathon 2024](https://redditgamesandpuzzles.devpost.com/)! You can watch the promotion video [here](https://www.youtube.com/watch?v=0axT4t4pkew)
 
 ## 🆕 Beta Note
 
@@ -8,7 +8,7 @@ This is a brandnew App that is currently in active development. If you run into 
 
 ## 👾 What it does
 
-Tap or click to boost your bird up and navigate through the pipes. If you hit a pipe, it's back to start! Birb is a remix of the original Flappy Bird game that ships with its own Twists.
+Tap or click to boost your birb up and navigate through the pipes. If you hit a pipe, it's back to start! Birb is a remix of the original Flappy Birb game that ships with its own Twists.
 
 ## ⚡ Items
 
@@ -50,7 +50,7 @@ The game gets harder, the longer you play in one run. This can include:
 
 ## 🎨 Customization
 
-Moderators can change the city background, birds and pipes to match their community's style.
+Moderators can change the city background, birb and pipes to match their community's style.
 
 - 4+ city backgrounds
 - 6+ brid characters
@@ -69,8 +69,8 @@ Moderators can change the city background, birds and pipes to match their commun
 
 v0.1.0
 
-- Change: Rest In Peace "Reddibirds", Reddibirds is now known as "Birb"
-- Change: rename VIP flair to Bird Club Member text
+- Change: Rest In Peace "Reddibirbs", Reddibirbs is now known as "Birb"
+- Change: rename VIP flair to Birb Club Member text
 - Chore: tweak UI arrows and mobile responsiveness
 - Chore: bump phaser to latest
 - Chore: bump devvit 0.11.6 to 0.11.7
@@ -94,7 +94,7 @@ hello@hammertime.studio
 
 _Do not contact me for gigs that relate to NFT, Crypto, Web3, Gambling or unecessarily violent games._
 
-## 📝 Former Reddibirds Changelog
+## 📝 Former Reddibirbs Changelog
 
 v0.3.0
 
