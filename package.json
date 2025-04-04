@@ -4,8 +4,8 @@
 	"version": "0.0.0",
 	"type": "module",
 	"dependencies": {
-		"@devvit/public-api": "0.11.7",
-		"@devvit/payments": "0.11.7",
+		"@devvit/public-api": "0.11.11",
+		"@devvit/payments": "0.11.11",
 		"phaser": "^3.88.2"
 	},
 	"devDependencies": {
