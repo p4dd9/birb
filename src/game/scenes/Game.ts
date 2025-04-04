@@ -227,6 +227,7 @@ export class Game extends Phaser.Scene {
 		this.physics.pause()
 		this.rain.stop()
 		this.cleanUpLightsOutEffects()
+		this.isPipeKeyActive = false
 
 		globalEventEmitter.emit('saveStats', this.currentScore)
 		globalEventEmitter.once(

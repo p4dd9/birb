@@ -124,6 +124,10 @@ export class PipePair extends Phaser.GameObjects.Container {
 			})
 		}
 
+		if (this.pipeNumber === 0) {
+			scene.isPipeKeyActive = false
+		}
+
 		if (this.pipeNumber > 0 && this.pipeNumber % 75 === 0) {
 			this.scene.rain.toggle()
 		}

@@ -67,6 +67,10 @@ Moderators can change the city background, birb and pipes to match their communi
 
 ## 📝 Changelog
 
+v0.2.0
+
+- Fix: exploit to repeatadly use key power up
+
 v0.1.0
 
 - Change: Rest In Peace "Reddibirbs", Reddibirbs is now known as "Birb"
