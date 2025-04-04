@@ -2,6 +2,7 @@
 
 import { addPaymentHandler, type Order } from '@devvit/payments'
 import type { Context } from '@devvit/public-api'
+import type { BIRB_CLUB_MEMBER_FLAIR_CHECK_JOB_PROPS } from './app/jobs/setBirbClubMemberFlair'
 import { devvitLogger } from './shared/logger'
 
 // note: throw gives user feedback on why it failed.
@@ -22,13 +23,13 @@ addPaymentHandler({
 
 		order.products.map(async (productOrder) => {
 			const { metadata, sku } = productOrder
-			if (metadata.category === 'flair') {
+			if (metadata?.category === 'flair') {
 				if (!subredditName || !user?.username) {
 					return
 				}
 
 				try {
-					context.scheduler.runJob({
+					context.scheduler.runJob<BIRB_CLUB_MEMBER_FLAIR_CHECK_JOB_PROPS>({
 						name: 'SET_FLAIR',
 						data: {
 							userid: user.id,
@@ -54,7 +55,7 @@ addPaymentHandler({
 	refundOrder: async (order: Order, context: Context) => {
 		devvitLogger.info(`Trying to refund order ${order.id}, ${order.products.map(({ sku }) => sku).join(', ')}.`)
 
-		const flairProducts = order.products.find(({ metadata }) => metadata.category === 'flair')
+		const flairProducts = order.products.find(({ metadata }) => metadata?.category === 'flair')
 		if (!context.userId) {
 			return
 		}

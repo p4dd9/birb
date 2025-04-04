@@ -70,6 +70,7 @@ Moderators can change the city background, birb and pipes to match their communi
 v0.2.0
 
 - Chore: bump devvit packages from 0.11.7 to 0.11.11
+- Chore: add some more typesafety
 - Fix: exploit to repeatadly use key power up
 
 v0.1.0

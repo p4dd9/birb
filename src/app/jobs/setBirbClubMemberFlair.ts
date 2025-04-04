@@ -2,7 +2,14 @@ import { Devvit } from '@devvit/public-api'
 import { devvitLogger } from '../../shared/logger'
 import { storePurchase } from '../services/purchaseService'
 
-export const setBirbClubMemberFlair = Devvit.addSchedulerJob({
+export type BIRB_CLUB_MEMBER_FLAIR_CHECK_JOB_PROPS = {
+	subredditname: string
+	username: string
+	sku: string
+	userid: string
+}
+
+export const setBirbClubMemberFlair = Devvit.addSchedulerJob<BIRB_CLUB_MEMBER_FLAIR_CHECK_JOB_PROPS>({
 	name: 'SET_FLAIR',
 	onRun: async (
 		event: {
