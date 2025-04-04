@@ -124,6 +124,13 @@ export class PipePair extends Phaser.GameObjects.Container {
 			})
 		}
 
+		if (this.pipeNumber > 0 && this.pipeNumber % 420 === 0) {
+			scene.cameras.main.shake(10000, 0.01)
+			scene.time.delayedCall(3000, () => {
+				scene.cameras.main.shake(0)
+			})
+		}
+
 		if (this.pipeNumber === 0) {
 			scene.isPipeKeyActive = false
 		}

@@ -47,6 +47,7 @@ The game gets harder, the longer you play in one run. This can include:
 - Smaller Gaps
 - Flickering Pipes
 - Invisible Pipes
+- Earthquakes
 
 ## 🎨 Customization
 
@@ -69,6 +70,7 @@ Moderators can change the city background, birb and pipes to match their communi
 
 v0.2.0
 
+- Feature: earthquakes added
 - Feature: add subscribe button on Splashscreen
 - Chore: bump devvit packages from 0.11.7 to 0.11.11
 - Chore: add some more typesafety
