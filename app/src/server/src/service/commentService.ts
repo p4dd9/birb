@@ -25,7 +25,7 @@ export const shareScoreComment = async (comment: string, score: number) => {
 
 const BIRB_DESCRIPTION = `**What is Birb?**
 
-Birb is a Flappy Bird-style arcade game built for Reddit. Tap or click to flap through pipes on a shared daily level — everyone gets the same layout each day.`
+Birb is an arcade game built for Reddit. Tap or click to flap through pipes on a shared daily level — everyone gets the same layout each day.`
 
 const formatDailyWrapUpComment = (dailyNumber: number, leader: DailyLeaderboardEntry | null): string => {
 	const highscoreLine = leader
