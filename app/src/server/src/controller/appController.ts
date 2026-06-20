@@ -4,7 +4,7 @@ import { context, redis } from '@devvit/web/server'
 import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import { getCommunityStats, touchOnlinePlayers } from '../service/communityService'
-import { getDailyDateKey, getDailyLeaderboard, getDailySeed, getLatestDailyNumber, getYouStats } from '../service/dailyService'
+import { getDailyDateKey, getDailyLeaderboard, getDailySeed, getLatestDailyNumber, getLatestDailyPostUrl, getYouStats } from '../service/dailyService'
 import { getIapData } from '../service/purchaseService'
 
 export const appController = Router()
@@ -14,7 +14,8 @@ appController.get('/data', requireAuth, async (req, res) => {
 	try {
 		const userId = context.userId!
 		const parsed = typeof req.query.dailyNumber === 'string' ? Number(req.query.dailyNumber) : NaN
-		const dailyNumber = Number.isFinite(parsed) && parsed > 0 ? parsed : await getLatestDailyNumber()
+		const latestDailyNumber = await getLatestDailyNumber()
+		const dailyNumber = Number.isFinite(parsed) && parsed > 0 ? parsed : latestDailyNumber
 
 		if (dailyNumber === 0) {
 			const empty: AppData = {
@@ -22,6 +23,8 @@ appController.get('/data', requireAuth, async (req, res) => {
 				name: context.subredditName ?? 'BIRB',
 				dateKey: toDateKey(),
 				dailyNumber: 0,
+				latestDailyNumber: 0,
+				latestDailyPostUrl: null,
 				you: { highscore: 0, attempts: 0, taps: 0, rank: null },
 				online: 0,
 				leaderboard: [],
@@ -33,7 +36,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			return
 		}
 
-		const [seed, you, online, leaderboard, stats, iap, subscribedFlag, storedDateKey] = await Promise.all([
+		const [seed, you, online, leaderboard, stats, iap, subscribedFlag, storedDateKey, latestDailyPostUrl] = await Promise.all([
 			getDailySeed(dailyNumber),
 			getYouStats(userId, dailyNumber),
 			touchOnlinePlayers(userId),
@@ -42,6 +45,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			getIapData(userId),
 			redis.get(subscribedKey(userId)),
 			getDailyDateKey(dailyNumber),
+			getLatestDailyPostUrl(),
 		])
 
 		const appData: AppData = {
@@ -49,6 +53,8 @@ appController.get('/data', requireAuth, async (req, res) => {
 			name: context.subredditName ?? 'BIRB',
 			dateKey: storedDateKey ?? toDateKey(),
 			dailyNumber,
+			latestDailyNumber,
+			latestDailyPostUrl,
 			you,
 			online,
 			leaderboard,

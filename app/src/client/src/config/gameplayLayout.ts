@@ -13,7 +13,7 @@ const REF_PLAYER_Y_OFFSET = 100
 const REF_SPAWN_MARGIN = 50
 const REF_PIPE_SPAWN_DELAY_MS = 1500
 /** Extra breathing room before the first pipe — player is still settling after the start tap. */
-const REF_PIPE_FIRST_SPAWN_DELAY_MS = 3200
+const REF_PIPE_FIRST_SPAWN_DELAY_MS = 1250
 const REF_PIPE_SCROLL_SPEED = 1.3 * 3.5
 const REF_SCORE_ZONE_HEIGHT = 150
 const REF_PIPE_CENTER_MIN = 100

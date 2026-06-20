@@ -1,12 +1,12 @@
 import type { AppData } from '@birb/shared'
-import { layoutHeight, layoutWidth } from '../cameraScale'
+import { BIRB_CURSOR } from '../util/dom'
 import type { Menu } from '../scenes/Menu'
+import { layoutHeight, layoutWidth } from '../cameraScale'
 import { MagoText } from './MagoText'
 import { CommunityAttempts } from './menu/CommunityAttempts'
 import { CommunityScores } from './menu/CommunityScores'
 import { CommunityStats } from './menu/CommunityStats'
 import { Daily } from './menu/Daily'
-import { Membership } from './menu/Membership'
 import { StartContent } from './menu/StartContent'
 import { YouStats } from './menu/YouStats'
 
@@ -24,7 +24,6 @@ export class MenuContent extends Phaser.GameObjects.Container {
 			new StartContent(scene),
 			new Daily(scene),
 			new YouStats(scene),
-			new Membership(scene),
 			new CommunityScores(scene),
 			new CommunityAttempts(scene),
 			new CommunityStats(scene),
@@ -45,7 +44,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 			)
 			.setOrigin(1, 0.5)
 			.setDisplaySize(128, 128)
-			.setInteractive({ cursor: 'pointer' })
+			.setInteractive({ cursor: BIRB_CURSOR })
 			.on('pointerdown', () => {
 				this.arrowLeft.play('arrows')
 				this.navigateContent(-1)
@@ -61,7 +60,7 @@ export class MenuContent extends Phaser.GameObjects.Container {
 
 			.setOrigin(0, 0.5)
 			.setDisplaySize(128, 128)
-			.setInteractive({ cursor: 'pointer' })
+			.setInteractive({ cursor: BIRB_CURSOR })
 			.setFlipX(true)
 			.on('pointerdown', () => {
 				this.arrowRight.play('arrows')

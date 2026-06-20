@@ -1,7 +1,8 @@
 import type { AppData, DailyLeaderboardEntry } from '@birb/shared'
 import { birbBridge } from '../api/birbBridge'
-import { applyAppDataToRegistry } from '../api/birbClient'
+import { applyAppDataToRegistry, isActiveDailyPost } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { BIRB_CURSOR } from '../util/dom'
 import { BREAKING_NEWS } from '../config/breakingnews.config'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
@@ -49,10 +50,11 @@ export class Menu extends Phaser.Scene {
 			72
 		)
 			.setOrigin(1, 1)
-			.setInteractive({ cursor: 'pointer' })
+			.setInteractive({ cursor: BIRB_CURSOR })
 			.on('pointerdown', this.toggleMute, this)
 
 		birbBridge.onceStartGame(() => {
+			if (!isActiveDailyPost(birbBridge.getAppData())) return
 			this.unsubscribeAppData?.()
 			this.scale.off('resize', this.resize, this)
 			this.scene.start('Game')

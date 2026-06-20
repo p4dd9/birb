@@ -25,7 +25,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 		scene.physics.add.existing(this)
 
 		this.setCollideWorldBounds(true)
-		;(this.body as Phaser.Physics.Arcade.Body).setCircle(this.displayWidth / 2, 0, 0)
+		// setCircle radius is in source pixels; displayWidth is already scaled.
+		;(this.body as Phaser.Physics.Arcade.Body).setCircle(this.width / 2)
 		;(this.body as Phaser.Physics.Arcade.Body).onWorldBounds = true
 		scene.physics.world.on('worldbounds', (body: Phaser.Physics.Arcade.Body) => {
 			if (body.gameObject === this) {

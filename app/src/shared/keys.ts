@@ -20,6 +20,9 @@ export const DAILY_COUNTER_KEY = 'daily:counter'
 /** Sorted set of all created dailies: member = dailyNumber, score = createdAtMs. */
 export const DAILY_INDEX_KEY = 'daily:index'
 
+/** Reddit URL of the most recently created daily post (for navigateTo from archived dailies). */
+export const DAILY_LATEST_POST_URL_KEY = 'daily:latest:postUrl'
+
 export const dailySeedKey = (dailyNumber: number) => `daily:${dailyNumber}:seed`
 export const dailyDateKey = (dailyNumber: number) => `daily:${dailyNumber}:dateKey`
 export const dailyScoresKey = (dailyNumber: number) => `daily:${dailyNumber}:scores`

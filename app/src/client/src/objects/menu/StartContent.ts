@@ -1,8 +1,9 @@
 import type { AppData } from '@birb/shared'
-import { context } from '@devvit/web/client'
+import { context, navigateTo } from '@devvit/web/client'
 import type { Menu } from '../../scenes/Menu'
-import { isDailyPost } from '../../api/birbClient'
+import { BIRB_CURSOR } from '../../util/dom'
 import { birbBridge } from '../../api/birbBridge'
+import { isActiveDailyPost, isDailyPost } from '../../api/birbClient'
 import { MagoText, MagoTextStyle } from '../MagoText'
 
 export class StartContent extends Phaser.GameObjects.Container {
@@ -25,15 +26,25 @@ export class StartContent extends Phaser.GameObjects.Container {
 			.image(0, 170, 'UI_Flat_Frame03a')
 			.setDisplaySize(719 / 2, 100)
 			.setOrigin(0.5)
-			.setInteractive({ cursor: 'pointer' })
-			.once('pointerdown', () => {
-				this.scene.sound.play('buttonclick1', { volume: 0.5 })
-				birbBridge.emitStartGame()
-			})
+			.setInteractive({ cursor: BIRB_CURSOR })
+			.on('pointerdown', () => this.handlePlayPress())
 
 		this.playButtonText = new MagoText(this.scene, this.playButton.x, this.playButton.y, 'Play', MagoTextStyle.bigger)
 
 		this.add([this.playButton, this.playButtonText])
+	}
+
+	handlePlayPress() {
+		this.scene.sound.play('buttonclick1', { volume: 0.5 })
+
+		const appData = birbBridge.getAppData()
+		if (isDailyPost() && !isActiveDailyPost(appData)) {
+			const url = appData?.latestDailyPostUrl
+			if (url) navigateTo(url)
+			return
+		}
+
+		birbBridge.emitStartGame()
 	}
 
 	updateData(appData: AppData) {
@@ -42,14 +53,26 @@ export class StartContent extends Phaser.GameObjects.Container {
 			return
 		}
 
-		const username = context.username ?? 'player'
-
 		if (!this.usernameText || !this.scoreText) {
 			this.usernameText = new MagoText(this.scene, 0, 90, '', MagoTextStyle.small)
 			this.scoreText = new MagoText(this.scene, 0, 140, '', MagoTextStyle.normal)
 			this.add([this.usernameText, this.scoreText])
 		}
 
+		if (!isActiveDailyPost(appData)) {
+			const leader = appData.leaderboard[0]
+			if (leader) {
+				this.usernameText.setText(`u/${leader.userName}`)
+				this.scoreText.setText(String(leader.score))
+				this.usernameText.setVisible(true)
+				this.scoreText.setVisible(true)
+			} else {
+				this.clearDailyHighscore()
+			}
+			return
+		}
+
+		const username = context.username ?? 'player'
 		this.usernameText.setText(`u/${username}`)
 		this.scoreText.setText(String(appData.you.highscore))
 		this.usernameText.setVisible(true)

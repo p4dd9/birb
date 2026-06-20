@@ -21,6 +21,15 @@ export const isDailyPost = (): boolean => getPostType() === 'daily'
 
 export const getDailyNumber = (): number | undefined => getPostData()?.dailyNumber
 
+/** True when this daily post is still accepting runs (i.e. it is the latest daily). */
+export const isActiveDailyPost = (appData?: AppData | null): boolean => {
+	if (!isDailyPost()) return true
+	const postDaily = getDailyNumber()
+	const latest = appData?.latestDailyNumber ?? birbBridge.getAppData()?.latestDailyNumber
+	if (postDaily === undefined || latest === undefined || latest === 0) return false
+	return postDaily === latest
+}
+
 export const fetchAppData = async (dailyNumber?: number): Promise<AppData> => {
 	const query =
 		dailyNumber !== undefined && dailyNumber > 0 ? `?dailyNumber=${encodeURIComponent(String(dailyNumber))}` : ''
@@ -92,9 +101,10 @@ export const applyAppDataToRegistry = (game: Phaser.Game, appData: AppData): voi
 	game.registry.set('community:online', appData.online)
 	game.registry.set('community:stats', appData.stats)
 	game.registry.set('community:you', appData.you)
-	game.registry.set('community:iap', appData.iap)
 	game.registry.set('daily:dateKey', appData.dateKey)
 	game.registry.set('daily:number', appData.dailyNumber)
+	game.registry.set('daily:latestNumber', appData.latestDailyNumber)
+	game.registry.set('daily:latestPostUrl', appData.latestDailyPostUrl)
 }
 
 const publishAppData = (appData: AppData): void => {

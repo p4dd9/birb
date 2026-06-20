@@ -1,8 +1,8 @@
 import { clientLogger } from '@birb/shared'
 import { getDailyNumber, saveScore } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
-import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
 import { BIRB_DISPLAY_SCALE } from '../config/birbs.config'
+import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
 import { PipeGaps } from '../config/pipe.config'
 import { MagoText } from '../objects/MagoText'
 import { PipePair } from '../objects/PipePair'
@@ -77,8 +77,8 @@ export class Game extends Phaser.Scene {
 			.setDepth(50)
 
 		this.physics.add.existing(this.earth)
-		;(this.earth.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
-		;(this.earth.body as Phaser.Physics.Arcade.Body).setImmovable(true)
+			; (this.earth.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
+			; (this.earth.body as Phaser.Physics.Arcade.Body).setImmovable(true)
 
 		this.start = this.start.bind(this)
 		this.hitPipe = this.hitPipe.bind(this)
@@ -89,7 +89,7 @@ export class Game extends Phaser.Scene {
 
 		this.physics.add.overlap(this.player, this.pipes, this.hitPipe, undefined, this)
 		this.physics.add.overlap(this.player, this.earth, this.hitPipe, undefined, this)
-		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
+			; (this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(false)
 
 		const { scaleX, scaleY } = this.gameplayLayout
 		this.createIntroHint(scaleX, scaleY)
@@ -188,7 +188,7 @@ export class Game extends Phaser.Scene {
 	start() {
 		if (this.isGameStarted) return
 		this.isGameStarted = true
-		;(this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
+			; (this.player.body as Phaser.Physics.Arcade.Body).setAllowGravity(true)
 		this.startPipeTimer()
 		this.destroyIntroHint()
 	}

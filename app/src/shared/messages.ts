@@ -67,6 +67,10 @@ export type AppData = {
 	dateKey: string
 	/** This post's daily number (#1, #2, …). */
 	dailyNumber: number
+	/** Most recently created daily number — only that post accepts new runs. */
+	latestDailyNumber: number
+	/** URL of the active daily post; null when no dailies exist yet. */
+	latestDailyPostUrl: string | null
 	you: YouStats
 	online: number
 	leaderboard: DailyLeaderboardEntry[]

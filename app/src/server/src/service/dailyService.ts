@@ -5,6 +5,7 @@ import {
 	configFromSeed,
 	DAILY_COUNTER_KEY,
 	DAILY_INDEX_KEY,
+	DAILY_LATEST_POST_URL_KEY,
 	dailyAttemptsKey,
 	dailyDateKey,
 	dailyScoresKey,
@@ -42,6 +43,7 @@ export const createDailyPost = async (): Promise<{ postId: string; url: string; 
 	await Promise.all([
 		redis.set(dailySeedKey(dailyNumber), String(seed)),
 		redis.set(dailyDateKey(dailyNumber), dateKey),
+		redis.set(DAILY_LATEST_POST_URL_KEY, post.url),
 		redis.zAdd(DAILY_INDEX_KEY, { member: String(dailyNumber), score: Date.now() }),
 	])
 
@@ -64,6 +66,9 @@ export const getLatestDailyNumber = async (): Promise<number> => {
 	const latest = await redis.zRange(DAILY_INDEX_KEY, 0, 0, { by: 'rank', reverse: true })
 	return latest[0] ? Number(latest[0].member) : 0
 }
+
+/** Reddit URL of the active daily post, if one was recorded on create. */
+export const getLatestDailyPostUrl = async (): Promise<string | null> => (await redis.get(DAILY_LATEST_POST_URL_KEY)) ?? null
 
 /** UTC day a daily was created on. */
 export const getDailyDateKey = async (dailyNumber: number): Promise<string | undefined> =>

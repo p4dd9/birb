@@ -1,5 +1,8 @@
 import { pipeThemeForFrame } from '@birb/shared'
 
+/** Custom glove cursor — hotspot at top-left (finger tip). */
+export const BIRB_CURSOR = "url('/assets/objects/Icon_Cursor_02a.png') 0 0, auto"
+
 export const applyShellTheme = (pipeFrame: number): void => {
 	const { shellLight, shellDark, frameAsset } = pipeThemeForFrame(pipeFrame)
 	const frameUrl = `url('/assets/pipes/${frameAsset}')`

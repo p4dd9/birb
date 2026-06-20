@@ -1,5 +1,6 @@
 import { PLAYER_FRAME_COUNT } from '@birb/shared/keys'
-import { isDailyPost } from '../api/birbClient'
+import { birbBridge } from '../api/birbBridge'
+import { getDailyNumber, isActiveDailyPost, isDailyPost } from '../api/birbClient'
 import { bindSceneCameraScale } from '../cameraScale'
 import { birbFlapAnimKey, birbFlapFrameNames, birbFlapRepeatAnimKey } from '../config/birbs.config'
 
@@ -71,7 +72,10 @@ export class Preloader extends Phaser.Scene {
 		this.createAnimations()
 
 		if (isDailyPost()) {
-			this.scene.start('Game')
+			const appData = birbBridge.getAppData()
+			const postDaily = getDailyNumber()
+			const isActive = isActiveDailyPost(appData) && postDaily !== undefined
+			this.scene.start(isActive ? 'Game' : 'Menu')
 			return
 		}
 
