@@ -2,6 +2,7 @@ import { clientLogger } from '@birb/shared'
 import { showForm, showToast } from '@devvit/web/client'
 import { shareScoreComment } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { applyMuteToGame, loadMutedPref, saveMutedPref } from '../util/audioPrefs'
 import { BIRB_CURSOR } from '../util/dom'
 import { MagoText } from '../objects/MagoText'
 
@@ -14,6 +15,7 @@ export class GameOver extends Phaser.Scene {
 	replayButtonText: MagoText
 	shareButton?: Phaser.GameObjects.Image
 	shareButtonText?: MagoText
+	muteButtonText: MagoText
 
 	personalHighscoreText: MagoText
 
@@ -62,6 +64,12 @@ export class GameOver extends Phaser.Scene {
 			this.shareButtonText = new MagoText(this, centerX, centerY, 'Share', 72)
 		}
 
+		applyMuteToGame(this.game, loadMutedPref())
+
+		this.muteButtonText = new MagoText(this, centerX, centerY, this.getMuteButtonText(), 72)
+			.setInteractive({ cursor: BIRB_CURSOR })
+			.on('pointerdown', this.toggleMute, this)
+
 		this.personalHighscoreText = new MagoText(
 			this,
 			50,
@@ -105,6 +113,19 @@ export class GameOver extends Phaser.Scene {
 		}
 	}
 
+	getMuteButtonText = (): string => (this.game.sound.mute ? 'Unmute' : 'Mute')
+
+	toggleMute = (): void => {
+		if (this.sound.locked) return
+
+		this.sound.play('buttonclick1', { volume: 0.5 })
+		const nextMuted = !this.game.sound.mute
+		this.sound.setMute(nextMuted)
+		applyMuteToGame(this.game, nextMuted)
+		saveMutedPref(nextMuted)
+		this.muteButtonText.setText(this.getMuteButtonText())
+	}
+
 	resize() {
 		const centerX = layoutWidth(this) / 2
 		const centerY = layoutHeight(this) / 2
@@ -114,13 +135,26 @@ export class GameOver extends Phaser.Scene {
 	}
 
 	layoutButtons = (centerX: number, centerY: number) => {
-		const stackOffset = this.showShareButton ? (BUTTON_HEIGHT + BUTTON_STACK_GAP) / 2 : 0
+		const stackHeights = [BUTTON_HEIGHT]
+		if (this.showShareButton) stackHeights.push(BUTTON_HEIGHT)
+		stackHeights.push(this.muteButtonText.displayHeight)
 
-		this.layoutButton(this.replayButton, this.replayButtonText, centerX, centerY - stackOffset)
+		const totalHeight =
+			stackHeights.reduce((sum, height) => sum + height, 0) + (stackHeights.length - 1) * BUTTON_STACK_GAP
+
+		let y = centerY - totalHeight / 2 + stackHeights[0] / 2
+
+		this.layoutButton(this.replayButton, this.replayButtonText, centerX, y)
+		y += BUTTON_HEIGHT / 2
 
 		if (this.showShareButton && this.shareButton && this.shareButtonText) {
-			this.layoutButton(this.shareButton, this.shareButtonText, centerX, centerY + stackOffset)
+			y += BUTTON_STACK_GAP + BUTTON_HEIGHT / 2
+			this.layoutButton(this.shareButton, this.shareButtonText, centerX, y)
+			y += BUTTON_HEIGHT / 2
 		}
+
+		y += BUTTON_STACK_GAP + this.muteButtonText.displayHeight / 2
+		this.muteButtonText.setPosition(centerX, y)
 	}
 
 	layoutButton = (button: Phaser.GameObjects.Image, label: MagoText, x: number, y: number) => {

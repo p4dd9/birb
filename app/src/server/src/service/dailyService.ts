@@ -17,6 +17,7 @@ import {
 	seedFromDailyNumber,
 	serverLogger,
 	toDateKey,
+	postFlairStyleForFrame,
 } from '@birb/shared'
 import { context, reddit, redis } from '@devvit/web/server'
 import type { Post } from '@devvit/reddit'
@@ -119,9 +120,8 @@ export const createDailyPost = async (): Promise<{ postId: string; url: string; 
 		.setPostFlair({
 			postId: post.id,
 			subredditName: context.subredditName,
-			text: '🐦 Daily',
-			textColor: 'dark',
-			backgroundColor: '#FE9A14',
+			text: 'Daily',
+			...postFlairStyleForFrame(config.pipeFrame),
 		})
 		.catch((e) => serverLogger.error(`Failed setting daily post flair: ${e}`))
 

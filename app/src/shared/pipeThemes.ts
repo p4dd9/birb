@@ -23,3 +23,20 @@ export const PIPE_THEMES: readonly PipeTheme[] = [
 
 export const pipeThemeForFrame = (pipeFrame: number): PipeTheme =>
 	PIPE_THEMES[((pipeFrame % PIPE_THEMES.length) + PIPE_THEMES.length) % PIPE_THEMES.length]!
+
+const relativeLuminance = (hex: string): number => {
+	const h = hex.replace('#', '')
+	const r = parseInt(h.slice(0, 2), 16) / 255
+	const g = parseInt(h.slice(2, 4), 16) / 255
+	const b = parseInt(h.slice(4, 6), 16) / 255
+	return 0.299 * r + 0.587 * g + 0.114 * b
+}
+
+/** Post flair colors derived from the daily pipe theme (seed → pipeFrame). */
+export const postFlairStyleForFrame = (pipeFrame: number): { backgroundColor: string; textColor: 'dark' | 'light' } => {
+	const theme = pipeThemeForFrame(pipeFrame)
+	return {
+		backgroundColor: theme.shellDark,
+		textColor: relativeLuminance(theme.shellDark) > 0.55 ? 'dark' : 'light',
+	}
+}

@@ -1,5 +1,5 @@
 import { clientLogger } from '@birb/shared'
-import { getDailyNumber, saveScore } from '../api/birbClient'
+import { getDailyNumber, saveScore, shouldAutoplayMusic } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
 import { BIRB_DISPLAY_SCALE } from '../config/birbs.config'
 import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
@@ -67,7 +67,9 @@ export class Game extends Phaser.Scene {
 		this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')
 
-		this.sound.play('Junkala_Stake_2', { volume: 0.05, loop: true })
+		if (shouldAutoplayMusic()) {
+			this.sound.play('Junkala_Stake_2', { volume: 0.05, loop: true })
+		}
 
 		this.spotLight = this.lights.addLight(400, 300, 280).setIntensity(3)
 		const earthH = 32 * this.gameplayLayout.scaleY
@@ -253,6 +255,7 @@ export class Game extends Phaser.Scene {
 	}
 
 	gameOver() {
+		this.cameras.main.shake(350, 0.02)
 		this.input.off('pointerdown')
 		this.stopPipeSpawning()
 		this.player.die()

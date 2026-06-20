@@ -1,4 +1,4 @@
-import { configFromSeed, serverLogger } from '@birb/shared'
+import { configFromSeed, postFlairStyleForFrame, serverLogger } from '@birb/shared'
 import { context, reddit } from '@devvit/web/server'
 import { getDailySeed, getLatestDailyNumber } from './dailyService'
 
@@ -29,9 +29,8 @@ export const createLauncherPost = async (): Promise<{ postId: string; url: strin
 		.setPostFlair({
 			postId: post.id,
 			subredditName: context.subredditName,
-			text: '🐦 Launcher',
-			textColor: 'dark',
-			backgroundColor: '#85A852',
+			text: 'Launcher',
+			...postFlairStyleForFrame(config.pipeFrame),
 		})
 		.catch((e) => serverLogger.error(`Failed setting launcher post flair: ${e}`))
 

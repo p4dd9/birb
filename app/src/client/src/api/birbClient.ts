@@ -40,6 +40,10 @@ export const isActiveDailyPost = (appData?: AppData | null): boolean => {
 	return postDaily === latest
 }
 
+/** Background music only on the current playable daily post. */
+export const shouldAutoplayMusic = (appData?: AppData | null): boolean =>
+	isDailyPost() && isActiveDailyPost(appData)
+
 export const fetchLatestDailyPostUrl = async (): Promise<string | null> => {
 	const res = await fetch('/api/v1/app/latest-daily-url')
 	if (!res.ok) {

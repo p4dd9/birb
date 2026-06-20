@@ -3,14 +3,10 @@ import { birbBridge } from '../api/birbBridge'
 import { applyAppDataToRegistry, isActiveDailyPost } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
 import { BREAKING_NEWS } from '../config/breakingnews.config'
-import { BIRB_CURSOR } from '../util/dom'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 
 export class Menu extends Phaser.Scene {
-	muteButtonText: MagoText
-	isMute: boolean = false
-
 	breakingNews: MagoText
 	menuContent: MenuContent
 	private unsubscribeAppData?: () => void
@@ -27,20 +23,7 @@ export class Menu extends Phaser.Scene {
 		this.cameras.main.filters.internal.clear()
 
 		this.sound.stopByKey('Junkala_Stake_2')
-		if (!this.sound.get('Junkala_Select_2')?.isPlaying) {
-			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
-		}
-
-		this.muteButtonText = new MagoText(
-			this,
-			layoutWidth(this) / 2,
-			layoutHeight(this) - 25,
-			this.getMuteButtonText(),
-			72
-		)
-			.setOrigin(0.5, 1)
-			.setInteractive({ cursor: BIRB_CURSOR })
-			.on('pointerdown', this.toggleMute, this)
+		this.sound.stopByKey('Junkala_Select_2')
 
 		birbBridge.onceStartGame(() => {
 			if (!isActiveDailyPost(birbBridge.getAppData())) return
@@ -120,23 +103,7 @@ export class Menu extends Phaser.Scene {
 		})
 	}
 
-	getMuteButtonText(): string {
-		return this.isMute ? 'Unmute' : 'Mute'
-	}
-
-	toggleMute(): void {
-		if (this.sound.locked) {
-			console.warn('Sound system is locked. Waiting for user interaction.')
-			return
-		}
-		this.sound.play('buttonclick1', { volume: 0.5 })
-		this.isMute = !this.game.sound.mute
-		this.sound.setMute(!this.game.sound.mute)
-		this.muteButtonText.setText(this.getMuteButtonText())
-	}
-
 	resize() {
-		this.muteButtonText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 25)
 		this.menuContent.setPosition(layoutWidth(this) / 2, layoutHeight(this) / 2 - 100)
 
 		if (this.breakingNews) {

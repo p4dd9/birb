@@ -24,7 +24,7 @@ export const gameConfig: Types.Core.GameConfig = {
 		default: 'arcade',
 		arcade: {
 			gravity: { y: 990, x: 0 },
-			debug: true,
+			debug: false,
 			debugShowBody: true,
 			debugShowStaticBody: true,
 			debugShowVelocity: true,
