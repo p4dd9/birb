@@ -42,10 +42,10 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.audio('buttonclick1', 'audio/buttonclick1.mp3')
 
-		this.load.audio('Pickup_Coin_0', 'audio/Pickup_Coin_0.wav')
-		this.load.audio('Pickup_Coin_1', 'audio/Pickup_Coin_1.wav')
-		this.load.audio('Pickup_Coin_2', 'audio/Pickup_Coin_2.wav')
-		this.load.audio('Pickup_Coin_3', 'audio/Pickup_Coin_3.wav')
+		this.load.audio('Pickup_Coin_0', 'audio/Pickup_Coin_0.mp3')
+		this.load.audio('Pickup_Coin_1', 'audio/Pickup_Coin_1.mp3')
+		this.load.audio('Pickup_Coin_2', 'audio/Pickup_Coin_2.mp3')
+		this.load.audio('Pickup_Coin_3', 'audio/Pickup_Coin_3.mp3')
 
 		this.load.audio('PickupKey_1', 'audio/PickupKey_1.mp3')
 		this.load.audio('PickupKey_2', 'audio/PickupKey_2.mp3')

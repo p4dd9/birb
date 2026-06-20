@@ -29,6 +29,12 @@ export const DAILY_LATEST_NUMBER_KEY = 'daily:latest:number'
 export const dailyPostIdKey = (dailyNumber: number) => `daily:${dailyNumber}:postId`
 export const dailyPostUrlKey = (dailyNumber: number) => `daily:${dailyNumber}:postUrl`
 
+/** Set when a closed-daily sticky wrap-up comment has been posted (value = comment id). */
+export const dailyClosedCommentKey = (dailyNumber: number) => `daily:${dailyNumber}:closedCommentId`
+
+/** Set when a new-daily sticky intro comment has been posted (value = comment id). */
+export const dailyIntroCommentKey = (dailyNumber: number) => `daily:${dailyNumber}:introCommentId`
+
 export const dailySeedKey = (dailyNumber: number) => `daily:${dailyNumber}:seed`
 export const dailyDateKey = (dailyNumber: number) => `daily:${dailyNumber}:dateKey`
 export const dailyScoresKey = (dailyNumber: number) => `daily:${dailyNumber}:scores`

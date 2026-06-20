@@ -24,6 +24,7 @@ import {
 import { context, reddit, redis } from '@devvit/web/server'
 import type { Post } from '@devvit/reddit'
 import { incrementCommunityAttempts, incrementCommunityScore } from './communityService'
+import { postDailyIntroComment, postDailyWrapUpComment } from './commentService'
 
 const listSubredditPosts = async (subredditName: string) => {
 	const [hot, newest] = await Promise.all([
@@ -56,6 +57,26 @@ const cacheDailyPostNavigation = async (dailyNumber: number, post: Pick<Post, 'i
 		redis.set(dailyPostUrlKey(dailyNumber), url),
 	])
 	return url
+}
+
+/** Reddit post id for a daily — cached, then resolved from subreddit lookup. */
+export const getDailyPostId = async (dailyNumber: number): Promise<string | null> => {
+	const cached = await redis.get(dailyPostIdKey(dailyNumber))
+	if (cached) return cached
+
+	await findDailyPostByNumber(dailyNumber)
+	return (await redis.get(dailyPostIdKey(dailyNumber))) ?? null
+}
+
+const closePreviousDaily = async (dailyNumber: number): Promise<void> => {
+	const postId = await getDailyPostId(dailyNumber)
+	if (!postId) {
+		serverLogger.error(`Cannot close daily #${dailyNumber}: post id not found`)
+		return
+	}
+
+	const [leader] = await getDailyLeaderboard(dailyNumber, 1)
+	await postDailyWrapUpComment(postId, dailyNumber, leader ?? null)
 }
 
 const findDailyPostByNumber = async (dailyNumber: number): Promise<string | null> => {
@@ -121,6 +142,20 @@ export const createDailyPost = async (): Promise<{ postId: string; url: string; 
 			...postFlairStyleForFrame(config.pipeFrame),
 		})
 		.catch((e) => serverLogger.error(`Failed setting daily post flair: ${e}`))
+
+	try {
+		await postDailyIntroComment(post.id, dailyNumber)
+	} catch (e) {
+		serverLogger.error(`Failed posting intro comment on daily #${dailyNumber}: ${e}`)
+	}
+
+	if (dailyNumber > 1) {
+		try {
+			await closePreviousDaily(dailyNumber - 1)
+		} catch (e) {
+			serverLogger.error(`Failed closing daily #${dailyNumber - 1} after creating #${dailyNumber}: ${e}`)
+		}
+	}
 
 	serverLogger.info(`Created daily #${dailyNumber} for ${dateKey}: ${post.id} (seed ${seed})`)
 	return { postId: post.id, url: navigateUrl, dailyNumber }
