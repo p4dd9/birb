@@ -1,10 +1,6 @@
-import { configFromSeed, postFlairStyleForFrame, serverLogger } from '@birb/shared'
+import { configFromSeed, pickLauncherPostTitle, postFlairStyleForFrame, serverLogger } from '@birb/shared'
 import { context, reddit } from '@devvit/web/server'
 import { getDailySeed, getLatestDailyNumber } from './dailyService'
-
-const LAUNCHER_TITLES = ['Birb — flap to the top! 🐦', 'Play Birb in the feed! 🐦', 'How far can you Birb? 🐦']
-
-const pickLauncherTitle = () => LAUNCHER_TITLES[Math.floor(Math.random() * LAUNCHER_TITLES.length)]!
 
 /** Create the in-feed launcher post (menu + Play). */
 export const createLauncherPost = async (): Promise<{ postId: string; url: string }> => {
@@ -17,7 +13,7 @@ export const createLauncherPost = async (): Promise<{ postId: string; url: strin
 	}
 
 	const post = await reddit.submitCustomPost({
-		title: pickLauncherTitle(),
+		title: pickLauncherPostTitle(),
 		entry: 'launcher',
 		runAs: 'APP',
 		postData,

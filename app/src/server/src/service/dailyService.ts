@@ -18,15 +18,12 @@ import {
 	serverLogger,
 	toDateKey,
 	postFlairStyleForFrame,
+	formatDailyPostTitle,
+	matchesDailyPostTitle,
 } from '@birb/shared'
 import { context, reddit, redis } from '@devvit/web/server'
 import type { Post } from '@devvit/reddit'
 import { incrementCommunityAttempts, incrementCommunityScore } from './communityService'
-
-const dailyPostTitle = (dailyNumber: number) => `#${dailyNumber} Daily Birb`
-
-const matchesDailyTitle = (title: string, dailyNumber: number) =>
-	title === dailyPostTitle(dailyNumber) || title.startsWith(`#${dailyNumber} Daily`)
 
 const listSubredditPosts = async (subredditName: string) => {
 	const [hot, newest] = await Promise.all([
@@ -67,7 +64,7 @@ const findDailyPostByNumber = async (dailyNumber: number): Promise<string | null
 
 	try {
 		const posts = await listSubredditPosts(subredditName)
-		const match = posts.find((post) => matchesDailyTitle(post.title, dailyNumber))
+		const match = posts.find((post) => matchesDailyPostTitle(post.title, dailyNumber))
 		if (!match) return null
 
 		const url = await cacheDailyPostNavigation(dailyNumber, match)
@@ -98,7 +95,7 @@ export const createDailyPost = async (): Promise<{ postId: string; url: string; 
 	const dailyPostData = { type: 'daily' as const, seed, dateKey, dailyNumber, config }
 
 	const post = await reddit.submitCustomPost({
-		title: `#${dailyNumber} Daily Birb`,
+		title: formatDailyPostTitle(dailyNumber),
 		entry: 'daily',
 		runAs: 'APP',
 		postData: dailyPostData,
