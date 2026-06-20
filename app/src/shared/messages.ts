@@ -95,6 +95,11 @@ export type SaveScoreResponse = {
 	attempts: number
 }
 
+/** Response of `GET /api/v1/app/latest-daily-url`. */
+export type LatestDailyUrlResponse = {
+	url: string | null
+}
+
 /** Response of `POST /api/v1/subscribe`. */
 export type SubscribeResponse = {
 	subscribed: boolean
@@ -103,4 +108,15 @@ export type SubscribeResponse = {
 /** Body of `POST /api/v1/purchase`. */
 export type PurchaseRequest = {
 	sku: string
+}
+
+/** Body of `POST /api/v1/score/share`. */
+export type ShareScoreCommentRequest = {
+	comment: string
+	score: number
+}
+
+/** Response of `POST /api/v1/score/share`. */
+export type ShareScoreCommentResponse = {
+	ok: true
 }

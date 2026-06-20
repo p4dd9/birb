@@ -1,4 +1,4 @@
-import type { AppData, SubscribeResponse } from '@birb/shared'
+import type { AppData, LatestDailyUrlResponse, SubscribeResponse } from '@birb/shared'
 import { configFromSeed, serverLogger, subscribedKey, toDateKey } from '@birb/shared'
 import { context, redis } from '@devvit/web/server'
 import { Router } from 'express'
@@ -65,6 +65,18 @@ appController.get('/data', requireAuth, async (req, res) => {
 		res.json(appData)
 	} catch (error) {
 		serverLogger.error(`GET /app/data failed: ${error}`)
+		res.status(500).json({ error: String(error) })
+	}
+})
+
+// GET /api/v1/app/latest-daily-url — resolve the active daily post URL for navigateTo.
+appController.get('/latest-daily-url', requireAuth, async (_req, res) => {
+	try {
+		const url = await getLatestDailyPostUrl()
+		const body: LatestDailyUrlResponse = { url }
+		res.json(body)
+	} catch (error) {
+		serverLogger.error(`GET /app/latest-daily-url failed: ${error}`)
 		res.status(500).json({ error: String(error) })
 	}
 })

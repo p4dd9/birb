@@ -1,15 +1,22 @@
-import { serverLogger } from '@birb/shared'
-import { reddit } from '@devvit/web/server'
+import { context, reddit } from '@devvit/web/server'
 
-/** Welcome DM on a player's very first run. */
-export const sendWelcomeMessage = async (username: string, score: number) => {
-	try {
-		await reddit.sendPrivateMessage({
-			to: username,
-			subject: `Welcome to Birb!`,
-			text: `🎉 **You scored ${score} on your first Birb run!** 🎉`,
-		})
-	} catch (error) {
-		serverLogger.error(`Failed USER_WELCOME message for ${username}: ${error}`)
+/** Post the player's share comment on the current post thread. */
+export const shareScoreComment = async (comment: string, score: number) => {
+	const postId = context.postId
+	if (!postId) {
+		throw new Error('Missing postId')
 	}
+
+	const trimmed = comment.trim()
+	if (!trimmed) {
+		throw new Error('Comment is required')
+	}
+
+	const text = `${trimmed}\n\nHighscore: ${score}`
+
+	await reddit.submitComment({
+		id: postId,
+		text,
+		runAs: 'USER',
+	})
 }

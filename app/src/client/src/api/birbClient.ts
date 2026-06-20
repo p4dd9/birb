@@ -1,11 +1,21 @@
-import type { AppConfiguration, AppData, BirbPostData, BirbPostType, SaveScoreRequest, SaveScoreResponse } from '@birb/shared'
+import type {
+	AppConfiguration,
+	AppData,
+	BirbPostData,
+	BirbPostType,
+	LatestDailyUrlResponse,
+	SaveScoreRequest,
+	SaveScoreResponse,
+	ShareScoreCommentRequest,
+	ShareScoreCommentResponse,
+} from '@birb/shared'
 import {
 	clientLogger,
 	configFromSeed,
 	resolveConfigFromPostData,
 	resolveDailySeed,
 } from '@birb/shared'
-import { context } from '@devvit/web/client'
+import { context, navigateTo, showToast } from '@devvit/web/client'
 import { applyShellTheme } from '../util/dom'
 import { birbBridge } from './birbBridge'
 
@@ -30,6 +40,46 @@ export const isActiveDailyPost = (appData?: AppData | null): boolean => {
 	return postDaily === latest
 }
 
+export const fetchLatestDailyPostUrl = async (): Promise<string | null> => {
+	const res = await fetch('/api/v1/app/latest-daily-url')
+	if (!res.ok) {
+		throw new Error(`GET /api/v1/app/latest-daily-url failed (${res.status}): ${await res.text()}`)
+	}
+	const body = (await res.json()) as LatestDailyUrlResponse
+	return body.url
+}
+
+/** Open the current daily post from an archived daily (or after a stale cache). */
+export const navigateToLatestDaily = async (): Promise<void> => {
+	let url: string | null = null
+
+	try {
+		const appData = await refreshAppData()
+		url = appData?.latestDailyPostUrl ?? null
+	} catch (error) {
+		clientLogger.error('Failed to refresh app data for latest daily URL', error)
+	}
+
+	if (!url) {
+		try {
+			url = await fetchLatestDailyPostUrl()
+			const appData = birbBridge.getAppData()
+			if (url && appData) {
+				birbBridge.setAppData({ ...appData, latestDailyPostUrl: url })
+			}
+		} catch (error) {
+			clientLogger.error('Failed to resolve latest daily URL', error)
+		}
+	}
+
+	if (!url) {
+		showToast('No active daily found.')
+		return
+	}
+
+	navigateTo(url)
+}
+
 export const fetchAppData = async (dailyNumber?: number): Promise<AppData> => {
 	const query =
 		dailyNumber !== undefined && dailyNumber > 0 ? `?dailyNumber=${encodeURIComponent(String(dailyNumber))}` : ''
@@ -50,6 +100,18 @@ export const saveScore = async (body: SaveScoreRequest): Promise<SaveScoreRespon
 		throw new Error(`POST /api/v1/score failed (${res.status}): ${await res.text()}`)
 	}
 	return res.json() as Promise<SaveScoreResponse>
+}
+
+export const shareScoreComment = async (body: ShareScoreCommentRequest): Promise<ShareScoreCommentResponse> => {
+	const res = await fetch('/api/v1/score/share', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(body),
+	})
+	if (!res.ok) {
+		throw new Error(`POST /api/v1/score/share failed (${res.status}): ${await res.text()}`)
+	}
+	return res.json() as Promise<ShareScoreCommentResponse>
 }
 
 /** Cosmetics from postData (sync) or app data fetch (async fallback). */

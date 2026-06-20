@@ -1,14 +1,18 @@
 import type { AppData } from '@birb/shared'
-import { context, navigateTo } from '@devvit/web/client'
+import { context } from '@devvit/web/client'
 import type { Menu } from '../../scenes/Menu'
 import { BIRB_CURSOR } from '../../util/dom'
 import { birbBridge } from '../../api/birbBridge'
-import { isActiveDailyPost, isDailyPost } from '../../api/birbClient'
+import { isActiveDailyPost, isDailyPost, navigateToLatestDaily } from '../../api/birbClient'
 import { MagoText, MagoTextStyle } from '../MagoText'
+
+const PLAY_BUTTON_GAP = 12
+const STACK_GAP = 12
 
 export class StartContent extends Phaser.GameObjects.Container {
 	usernameText?: MagoText
 	scoreText?: MagoText
+	winnerText?: MagoText
 	playButton: Phaser.GameObjects.Image
 	playButtonText: MagoText
 
@@ -30,6 +34,7 @@ export class StartContent extends Phaser.GameObjects.Container {
 			.on('pointerdown', () => this.handlePlayPress())
 
 		this.playButtonText = new MagoText(this.scene, this.playButton.x, this.playButton.y, 'Play', MagoTextStyle.bigger)
+		this.playButtonText.setInteractive({ cursor: BIRB_CURSOR }).on('pointerdown', () => this.handlePlayPress())
 
 		this.add([this.playButton, this.playButtonText])
 	}
@@ -37,10 +42,8 @@ export class StartContent extends Phaser.GameObjects.Container {
 	handlePlayPress() {
 		this.scene.sound.play('buttonclick1', { volume: 0.5 })
 
-		const appData = birbBridge.getAppData()
-		if (isDailyPost() && !isActiveDailyPost(appData)) {
-			const url = appData?.latestDailyPostUrl
-			if (url) navigateTo(url)
+		if (isDailyPost() && !isActiveDailyPost(birbBridge.getAppData())) {
+			void navigateToLatestDaily()
 			return
 		}
 
@@ -53,19 +56,22 @@ export class StartContent extends Phaser.GameObjects.Container {
 			return
 		}
 
-		if (!this.usernameText || !this.scoreText) {
-			this.usernameText = new MagoText(this.scene, 0, 90, '', MagoTextStyle.small)
-			this.scoreText = new MagoText(this.scene, 0, 140, '', MagoTextStyle.normal)
-			this.add([this.usernameText, this.scoreText])
+		if (!this.usernameText || !this.scoreText || !this.winnerText) {
+			this.winnerText = new MagoText(this.scene, 0, 0, 'WINNER', MagoTextStyle.small)
+			this.scoreText = new MagoText(this.scene, 0, 0, '', MagoTextStyle.normal * 2)
+			this.usernameText = new MagoText(this.scene, 0, 0, '', MagoTextStyle.small)
+			this.add([this.winnerText, this.scoreText, this.usernameText])
 		}
 
 		if (!isActiveDailyPost(appData)) {
 			const leader = appData.leaderboard[0]
 			if (leader) {
-				this.usernameText.setText(`u/${leader.userName}`)
 				this.scoreText.setText(String(leader.score))
-				this.usernameText.setVisible(true)
+				this.usernameText.setText(`u/${leader.userName}`)
+				this.winnerText.setVisible(true)
 				this.scoreText.setVisible(true)
+				this.usernameText.setVisible(true)
+				this.layoutDailyHighscore(true)
 			} else {
 				this.clearDailyHighscore()
 			}
@@ -73,13 +79,33 @@ export class StartContent extends Phaser.GameObjects.Container {
 		}
 
 		const username = context.username ?? 'player'
-		this.usernameText.setText(`u/${username}`)
 		this.scoreText.setText(String(appData.you.highscore))
+		this.usernameText.setText(`u/${username}`)
+		this.winnerText.setVisible(false)
 		this.usernameText.setVisible(true)
 		this.scoreText.setVisible(true)
+		this.layoutDailyHighscore(false)
+	}
+
+	layoutDailyHighscore = (showWinner: boolean) => {
+		if (!this.scoreText || !this.usernameText) return
+
+		const playButtonTop = this.playButton.y - this.playButton.displayHeight / 2
+
+		this.usernameText.setY(playButtonTop - PLAY_BUTTON_GAP - this.usernameText.displayHeight / 2)
+		this.scoreText.setY(
+			this.usernameText.y - this.usernameText.displayHeight / 2 - STACK_GAP - this.scoreText.displayHeight / 2
+		)
+
+		if (showWinner && this.winnerText) {
+			this.winnerText.setY(
+				this.scoreText.y - this.scoreText.displayHeight / 2 - STACK_GAP - this.winnerText.displayHeight / 2
+			)
+		}
 	}
 
 	clearDailyHighscore() {
+		this.winnerText?.setVisible(false)
 		this.usernameText?.setVisible(false)
 		this.scoreText?.setVisible(false)
 	}

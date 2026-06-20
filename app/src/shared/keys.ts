@@ -23,6 +23,12 @@ export const DAILY_INDEX_KEY = 'daily:index'
 /** Reddit URL of the most recently created daily post (for navigateTo from archived dailies). */
 export const DAILY_LATEST_POST_URL_KEY = 'daily:latest:postUrl'
 
+/** Daily number that `DAILY_LATEST_POST_URL_KEY` points at — guards against stale cache. */
+export const DAILY_LATEST_NUMBER_KEY = 'daily:latest:number'
+
+export const dailyPostIdKey = (dailyNumber: number) => `daily:${dailyNumber}:postId`
+export const dailyPostUrlKey = (dailyNumber: number) => `daily:${dailyNumber}:postUrl`
+
 export const dailySeedKey = (dailyNumber: number) => `daily:${dailyNumber}:seed`
 export const dailyDateKey = (dailyNumber: number) => `daily:${dailyNumber}:dateKey`
 export const dailyScoresKey = (dailyNumber: number) => `daily:${dailyNumber}:scores`

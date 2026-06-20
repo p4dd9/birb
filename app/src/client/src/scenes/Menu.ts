@@ -2,19 +2,16 @@ import type { AppData, DailyLeaderboardEntry } from '@birb/shared'
 import { birbBridge } from '../api/birbBridge'
 import { applyAppDataToRegistry, isActiveDailyPost } from '../api/birbClient'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
-import { BIRB_CURSOR } from '../util/dom'
 import { BREAKING_NEWS } from '../config/breakingnews.config'
+import { BIRB_CURSOR } from '../util/dom'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
 
 export class Menu extends Phaser.Scene {
 	muteButtonText: MagoText
-
 	isMute: boolean = false
 
-	breakingNews: Phaser.GameObjects.BitmapText
-	playersOnline: Phaser.GameObjects.BitmapText
-
+	breakingNews: MagoText
 	menuContent: MenuContent
 	private unsubscribeAppData?: () => void
 
@@ -34,22 +31,14 @@ export class Menu extends Phaser.Scene {
 			this.sound.play('Junkala_Select_2', { loop: true, volume: 0.05 })
 		}
 
-		this.playersOnline = new MagoText(
-			this,
-			50,
-			layoutHeight(this) - 25,
-			`Online: ${this.registry.get('community:online')}`,
-			72
-		).setOrigin(0, 1)
-
 		this.muteButtonText = new MagoText(
 			this,
-			layoutWidth(this) - 50,
+			layoutWidth(this) / 2,
 			layoutHeight(this) - 25,
 			this.getMuteButtonText(),
 			72
 		)
-			.setOrigin(1, 1)
+			.setOrigin(0.5, 1)
 			.setInteractive({ cursor: BIRB_CURSOR })
 			.on('pointerdown', this.toggleMute, this)
 
@@ -78,12 +67,10 @@ export class Menu extends Phaser.Scene {
 
 	updateAppData(appData: AppData) {
 		applyAppDataToRegistry(this.game, appData)
-
 		this.menuContent.updateData(appData)
-		this.playersOnline.setText(`Online: ${appData.online}`)
 	}
 
-	getBreakingNewsText(players: DailyLeaderboardEntry[]) {
+	getBreakingNewsText(players: DailyLeaderboardEntry[] = []) {
 		const topPlayers = players
 			.slice(0, 3)
 			.map((player) => `"${player.userName}" ${player.score}`)
@@ -96,7 +83,7 @@ export class Menu extends Phaser.Scene {
 	}
 
 	createBreakingNews() {
-		const bannerText = this.getBreakingNewsText(this.registry.get('community:leaderboard'))
+		const bannerText = this.getBreakingNewsText(this.registry.get('community:leaderboard') ?? [])
 
 		this.breakingNews = new MagoText(this, layoutWidth(this), 20, bannerText, 100).setOrigin(0, 0)
 
@@ -106,7 +93,7 @@ export class Menu extends Phaser.Scene {
 	setRandomBreakingNews() {
 		let news = ''
 		if (Phaser.Math.Between(0, 9) < 3) {
-			news = this.getBreakingNewsText(this.registry.get('community:leaderboard'))
+			news = this.getBreakingNewsText(this.registry.get('community:leaderboard') ?? [])
 		} else {
 			news = BREAKING_NEWS[Phaser.Math.Between(0, BREAKING_NEWS.length)] ?? ''
 		}
@@ -149,8 +136,7 @@ export class Menu extends Phaser.Scene {
 	}
 
 	resize() {
-		this.muteButtonText.setPosition(layoutWidth(this) - 50, layoutHeight(this) - 25)
-		this.playersOnline.setPosition(50, layoutHeight(this) - 25)
+		this.muteButtonText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 25)
 		this.menuContent.setPosition(layoutWidth(this) / 2, layoutHeight(this) / 2 - 100)
 
 		if (this.breakingNews) {
