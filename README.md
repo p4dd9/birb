@@ -70,6 +70,8 @@ Moderators can change the city background, birb and pipes to match their communi
 
 v1.0.0
 
+Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
+
 - Chore: refactor game completely into inline feed and throw out a lot of features
 - Chore: bump devvit 0.11.11 to 0.13.3
 
