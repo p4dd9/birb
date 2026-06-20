@@ -68,7 +68,7 @@ Moderators can change the city background, birb and pipes to match their communi
 
 ## 📝 Changelog
 
-v1.0.1
+v1.0.2
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
