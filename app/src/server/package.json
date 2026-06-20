@@ -1,0 +1,19 @@
+{
+	"name": "@birb/server",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"main": "./dist/index.cjs",
+	"scripts": {
+		"dev": "vite build --watch --mode development",
+		"build": "vite build",
+		"start": "node dist/index.cjs"
+	},
+	"dependencies": {
+		"@birb/shared": "*",
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.6"
+	}
+}

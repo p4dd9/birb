@@ -1,0 +1,14 @@
+{
+	"name": "@birb/shared",
+	"version": "0.0.1",
+	"private": true,
+	"main": "./index.ts",
+	"types": "./index.ts",
+	"scripts": {
+		"build": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@types/node": "^25.3.3",
+		"typescript": "^5.9.3"
+	}
+}

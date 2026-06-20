@@ -1,0 +1,135 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	height: 100dvh;
+	height: -webkit-fill-available;
+	overflow: hidden;
+	touch-action: manipulation;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	position: fixed;
+	inset: 0;
+	background: #0b1416;
+}
+
+/* Centers the framed game; padding reserves space for the pipe overlay. */
+#game-shell {
+	--pipe-border: clamp(12px, 2.8vw, 22px);
+	--shell-light: #98e858;
+	--shell-dark: #58c848;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	padding: var(--pipe-border);
+	overflow: visible;
+	background: linear-gradient(
+		90deg,
+		var(--shell-light) 0%,
+		var(--shell-light) 16%,
+		var(--shell-dark) 38%,
+		var(--shell-dark) 100%
+	);
+}
+
+/* Exact 480×720 play area; pipe frame overlays into the shell padding band. */
+#game-stage {
+	position: relative;
+	aspect-ratio: 480 / 720;
+	width: min(100%, calc((100dvh - 2 * var(--pipe-border)) * 480 / 720));
+	height: min(calc(100dvh - 2 * var(--pipe-border)), calc(100vw * 720 / 480));
+	max-width: 100%;
+	max-height: calc(100dvh - 2 * var(--pipe-border));
+	overflow: visible;
+	isolation: isolate;
+}
+
+#game-container {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	overflow: hidden;
+	line-height: 0;
+}
+
+/*
+ * Pipe frame overlay — four background edges instead of border-image (broken on iOS,
+ * scales to full-screen on Android). Slice math matches in-game pipes (32×80, 39 6 39 6).
+ */
+#game-frame {
+	--pipe-frame-url: url('/assets/pipes/pipe-green.png');
+	--pipe-sprite-w: 32;
+	--pipe-sprite-h: 80;
+	--pipe-slice-top: 39;
+	--pipe-slice-right: 6;
+	--pipe-slice-bottom: 39;
+	--pipe-slice-left: 6;
+	position: absolute;
+	inset: calc(-1 * var(--pipe-border));
+	z-index: 1;
+	pointer-events: none;
+	transform: translateZ(0);
+}
+
+.pipe-frame-edge {
+	position: absolute;
+	background-image: var(--pipe-frame-url);
+	background-repeat: no-repeat;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+}
+
+.pipe-frame-edge--top {
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+	height: var(--pipe-border);
+	background-size: 100% calc(var(--pipe-border) * var(--pipe-sprite-h) / var(--pipe-slice-top));
+	background-position: top center;
+}
+
+.pipe-frame-edge--bottom {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2;
+	height: var(--pipe-border);
+	background-size: 100% calc(var(--pipe-border) * var(--pipe-sprite-h) / var(--pipe-slice-bottom));
+	background-position: bottom center;
+}
+
+.pipe-frame-edge--left {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	width: var(--pipe-border);
+	background-size: calc(var(--pipe-border) * var(--pipe-sprite-w) / var(--pipe-slice-left)) 100%;
+	background-position: left center;
+}
+
+.pipe-frame-edge--right {
+	top: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 1;
+	width: var(--pipe-border);
+	background-size: calc(var(--pipe-border) * var(--pipe-sprite-w) / var(--pipe-slice-right)) 100%;
+	background-position: right center;
+}
+
+#game-container canvas {
+	display: block;
+	margin: 0;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+}

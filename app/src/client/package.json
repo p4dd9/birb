@@ -1,0 +1,17 @@
+{
+	"name": "@birb/client",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"dev:build": "vite build --watch",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@birb/shared": "*",
+		"@devvit/web": "0.13.3",
+		"phaser": "4.1.0"
+	}
+}

@@ -1,0 +1,30 @@
+import { serverLogger } from '@birb/shared'
+import { Router } from 'express'
+import { createDailyPost } from '../../service/dailyService'
+import { sweepExpiredMemberships } from '../../service/purchaseService'
+
+export const schedulerController = Router()
+
+// Cron (daily 00:00 UTC): generate today's seed + post the daily level.
+schedulerController.post('/daily-level', async (_req, res) => {
+	try {
+		serverLogger.info('Scheduler: daily-level started')
+		const result = await createDailyPost()
+		res.status(200).json({ success: true, ...result })
+	} catch (error) {
+		serverLogger.error('Scheduler: daily-level failed', { error: String(error) })
+		res.status(500).json({ error: String(error) })
+	}
+})
+
+// Cron (daily 00:00 UTC): expire 30-day Birb Club memberships.
+schedulerController.post('/membership-flairs', async (_req, res) => {
+	try {
+		serverLogger.info('Scheduler: membership-flairs started')
+		const result = await sweepExpiredMemberships()
+		res.status(200).json({ success: true, ...result })
+	} catch (error) {
+		serverLogger.error('Scheduler: membership-flairs failed', { error: String(error) })
+		res.status(500).json({ error: String(error) })
+	}
+})

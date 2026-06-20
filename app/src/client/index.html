@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+		<link rel="stylesheet" href="/src/style.css" />
+		<title>Birb</title>
+	</head>
+
+	<body>
+		<div id="game-shell">
+			<div id="game-stage">
+				<div id="game-container"></div>
+				<div id="game-frame" aria-hidden="true">
+					<div class="pipe-frame-edge pipe-frame-edge--top"></div>
+					<div class="pipe-frame-edge pipe-frame-edge--right"></div>
+					<div class="pipe-frame-edge pipe-frame-edge--bottom"></div>
+					<div class="pipe-frame-edge pipe-frame-edge--left"></div>
+				</div>
+			</div>
+		</div>
+		<script type="module" src="/src/index.ts"></script>
+	</body>
+</html>

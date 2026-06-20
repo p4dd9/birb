@@ -68,6 +68,10 @@ Moderators can change the city background, birb and pipes to match their communi
 
 ## 📝 Changelog
 
+v1.0.0
+
+- Chore: bump devvit 0.11.11 to 0.13.3
+
 v0.2.0
 
 - Feature: earthquakes added

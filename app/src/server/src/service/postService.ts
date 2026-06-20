@@ -1,0 +1,40 @@
+import { configFromSeed, serverLogger } from '@birb/shared'
+import { context, reddit } from '@devvit/web/server'
+import { getDailySeed, getLatestDailyNumber } from './dailyService'
+
+const LAUNCHER_TITLES = ['Birb — flap to the top! 🐦', 'Play Birb in the feed! 🐦', 'How far can you Birb? 🐦']
+
+const pickLauncherTitle = () => LAUNCHER_TITLES[Math.floor(Math.random() * LAUNCHER_TITLES.length)]!
+
+/** Create the in-feed launcher post (menu + Play). */
+export const createLauncherPost = async (): Promise<{ postId: string; url: string }> => {
+	const dailyNumber = await getLatestDailyNumber()
+	const seed = dailyNumber > 0 ? await getDailySeed(dailyNumber) : 0
+	const config = configFromSeed(seed)
+	const postData = {
+		type: 'launcher' as const,
+		...(dailyNumber > 0 ? { dailyNumber, seed, config } : { config }),
+	}
+
+	const post = await reddit.submitCustomPost({
+		title: pickLauncherTitle(),
+		entry: 'launcher',
+		runAs: 'APP',
+		postData,
+	})
+
+	await reddit.setPostData(post.id, postData)
+
+	reddit
+		.setPostFlair({
+			postId: post.id,
+			subredditName: context.subredditName,
+			text: '🐦 Launcher',
+			textColor: 'dark',
+			backgroundColor: '#85A852',
+		})
+		.catch((e) => serverLogger.error(`Failed setting launcher post flair: ${e}`))
+
+	serverLogger.info(`Created launcher post: ${post.id}`)
+	return { postId: post.id, url: post.url }
+}

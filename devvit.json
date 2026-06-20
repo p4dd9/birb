@@ -1,0 +1,89 @@
+{
+	"$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+	"name": "birb-game",
+	"media": {
+		"dir": "app/dist/client"
+	},
+	"post": {
+		"dir": "app/dist/client",
+		"entrypoints": {
+			"default": {
+				"inline": true,
+				"height": "tall",
+				"entry": "index.html"
+			},
+			"launcher": {
+				"inline": true,
+				"height": "tall",
+				"entry": "index.html"
+			},
+			"daily": {
+				"inline": true,
+				"height": "tall",
+				"entry": "index.html"
+			}
+		}
+	},
+	"server": {
+		"dir": "app/dist/server",
+		"entry": "index.cjs"
+	},
+	"permissions": {
+		"redis": true,
+		"reddit": {
+			"enable": true,
+			"asUser": ["SUBMIT_COMMENT", "SUBMIT_POST", "SUBSCRIBE_TO_SUBREDDIT"]
+		},
+		"payments": true
+	},
+	"payments": {
+		"productsFile": "./app/src/products.json",
+		"endpoints": {
+			"fulfillOrder": "/internal/payments/fulfill",
+			"refundOrder": "/internal/payments/refund"
+		}
+	},
+	"scheduler": {
+		"tasks": {
+			"daily-level": {
+				"endpoint": "/internal/scheduler/daily-level",
+				"cron": "0 0 * * *"
+			},
+			"membership-flairs": {
+				"endpoint": "/internal/scheduler/membership-flairs",
+				"cron": "0 0 * * *"
+			}
+		}
+	},
+	"triggers": {
+		"onAppInstall": "/internal/triggers/app-install"
+	},
+	"menu": {
+		"items": [
+			{
+				"label": "[ADMIN] Create Launcher Post",
+				"description": "Create the in-feed Birb launcher post (menu + Play).",
+				"location": "subreddit",
+				"forUserType": "moderator",
+				"endpoint": "/internal/menu/create-launcher"
+			},
+			{
+				"label": "[ADMIN] Create Daily Birb Post",
+				"description": "Generate today's seed and post the daily Birb level now.",
+				"location": "subreddit",
+				"forUserType": "moderator",
+				"endpoint": "/internal/menu/create-daily"
+			},
+			{
+				"label": "[ADMIN] Run Membership Flair Check",
+				"description": "Sweep and expire 30-day Birb Club memberships now.",
+				"location": "subreddit",
+				"forUserType": "moderator",
+				"endpoint": "/internal/menu/membership-sweep"
+			}
+		]
+	},
+	"dev": {
+		"subreddit": "hammertime_dev"
+	}
+}
