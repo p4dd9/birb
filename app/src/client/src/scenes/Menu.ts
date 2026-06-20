@@ -104,7 +104,7 @@ export class Menu extends Phaser.Scene {
 	}
 
 	resize() {
-		this.menuContent.setPosition(layoutWidth(this) / 2, layoutHeight(this) / 2 - 100)
+		this.menuContent.reposition(this)
 
 		if (this.breakingNews) {
 			this.breakingNews.setPosition(layoutWidth(this), 20)
