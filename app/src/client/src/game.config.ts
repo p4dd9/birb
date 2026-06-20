@@ -14,6 +14,13 @@ export const gameConfig: Types.Core.GameConfig = {
 	parent: 'game-container',
 	width: REF_WIDTH,
 	height: REF_HEIGHT,
+	input: {
+		mouse: {
+			// Don't preventDefault() on wheel events — otherwise the canvas traps
+			// the desktop scroll and the Reddit post can't be scrolled past the game.
+			preventDefaultWheel: false,
+		},
+	},
 	scale: {
 		// Fixed 480×720 world; Phaser letterboxes/scales the canvas to the embed on every device.
 		mode: Phaser.Scale.FIT,
