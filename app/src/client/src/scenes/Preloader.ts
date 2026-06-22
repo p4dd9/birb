@@ -15,11 +15,27 @@ export class Preloader extends Phaser.Scene {
 		super('Preloader')
 	}
 
+	/**
+	 * Archived (non-active) daily posts only ever render the static Menu landing,
+	 * which redirects to the live daily — the Game scene never starts. So they
+	 * don't need the heavy game asset bundle, only what the Menu draws.
+	 */
+	private isArchivedDailyPost(): boolean {
+		return isDailyPost() && !isActiveDailyPost(birbBridge.getAppData())
+	}
+
 	preload() {
 		this.load.setPath('../assets/')
 
-		this.load.image('UI_Flat_FrameSlot03b', 'gui/UI_Flat_FrameSlot03b.png')
+		// Assets the Menu landing needs even on archived daily posts.
 		this.load.image('UI_Flat_Frame03a', 'gui/UI_Flat_Frame03a.png')
+		this.load.audio('buttonclick1', 'audio/buttonclick1.mp3')
+
+		// Archived dailies stop here — skip the full game bundle to cut
+		// network/decode/memory cost on every past daily post.
+		if (this.isArchivedDailyPost()) return
+
+		this.load.image('UI_Flat_FrameSlot03b', 'gui/UI_Flat_FrameSlot03b.png')
 
 		this.load.image('Icon_Cursor_02a', 'objects/Icon_Cursor_02a.png')
 		this.load.image('earth', 'foreground/earth.png')
@@ -46,8 +62,6 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('shrink', 'audio/shrink.mp3')
 
 		this.load.audio('victory', 'audio/victory.mp3')
-
-		this.load.audio('buttonclick1', 'audio/buttonclick1.mp3')
 
 		this.load.audio('Pickup_Coin_0', 'audio/Pickup_Coin_0.mp3')
 		this.load.audio('Pickup_Coin_1', 'audio/Pickup_Coin_1.mp3')
@@ -79,6 +93,13 @@ export class Preloader extends Phaser.Scene {
 
 	create() {
 		// bindSceneCameraScale(this)
+
+		// Archived dailies skipped the game bundle — go straight to the Menu landing
+		// without touching game-only textures/animations that were never loaded.
+		if (this.isArchivedDailyPost()) {
+			this.scene.start('Menu')
+			return
+		}
 
 		// Pixel HUD art — avoid linear filtering bleeding atlas gutters / AA fringes.
 		this.textures.get('sound_icon').setFilter(Phaser.Textures.FilterMode.NEAREST)
