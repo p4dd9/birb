@@ -72,11 +72,11 @@ export class GameOver extends Phaser.Scene {
 
 		this.personalHighscoreText = new MagoText(
 			this,
-			50,
+			layoutWidth(this) / 2,
 			layoutHeight(this) - 25,
 			`Highscore: ${highscore}`,
 			72
-		).setOrigin(0, 1)
+		).setOrigin(0.5, 1)
 
 		this.scale.on('resize', this.resize, this)
 		this.resize()
@@ -131,7 +131,7 @@ export class GameOver extends Phaser.Scene {
 		const centerY = layoutHeight(this) / 2
 
 		this.layoutButtons(centerX, centerY)
-		this.personalHighscoreText.setPosition(50, layoutHeight(this) - 25)
+		this.personalHighscoreText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 25)
 	}
 
 	layoutButtons = (centerX: number, centerY: number) => {
