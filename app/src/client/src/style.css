@@ -10,13 +10,16 @@ body {
 	touch-action: manipulation;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
+	overscroll-behavior: none;
 }
 
 body {
 	position: fixed;
 	inset: 0;
 	background: #0b1416;
-	cursor: url('/assets/objects/Icon_Cursor_02a.png') 0 0, auto;
+	cursor:
+		url('/assets/objects/Icon_Cursor_02a.png') 0 0,
+		auto;
 }
 
 /* Centers the framed game; padding reserves space for the pipe overlay. */
@@ -133,5 +136,7 @@ body {
 	margin: 0;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
-	cursor: url('/assets/objects/Icon_Cursor_02a.png') 0 0, auto;
+	cursor:
+		url('/assets/objects/Icon_Cursor_02a.png') 0 0,
+		auto;
 }

@@ -21,6 +21,10 @@ export const gameConfig: Types.Core.GameConfig = {
 			// the desktop scroll and the Reddit post can't be scrolled past the game.
 			preventDefaultWheel: false,
 		},
+		touch: {
+			// Same for iOS touch — capture:true blocks vertical swipes from reaching Reddit.
+			capture: false,
+		},
 	},
 	scale: {
 		// Fixed 480×720 world; Phaser letterboxes/scales the canvas to the embed on every device.
