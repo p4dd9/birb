@@ -1,0 +1,60 @@
+{ "frames": {
+   "hearts 0.png": {
+    "frame": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "sourceSize": { "w": 17, "h": 16 },
+    "duration": 100
+   },
+   "hearts 1.png": {
+    "frame": { "x": 17, "y": 0, "w": 17, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "sourceSize": { "w": 17, "h": 16 },
+    "duration": 100
+   },
+   "hearts 2.png": {
+    "frame": { "x": 34, "y": 0, "w": 17, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "sourceSize": { "w": 17, "h": 16 },
+    "duration": 100
+   },
+   "hearts 3.png": {
+    "frame": { "x": 51, "y": 0, "w": 17, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "sourceSize": { "w": 17, "h": 16 },
+    "duration": 100
+   },
+   "hearts 4.png": {
+    "frame": { "x": 68, "y": 0, "w": 17, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 17, "h": 16 },
+    "sourceSize": { "w": 17, "h": 16 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.17.2-x64",
+  "image": "hearts.png",
+  "format": "RGBA8888",
+  "size": { "w": 85, "h": 16 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Die", "from": 0, "to": 4, "direction": "forward", "color": "#000000ff" },
+   { "name": "Still", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

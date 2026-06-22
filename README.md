@@ -68,9 +68,15 @@ Moderators can change the city background, birb and pipes to match their communi
 
 ## 📝 Changelog
 
-v1.0.2
-
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
+
+v1.0.3
+
+- Feature:
+- Fix: ui alignment
+- Fix: out of sync mute button
+
+v1.0.2
 
 - Chore: refactor game completely into inline feed and throw out a lot of features
 - Chore: bump devvit 0.11.11 to 0.13.3

@@ -66,6 +66,10 @@ export class GameOver extends Phaser.Scene {
 
 		applyMuteToGame(this.game, loadMutedPref())
 
+		// The WebAudio context may still be locked (suspended) when mute is first applied, which lets
+		// the flag and the audible state drift apart. Re-apply the persisted pref the moment it unlocks.
+		this.syncMuteOnUnlock()
+
 		this.muteButtonText = new MagoText(this, centerX, centerY, this.getMuteButtonText(), 72)
 			.setInteractive({ cursor: BIRB_CURSOR })
 			.on('pointerdown', this.toggleMute, this)
@@ -73,7 +77,7 @@ export class GameOver extends Phaser.Scene {
 		this.personalHighscoreText = new MagoText(
 			this,
 			layoutWidth(this) / 2,
-			layoutHeight(this) - 25,
+			layoutHeight(this) - 15,
 			`Highscore: ${highscore}`,
 			72
 		).setOrigin(0.5, 1)
@@ -115,15 +119,26 @@ export class GameOver extends Phaser.Scene {
 
 	getMuteButtonText = (): string => (this.game.sound.mute ? 'Unmute' : 'Mute')
 
-	toggleMute = (): void => {
-		if (this.sound.locked) return
+	/** Re-apply the persisted mute pref once the audio context unlocks, so the flag matches what's audible. */
+	syncMuteOnUnlock = (): void => {
+		if (!this.sound.locked) return
+		this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
+			applyMuteToGame(this.game, loadMutedPref())
+			this.muteButtonText?.setText(this.getMuteButtonText())
+		})
+	}
 
-		this.sound.play('buttonclick1', { volume: 0.5 })
+	toggleMute = (): void => {
 		const nextMuted = !this.game.sound.mute
 		this.sound.setMute(nextMuted)
 		applyMuteToGame(this.game, nextMuted)
 		saveMutedPref(nextMuted)
 		this.muteButtonText.setText(this.getMuteButtonText())
+
+		// Only audible once unlocked; muting also makes the click pointless, so skip it then.
+		if (!this.sound.locked && !nextMuted) {
+			this.sound.play('buttonclick1', { volume: 0.5 })
+		}
 	}
 
 	resize() {
@@ -131,7 +146,7 @@ export class GameOver extends Phaser.Scene {
 		const centerY = layoutHeight(this) / 2
 
 		this.layoutButtons(centerX, centerY)
-		this.personalHighscoreText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 25)
+		this.personalHighscoreText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 15)
 	}
 
 	layoutButtons = (centerX: number, centerY: number) => {
