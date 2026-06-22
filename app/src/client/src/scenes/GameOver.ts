@@ -10,6 +10,7 @@ import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
 import { MagoText } from '../objects/MagoText'
 import { MuteToggle } from '../objects/MuteToggle'
 import { openLivesPurchaseMenu } from './LivesPurchaseMenu'
+import type { Game } from './Game'
 
 const BUTTON_TEXT_PADDING_RATIO = 0.35
 const BUTTON_HEIGHT = 100
@@ -20,6 +21,7 @@ type GameOverData = {
 	newScore: number
 	highscore: number
 	attempts: number
+	taps: number
 	livesBefore: number
 	livesAfter: number
 	lives: LivesData
@@ -38,6 +40,7 @@ export class GameOver extends Phaser.Scene {
 	muteToggle?: MuteToggle
 
 	private newScore = 0
+	private runTaps = 0
 	private showShareButton = false
 	private outOfLives = false
 	private unsubscribeAppData?: () => void
@@ -52,13 +55,15 @@ export class GameOver extends Phaser.Scene {
 		const centerX = layoutWidth(this) / 2
 		const centerY = layoutHeight(this) / 2
 
-		const { isNewHighScore, highscore, newScore, livesBefore, livesAfter, lives } = data
+		const { isNewHighScore, highscore, newScore, taps, livesBefore, livesAfter, lives } = data
 		this.newScore = newScore
+		this.runTaps = taps
 		this.showShareButton = isNewHighScore && newScore > 0
 		this.outOfLives = livesAfter <= 0
 
 		if (isNewHighScore) {
 			this.sound.play('victory', { volume: 0.2 })
+			;(this.scene.get('Game') as Game).fireworks.startLoop()
 		}
 
 		applyMuteToGame(this.game, loadMutedPref())
@@ -162,6 +167,7 @@ export class GameOver extends Phaser.Scene {
 			await shareScoreComment({
 				comment: result.values.comment,
 				score: this.newScore,
+				taps: this.runTaps,
 			})
 			showToast('Score shared in the thread.')
 		} catch (error) {

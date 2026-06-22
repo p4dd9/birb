@@ -3,7 +3,7 @@
 I want to say thanks to those people who listen to my ideas, playtest and add their honest opinion on it!  
 Thanks to Flo, Jürgen (https://www.ilikescifi.com/), Drew, Sevi and Boris!
 
-## Assets
+## Assets & Credits
 
 You may not use assets from this project freely if you do not understand the licensing of those for your hobby or commercial project. Please read them carefully or get in touch with the creator.
 
@@ -15,3 +15,11 @@ You may not use assets from this project freely if you do not understand the lic
 - SFX: https://www.ilikescifi.com
 - Music: https://juhanijunkala.com CC0
 - Flag https://twiceuponatime.itch.io/waving-triangular-flag
+- Firefwork https://nyknck.itch.io/firework-pixel
+
+- Firework Sounds: https://jdsherbert.itch.io/pixel-explosions-sfx-pack
+  Attributions
+
+Art designed by Pixel Eric
+Produced using rFXGen.
+Rendered using FL Studio 21.

@@ -3,6 +3,7 @@ import { getDailyNumber, saveScore, shouldAutoplayMusic } from '../api/birbClien
 import { birbBridge } from '../api/birbBridge'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
 import { BIRB_DISPLAY_SCALE } from '../config/birbs.config'
+import { FIREWORK_BURST_COUNT } from '../config/fireworks.config'
 import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
 import { PipeGaps } from '../config/pipe.config'
 import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
@@ -12,6 +13,7 @@ import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import { openLivesPurchaseMenu } from '../scenes/LivesPurchaseMenu'
 import { changeBackgroundStyle } from '../util/dom'
+import { FireworksManager } from '../effects/FireworksManager'
 import { Rain } from '../weather/Rain'
 
 const speedEarth = 0.26 * 3.5
@@ -47,6 +49,10 @@ export class Game extends Phaser.Scene {
 	earth: Phaser.GameObjects.TileSprite
 
 	rain: Rain
+	fireworks: FireworksManager
+	personalHighscore = 0
+	isFirstDailyRun = false
+	hasBeatenPersonalHighscore = false
 	gameplayLayout!: GameplayLayout
 	livesHud?: LivesHud
 	muteToggle?: MuteToggle
@@ -70,6 +76,12 @@ export class Game extends Phaser.Scene {
 		this.stopPipeSpawning()
 
 		this.rain = new Rain(this)
+		this.fireworks = new FireworksManager(this)
+
+		const you = this.registry.get('community:you') as { highscore: number; attempts: number } | undefined
+		this.personalHighscore = you?.highscore ?? 0
+		this.isFirstDailyRun = (you?.attempts ?? 0) === 0
+		this.hasBeatenPersonalHighscore = false
 
 		this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')
@@ -117,7 +129,6 @@ export class Game extends Phaser.Scene {
 					return
 				}
 				this.start()
-				return
 			}
 			this.tapCount++
 			this.player.flap()
@@ -268,6 +279,14 @@ export class Game extends Phaser.Scene {
 	incrementScore(score: number = 1) {
 		this.currentScore += score
 		this.score.setText(this.currentScore.toString())
+		this.tryStartPersonalHighscoreFireworks()
+	}
+
+	tryStartPersonalHighscoreFireworks = (): void => {
+		if (this.hasBeatenPersonalHighscore || this.currentScore <= this.personalHighscore) return
+		this.hasBeatenPersonalHighscore = true
+		if (this.isFirstDailyRun) return
+		this.fireworks.playBurst(FIREWORK_BURST_COUNT)
 	}
 
 	resetScore() {
@@ -322,6 +341,7 @@ export class Game extends Phaser.Scene {
 				newScore: this.currentScore,
 				highscore: result.highscore,
 				attempts: result.attempts,
+				taps: this.tapCount,
 				livesBefore,
 				livesAfter: result.lives.count,
 				lives: result.lives,
@@ -337,6 +357,7 @@ export class Game extends Phaser.Scene {
 				newScore: this.currentScore,
 				highscore: isNewHighScore ? this.currentScore : fallbackHighscore,
 				attempts: fallbackAttempts,
+				taps: this.tapCount,
 				livesBefore,
 				livesAfter: Math.max(0, livesBefore - 1),
 				lives: { ...fallbackLives, count: Math.max(0, livesBefore - 1) },

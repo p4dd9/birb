@@ -51,14 +51,18 @@ scoreController.post('/', requireAuth, async (req, res) => {
 // POST /api/v1/score/share — comment the player's score on the current post.
 scoreController.post('/share', requireAuth, async (req, res) => {
 	try {
-		const { comment, score } = (req.body ?? {}) as Partial<ShareScoreCommentRequest>
+		const { comment, score, taps } = (req.body ?? {}) as Partial<ShareScoreCommentRequest>
 
-		if (typeof comment !== 'string' || typeof score !== 'number') {
-			res.status(400).json({ error: 'comment and score are required' })
+		if (typeof comment !== 'string' || typeof score !== 'number' || typeof taps !== 'number') {
+			res.status(400).json({ error: 'comment, score and taps are required' })
 			return
 		}
 
-		await shareScoreComment(comment, Math.max(0, Math.floor(score)))
+		await shareScoreComment(
+			comment,
+			Math.max(0, Math.floor(score)),
+			Math.max(0, Math.floor(taps))
+		)
 		res.json({ ok: true })
 	} catch (error) {
 		serverLogger.error(`POST /score/share failed: ${error}`)

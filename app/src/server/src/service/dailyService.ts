@@ -284,10 +284,11 @@ export const saveDailyScore = async (
 
 	const prevBest = Number(prevBestRaw ?? 0)
 	const isNewHighScore = score > prevBest
+	const isHighScoreRun = score >= prevBest
 
 	// Per-daily attempts; taps reflect the highscore run only
 	const attempts = await redis.hIncrBy(dailyAttemptsKey(dailyNumber), userId, 1)
-	if (isNewHighScore) {
+	if (isHighScoreRun) {
 		await Promise.all([
 			redis.zAdd(scoresKey, { member: userId, score }),
 			redis.hSet(dailyTapsKey(dailyNumber), userId, String(taps)),

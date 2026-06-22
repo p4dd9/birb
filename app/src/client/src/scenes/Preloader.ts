@@ -1,8 +1,15 @@
 import { PLAYER_FRAME_COUNT } from '@birb/shared/keys'
+import Phaser from 'phaser'
 import { birbBridge } from '../api/birbBridge'
 import { getDailyNumber, isActiveDailyPost, isDailyPost } from '../api/birbClient'
 import { bindSceneCameraScale } from '../cameraScale'
 import { birbFlapAnimKey, birbFlapFrameNames, birbFlapRepeatAnimKey } from '../config/birbs.config'
+import {
+	FIREWORK_VARIANTS,
+	fireworkAnimKey,
+	fireworkFrameName,
+	type FireworkVariant,
+} from '../config/fireworks.config'
 
 export class Preloader extends Phaser.Scene {
 	constructor() {
@@ -51,11 +58,14 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('PickupKey_2', 'audio/PickupKey_2.mp3')
 		this.load.audio('PickupKey_3', 'audio/PickupKey_3.mp3')
 		this.load.audio('Pipes_Down1', 'audio/Pipes_Down1.mp3')
+		this.load.audio('explo1', 'audio/explo1.mp3')
+		this.load.audio('explo2', 'audio/explo2.mp3')
 
 		this.load.atlas('birbs', 'birbs.png', 'birbs.json')
 
 		this.load.atlas('hearts', 'gui/hearts.png', 'gui/hearts.json')
 		this.load.atlas('sound_icon', 'gui/sound_icon.png', 'gui/sound_icon.json')
+		this.load.atlas('fireworks', 'objects/fireworks.png', 'objects/fireworks.json')
 		this.load.image('hearts_portrait', 'gui/hearts_portrait.png')
 
 		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
@@ -69,6 +79,10 @@ export class Preloader extends Phaser.Scene {
 
 	create() {
 		bindSceneCameraScale(this)
+
+		// Pixel HUD art — avoid linear filtering bleeding atlas gutters / AA fringes.
+		this.textures.get('sound_icon').setFilter(Phaser.Textures.FilterMode.NEAREST)
+		this.textures.get('fireworks').setFilter(Phaser.Textures.FilterMode.NEAREST)
 
 		this.sound.add('Junkala_Stake_2')
 		this.sound.add('Junkala_Select_2')
@@ -221,6 +235,32 @@ export class Preloader extends Phaser.Scene {
 				suffix: '.png',
 			}),
 			frameRate: 10,
+			repeat: 0,
+		})
+
+		for (const variant of FIREWORK_VARIANTS) {
+			this.createFireworkAnimations(variant)
+		}
+	}
+
+	createFireworkAnimations = (variant: FireworkVariant): void => {
+		this.anims.create({
+			key: fireworkAnimKey(variant, 'lift'),
+			frames: [{ key: 'fireworks', frame: fireworkFrameName(variant, 0) }],
+			frameRate: 12,
+		})
+
+		this.anims.create({
+			key: fireworkAnimKey(variant, 'fly'),
+			frames: [1, 2].map((frame) => ({ key: 'fireworks', frame: fireworkFrameName(variant, frame) })),
+			frameRate: 12,
+			repeat: -1,
+		})
+
+		this.anims.create({
+			key: fireworkAnimKey(variant, 'explode'),
+			frames: [3, 4, 5, 6].map((frame) => ({ key: 'fireworks', frame: fireworkFrameName(variant, frame) })),
+			frameRate: 12,
 			repeat: 0,
 		})
 	}

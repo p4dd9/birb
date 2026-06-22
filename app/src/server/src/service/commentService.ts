@@ -3,7 +3,7 @@ import { dailyClosedCommentKey, dailyIntroCommentKey, serverLogger } from '@birb
 import { context, reddit, redis } from '@devvit/web/server'
 
 /** Post the player's share comment on the current post thread. */
-export const shareScoreComment = async (comment: string, score: number) => {
+export const shareScoreComment = async (comment: string, score: number, taps: number) => {
 	const postId = context.postId
 	if (!postId) {
 		throw new Error('Missing postId')
@@ -14,7 +14,7 @@ export const shareScoreComment = async (comment: string, score: number) => {
 		throw new Error('Comment is required')
 	}
 
-	const text = `${trimmed}\n\nHighscore: ${score}`
+	const text = `${trimmed}\n\nHighscore: ${score} points in ${taps} flaps`
 
 	await reddit.submitComment({
 		id: postId,

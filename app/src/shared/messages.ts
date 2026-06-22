@@ -124,6 +124,8 @@ export type PurchaseRequest = {
 export type ShareScoreCommentRequest = {
 	comment: string
 	score: number
+	/** Flaps/taps in the run being shared. */
+	taps: number
 }
 
 /** Response of `POST /api/v1/score/share`. */

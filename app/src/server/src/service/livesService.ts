@@ -155,6 +155,7 @@ export const manageLivesFormDefinition = {
 			name: 'action',
 			label: 'Action',
 			required: true,
+			defaultValue: ['view'],
 			options: [
 				{ label: 'View (log to server)', value: 'view' },
 				{ label: 'Add lives', value: 'add' },

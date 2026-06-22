@@ -24,6 +24,13 @@ const parseAmount = (raw: unknown): number | null => {
 	return n
 }
 
+/** Devvit select fields submit as string[]; menu form defaults may use a plain string. */
+const parseSelectValue = (raw: unknown): string => {
+	if (typeof raw === 'string') return raw
+	if (Array.isArray(raw) && typeof raw[0] === 'string') return raw[0]
+	return ''
+}
+
 // [ADMIN] Create Launcher Post — in-feed menu + Play button.
 menuController.post('/create-launcher', async (_req, res) => {
 	try {
@@ -63,7 +70,7 @@ menuController.post('/manage-lives', requireAuthAdmin, (_req, res) => {
 		showForm: {
 			name: 'manageLivesForm',
 			form: manageLivesFormDefinition,
-			data: { action: 'view', amount: 5 },
+			data: { action: ['view'], amount: 5 },
 		},
 	})
 })
@@ -75,7 +82,7 @@ menuController.post('/manage-lives-submit', requireAuthAdmin, async (req, res) =
 		return
 	}
 
-	const action = typeof req.body?.action === 'string' ? req.body.action : ''
+	const action = parseSelectValue(req.body?.action)
 	const { userId, username } = resolved
 
 	try {
