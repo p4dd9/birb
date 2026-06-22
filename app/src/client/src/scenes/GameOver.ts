@@ -1,44 +1,71 @@
+import type { LivesData } from '@birb/shared'
 import { clientLogger } from '@birb/shared'
 import { showForm, showToast } from '@devvit/web/client'
 import { shareScoreComment } from '../api/birbClient'
+import { birbBridge } from '../api/birbBridge'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
-import { applyMuteToGame, loadMutedPref, saveMutedPref } from '../util/audioPrefs'
+import { applyMuteToGame, loadMutedPref } from '../util/audioPrefs'
 import { BIRB_CURSOR } from '../util/dom'
+import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
 import { MagoText } from '../objects/MagoText'
+import { MuteToggle } from '../objects/MuteToggle'
+import { openLivesPurchaseMenu } from './LivesPurchaseMenu'
 
 const BUTTON_TEXT_PADDING_RATIO = 0.35
 const BUTTON_HEIGHT = 100
 const BUTTON_STACK_GAP = 24
+
+type GameOverData = {
+	isNewHighScore: boolean
+	newScore: number
+	highscore: number
+	attempts: number
+	livesBefore: number
+	livesAfter: number
+	lives: LivesData
+}
 
 export class GameOver extends Phaser.Scene {
 	replayButton: Phaser.GameObjects.Image
 	replayButtonText: MagoText
 	shareButton?: Phaser.GameObjects.Image
 	shareButtonText?: MagoText
-	muteButtonText: MagoText
+	getLivesButton?: Phaser.GameObjects.Image
+	getLivesButtonText?: MagoText
 
 	personalHighscoreText: MagoText
+	livesHud?: LivesHud
+	muteToggle?: MuteToggle
 
 	private newScore = 0
 	private showShareButton = false
+	private outOfLives = false
+	private unsubscribeAppData?: () => void
 
 	constructor() {
 		super('GameOver')
 	}
 
-	create(data: { isNewHighScore: boolean; newScore: number; highscore: number; attempts: number }) {
+	create(data: GameOverData) {
 		bindSceneCameraScale(this)
 
 		const centerX = layoutWidth(this) / 2
 		const centerY = layoutHeight(this) / 2
 
-		const { isNewHighScore, highscore, newScore } = data
+		const { isNewHighScore, highscore, newScore, livesBefore, livesAfter, lives } = data
 		this.newScore = newScore
 		this.showShareButton = isNewHighScore && newScore > 0
+		this.outOfLives = livesAfter <= 0
 
 		if (isNewHighScore) {
 			this.sound.play('victory', { volume: 0.2 })
 		}
+
+		applyMuteToGame(this.game, loadMutedPref())
+
+		this.livesHud = new LivesHud(this, { ...lives, count: livesBefore })
+		this.livesHud.playLifeLostAnimation(livesBefore, livesAfter)
+		this.muteToggle = new MuteToggle(this)
 
 		this.replayButton = this.add
 			.image(centerX, centerY, 'UI_Flat_Frame03a')
@@ -46,8 +73,7 @@ export class GameOver extends Phaser.Scene {
 			.setInteractive({ cursor: BIRB_CURSOR })
 			.once('pointerdown', () => {
 				this.sound.play('buttonclick1', { volume: 0.5 })
-				this.scale.off('resize', this.resize, this)
-				this.scene.start('Game')
+				this.handleRestartPress()
 			})
 
 		this.replayButtonText = new MagoText(this, centerX, centerY, 'Restart', 72)
@@ -64,15 +90,18 @@ export class GameOver extends Phaser.Scene {
 			this.shareButtonText = new MagoText(this, centerX, centerY, 'Share', 72)
 		}
 
-		applyMuteToGame(this.game, loadMutedPref())
+		if (this.outOfLives) {
+			this.getLivesButton = this.add
+				.image(centerX, centerY, 'UI_Flat_Frame03a')
+				.setOrigin(0.5)
+				.setInteractive({ cursor: BIRB_CURSOR })
+				.on('pointerdown', () => {
+					this.sound.play('buttonclick1', { volume: 0.5 })
+					openLivesPurchaseMenu(this)
+				})
 
-		// The WebAudio context may still be locked (suspended) when mute is first applied, which lets
-		// the flag and the audible state drift apart. Re-apply the persisted pref the moment it unlocks.
-		this.syncMuteOnUnlock()
-
-		this.muteButtonText = new MagoText(this, centerX, centerY, this.getMuteButtonText(), 72)
-			.setInteractive({ cursor: BIRB_CURSOR })
-			.on('pointerdown', this.toggleMute, this)
+			this.getLivesButtonText = new MagoText(this, centerX, centerY, 'Get Lives', 72)
+		}
 
 		this.personalHighscoreText = new MagoText(
 			this,
@@ -83,7 +112,31 @@ export class GameOver extends Phaser.Scene {
 		).setOrigin(0.5, 1)
 
 		this.scale.on('resize', this.resize, this)
+		this.unsubscribeAppData = birbBridge.onAppData((appData) => {
+			this.registry.set('lives', appData.lives)
+			this.livesHud?.setLives(appData.lives)
+			if (appData.lives.count > 0 && this.outOfLives) {
+				this.outOfLives = false
+				this.getLivesButton?.destroy()
+				this.getLivesButtonText?.destroy()
+				this.getLivesButton = undefined
+				this.getLivesButtonText = undefined
+				this.resize()
+			}
+		})
 		this.resize()
+	}
+
+	handleRestartPress = (): void => {
+		const lives = readLivesFromRegistry(this)
+		if (lives.count <= 0) {
+			openLivesPurchaseMenu(this)
+			return
+		}
+
+		this.unsubscribeAppData?.()
+		this.scale.off('resize', this.resize, this)
+		this.scene.start('Game')
 	}
 
 	handleSharePress = async () => {
@@ -117,42 +170,20 @@ export class GameOver extends Phaser.Scene {
 		}
 	}
 
-	getMuteButtonText = (): string => (this.game.sound.mute ? 'Unmute' : 'Mute')
-
-	/** Re-apply the persisted mute pref once the audio context unlocks, so the flag matches what's audible. */
-	syncMuteOnUnlock = (): void => {
-		if (!this.sound.locked) return
-		this.sound.once(Phaser.Sound.Events.UNLOCKED, () => {
-			applyMuteToGame(this.game, loadMutedPref())
-			this.muteButtonText?.setText(this.getMuteButtonText())
-		})
-	}
-
-	toggleMute = (): void => {
-		const nextMuted = !this.game.sound.mute
-		this.sound.setMute(nextMuted)
-		applyMuteToGame(this.game, nextMuted)
-		saveMutedPref(nextMuted)
-		this.muteButtonText.setText(this.getMuteButtonText())
-
-		// Only audible once unlocked; muting also makes the click pointless, so skip it then.
-		if (!this.sound.locked && !nextMuted) {
-			this.sound.play('buttonclick1', { volume: 0.5 })
-		}
-	}
-
 	resize() {
 		const centerX = layoutWidth(this) / 2
 		const centerY = layoutHeight(this) / 2
 
 		this.layoutButtons(centerX, centerY)
 		this.personalHighscoreText.setPosition(layoutWidth(this) / 2, layoutHeight(this) - 15)
+		this.livesHud?.layout()
+		this.muteToggle?.layout()
 	}
 
 	layoutButtons = (centerX: number, centerY: number) => {
 		const stackHeights = [BUTTON_HEIGHT]
 		if (this.showShareButton) stackHeights.push(BUTTON_HEIGHT)
-		stackHeights.push(this.muteButtonText.displayHeight)
+		if (this.outOfLives && this.getLivesButtonText) stackHeights.push(BUTTON_HEIGHT)
 
 		const totalHeight =
 			stackHeights.reduce((sum, height) => sum + height, 0) + (stackHeights.length - 1) * BUTTON_STACK_GAP
@@ -168,8 +199,10 @@ export class GameOver extends Phaser.Scene {
 			y += BUTTON_HEIGHT / 2
 		}
 
-		y += BUTTON_STACK_GAP + this.muteButtonText.displayHeight / 2
-		this.muteButtonText.setPosition(centerX, y)
+		if (this.outOfLives && this.getLivesButton && this.getLivesButtonText) {
+			y += BUTTON_STACK_GAP + BUTTON_HEIGHT / 2
+			this.layoutButton(this.getLivesButton, this.getLivesButtonText, centerX, y)
+		}
 	}
 
 	layoutButton = (button: Phaser.GameObjects.Image, label: MagoText, x: number, y: number) => {

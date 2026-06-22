@@ -1,12 +1,16 @@
 import { clientLogger } from '@birb/shared'
 import { getDailyNumber, saveScore, shouldAutoplayMusic } from '../api/birbClient'
+import { birbBridge } from '../api/birbBridge'
 import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
 import { BIRB_DISPLAY_SCALE } from '../config/birbs.config'
 import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
 import { PipeGaps } from '../config/pipe.config'
+import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
 import { MagoText } from '../objects/MagoText'
+import { MuteToggle } from '../objects/MuteToggle'
 import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
+import { openLivesPurchaseMenu } from '../scenes/LivesPurchaseMenu'
 import { changeBackgroundStyle } from '../util/dom'
 import { Rain } from '../weather/Rain'
 
@@ -44,6 +48,9 @@ export class Game extends Phaser.Scene {
 
 	rain: Rain
 	gameplayLayout!: GameplayLayout
+	livesHud?: LivesHud
+	muteToggle?: MuteToggle
+	private unsubscribeAppData?: () => void
 
 	constructor() {
 		super('Game')
@@ -97,10 +104,18 @@ export class Game extends Phaser.Scene {
 		this.createIntroHint(scaleX, scaleY)
 		this.score = new MagoText(this, layoutWidth(this) / 2, 12, '0', 121).setDepth(100).setOrigin(0.5, 0)
 
+		const lives = readLivesFromRegistry(this)
+		this.livesHud = new LivesHud(this, lives)
+		this.muteToggle = new MuteToggle(this)
+
 		this.physics.world.setBounds(0, 0, layoutWidth(this), layoutHeight(this))
 
 		this.input.on('pointerdown', () => {
 			if (!this.isGameStarted) {
+				if (readLivesFromRegistry(this).count <= 0) {
+					openLivesPurchaseMenu(this)
+					return
+				}
 				this.start()
 				return
 			}
@@ -109,6 +124,10 @@ export class Game extends Phaser.Scene {
 		})
 
 		this.scale.on('resize', this.resize, this)
+		this.unsubscribeAppData = birbBridge.onAppData((appData) => {
+			this.registry.set('lives', appData.lives)
+			this.livesHud?.setLives(appData.lives)
+		})
 
 		this.resetScore()
 		this.resize()
@@ -205,6 +224,8 @@ export class Game extends Phaser.Scene {
 		this.earth.setSize(width, earthH)
 
 		this.score.setPosition(width / 2, 12)
+		this.livesHud?.layout()
+		this.muteToggle?.layout()
 		if (!this.isGameStarted) {
 			this.player.setPosition(playerStartX, playerStartY)
 			this.syncIntroHintPosition()
@@ -272,10 +293,16 @@ export class Game extends Phaser.Scene {
 		void this.submitScore()
 	}
 
+	hideTopHud = (): void => {
+		this.livesHud?.setVisible(false)
+		this.muteToggle?.setVisible(false)
+	}
+
 	async submitScore() {
 		const you = this.registry.get('community:you') as { highscore: number; attempts: number } | undefined
 		const fallbackHighscore = you?.highscore ?? 0
 		const fallbackAttempts = (you?.attempts ?? 0) + 1
+		const livesBefore = readLivesFromRegistry(this).count
 
 		try {
 			const dailyNumber = getDailyNumber()
@@ -287,22 +314,32 @@ export class Game extends Phaser.Scene {
 				score: this.currentScore,
 				taps: this.tapCount,
 			})
+			this.registry.set('lives', result.lives)
 			this.scale.off('resize', this.resize, this)
+			this.hideTopHud()
 			this.scene.run('GameOver', {
 				isNewHighScore: result.isNewHighScore,
 				newScore: this.currentScore,
 				highscore: result.highscore,
 				attempts: result.attempts,
+				livesBefore,
+				livesAfter: result.lives.count,
+				lives: result.lives,
 			})
 		} catch (error) {
 			clientLogger.error('Failed to save score', error)
 			const isNewHighScore = this.currentScore > fallbackHighscore
+			const fallbackLives = readLivesFromRegistry(this)
 			this.scale.off('resize', this.resize, this)
+			this.hideTopHud()
 			this.scene.run('GameOver', {
 				isNewHighScore,
 				newScore: this.currentScore,
 				highscore: isNewHighScore ? this.currentScore : fallbackHighscore,
 				attempts: fallbackAttempts,
+				livesBefore,
+				livesAfter: Math.max(0, livesBefore - 1),
+				lives: { ...fallbackLives, count: Math.max(0, livesBefore - 1) },
 			})
 		}
 	}

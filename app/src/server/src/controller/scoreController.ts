@@ -5,6 +5,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import { shareScoreComment } from '../service/commentService'
 import { getLatestDailyNumber, saveDailyScore } from '../service/dailyService'
+import { consumePlayerLife } from '../service/livesService'
 
 export const scoreController = Router()
 
@@ -39,7 +40,8 @@ scoreController.post('/', requireAuth, async (req, res) => {
 			Math.max(0, Math.floor(score)),
 			Math.max(0, Math.floor(taps))
 		)
-		res.json(result)
+		const lives = await consumePlayerLife(userId)
+		res.json({ ...result, lives })
 	} catch (error) {
 		serverLogger.error(`POST /score failed: ${error}`)
 		res.status(500).json({ error: String(error) })

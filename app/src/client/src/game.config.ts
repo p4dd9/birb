@@ -5,6 +5,7 @@ import './phaser-global'
 import { Boot } from './scenes/Boot'
 import { Game } from './scenes/Game'
 import { GameOver } from './scenes/GameOver'
+import { LivesPurchaseMenu } from './scenes/LivesPurchaseMenu'
 import { Menu } from './scenes/Menu'
 import { Preloader } from './scenes/Preloader'
 
@@ -46,5 +47,5 @@ export const gameConfig: Types.Core.GameConfig = {
 		min: 40,
 	},
 	transparent: true,
-	scene: [Boot, Preloader, Menu, Game, GameOver],
+	scene: [Boot, Preloader, Menu, Game, GameOver, LivesPurchaseMenu],
 }

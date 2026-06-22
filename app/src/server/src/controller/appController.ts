@@ -5,6 +5,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import { getCommunityStats, touchOnlinePlayers } from '../service/communityService'
 import { getDailyDateKey, getDailyLeaderboard, getDailySeed, getLatestDailyNumber, getLatestDailyPostUrl, getYouStats } from '../service/dailyService'
+import { syncPlayerLives } from '../service/livesService'
 import { getIapData } from '../service/purchaseService'
 
 export const appController = Router()
@@ -18,6 +19,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 		const dailyNumber = Number.isFinite(parsed) && parsed > 0 ? parsed : latestDailyNumber
 
 		if (dailyNumber === 0) {
+			const lives = await syncPlayerLives(userId)
 			const empty: AppData = {
 				config: configFromSeed(0),
 				name: context.subredditName ?? 'BIRB',
@@ -30,13 +32,15 @@ appController.get('/data', requireAuth, async (req, res) => {
 				leaderboard: [],
 				stats: { communityScore: 0, communityAttempts: 0, communityPlayers: 0 },
 				iap: { membershipActiveUntil: null },
+				lives,
 				subscribed: false,
 			}
 			res.json(empty)
 			return
 		}
 
-		const [seed, you, online, leaderboard, stats, iap, subscribedFlag, storedDateKey, latestDailyPostUrl] = await Promise.all([
+		const [seed, you, online, leaderboard, stats, iap, subscribedFlag, storedDateKey, latestDailyPostUrl, lives] =
+			await Promise.all([
 			getDailySeed(dailyNumber),
 			getYouStats(userId, dailyNumber),
 			touchOnlinePlayers(userId),
@@ -46,6 +50,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			redis.get(subscribedKey(userId)),
 			getDailyDateKey(dailyNumber),
 			getLatestDailyPostUrl(),
+			syncPlayerLives(userId),
 		])
 
 		const appData: AppData = {
@@ -60,6 +65,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			leaderboard,
 			stats,
 			iap,
+			lives,
 			subscribed: subscribedFlag === 'true',
 		}
 		res.json(appData)

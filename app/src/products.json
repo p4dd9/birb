@@ -12,6 +12,48 @@
 				"days": "30"
 			},
 			"accountingType": "VALID_FOR_30D"
+		},
+		{
+			"sku": "birb-lives-25",
+			"displayName": "25 Lives",
+			"description": "Instantly add 25 lives to keep flapping.",
+			"price": 50,
+			"images": {
+				"icon": "assets/gui/hearts_portrait.png"
+			},
+			"metadata": {
+				"category": "lives",
+				"livesAmount": "25"
+			},
+			"accountingType": "INSTANT"
+		},
+		{
+			"sku": "birb-lives-75",
+			"displayName": "75 Lives",
+			"description": "Instantly add 75 lives to keep flapping.",
+			"price": 100,
+			"images": {
+				"icon": "assets/gui/hearts_portrait.png"
+			},
+			"metadata": {
+				"category": "lives",
+				"livesAmount": "75"
+			},
+			"accountingType": "INSTANT"
+		},
+		{
+			"sku": "birb-lives-225",
+			"displayName": "225 Lives",
+			"description": "Instantly add 225 lives to keep flapping.",
+			"price": 250,
+			"images": {
+				"icon": "assets/gui/hearts_portrait.png"
+			},
+			"metadata": {
+				"category": "lives",
+				"livesAmount": "225"
+			},
+			"accountingType": "INSTANT"
 		}
 	]
 }

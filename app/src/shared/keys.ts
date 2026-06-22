@@ -51,6 +51,12 @@ export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000
 
 export const subscribedKey = (userId: string) => `subscribed:${userId}`
 
+/** Per-player lives pool (hash: count, lastRefillAt). */
+export const playerLivesKey = (userId: string) => `player:${userId}:lives`
+
+/** Idempotency lock for fulfilled payment orders. */
+export const processedOrderKey = (orderId: string) => `payment:order:processed:${orderId}`
+
 /* --------------------------- date & seed ----------------------------- */
 
 /** UTC day key, formatted YYYY-MM-DD. */

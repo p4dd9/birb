@@ -171,6 +171,7 @@ export const applyAppDataToRegistry = (game: Phaser.Game, appData: AppData): voi
 	game.registry.set('daily:number', appData.dailyNumber)
 	game.registry.set('daily:latestNumber', appData.latestDailyNumber)
 	game.registry.set('daily:latestPostUrl', appData.latestDailyPostUrl)
+	game.registry.set('lives', appData.lives)
 }
 
 const publishAppData = (appData: AppData): void => {

@@ -276,7 +276,7 @@ export const saveDailyScore = async (
 	dailyNumber: number,
 	score: number,
 	taps: number
-): Promise<SaveScoreResponse> => {
+): Promise<Omit<SaveScoreResponse, 'lives'>> => {
 	const subredditId = context.subredditId
 	const scoresKey = dailyScoresKey(dailyNumber)
 
@@ -285,11 +285,13 @@ export const saveDailyScore = async (
 	const prevBest = Number(prevBestRaw ?? 0)
 	const isNewHighScore = score > prevBest
 
-	// Per-daily attempts + taps
+	// Per-daily attempts; taps reflect the highscore run only
 	const attempts = await redis.hIncrBy(dailyAttemptsKey(dailyNumber), userId, 1)
-	await redis.hIncrBy(dailyTapsKey(dailyNumber), userId, taps)
 	if (isNewHighScore) {
-		await redis.zAdd(scoresKey, { member: userId, score })
+		await Promise.all([
+			redis.zAdd(scoresKey, { member: userId, score }),
+			redis.hSet(dailyTapsKey(dailyNumber), userId, String(taps)),
+		])
 	}
 
 	// All-time community rollups (stats + distinct player count)

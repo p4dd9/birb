@@ -25,11 +25,11 @@ export const shareScoreComment = async (comment: string, score: number) => {
 
 const BIRB_DESCRIPTION = `**What is Birb?**
 
-Birb is an arcade game built for Reddit. Tap or click to flap through pipes on a shared daily level — everyone gets the same layout each day.`
+Birb is an arcade game built for Reddit. Tap to birb up through pipes on the daily level, everyone gets the same level each day. Lives re-stock up to 25, giving +5 every 6 hours.`
 
 const formatDailyWrapUpComment = (dailyNumber: number, leader: DailyLeaderboardEntry | null): string => {
 	const highscoreLine = leader
-		? `**#${dailyNumber} highscore:** u/${leader.userName} — **${leader.score}** points`
+		? `**#${dailyNumber} highscore:** u/${leader.userName} — **${leader.score}** points in **${leader.taps}** flaps`
 		: `**#${dailyNumber} highscore:** No one scored on this daily.`
 
 	return `${BIRB_DESCRIPTION}
@@ -40,11 +40,9 @@ const formatDailyWrapUpComment = (dailyNumber: number, leader: DailyLeaderboardE
 
 A new daily has been posted, so **scores are locked** on this post from this moment on and no longer count.
 
-While this daily was live, the leaderboard was hidden so no one could peek at the top score. It is revealed here now that the next daily is up.
-
 ${highscoreLine}
 
-Head to today's daily post to compete on the current board!`
+Head to today's daily post via the Play button to compete!`
 }
 
 const submitStickyAppComment = async (postId: string, text: string) => {

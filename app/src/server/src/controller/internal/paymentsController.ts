@@ -1,6 +1,7 @@
 import { serverLogger } from '@birb/shared'
 import { context, reddit } from '@devvit/web/server'
 import { Router } from 'express'
+import { fulfillLivesOrder, handleLivesRefund, type PurchaseOrder } from '../../service/livesPurchaseService'
 import { grantMembership, revokeMembership } from '../../service/purchaseService'
 
 export const paymentsController = Router()
@@ -13,10 +14,10 @@ const readOrder = (body: unknown): Order => {
 	return (b.order ?? b) as Order
 }
 
-// Fulfillment: grant the Birb Club Member flair for flair-category products.
+// Fulfillment: grant flair or lives depending on product category.
 paymentsController.post('/fulfill', async (req, res) => {
 	try {
-		const order = readOrder(req.body)
+		const order = readOrder(req.body) as PurchaseOrder
 		serverLogger.info(`Fulfilling order ${order.id}: ${(order.products ?? []).map((p) => p.sku).join(', ')}`)
 
 		if (order.status && order.status !== 'PAID') {
@@ -33,26 +34,34 @@ paymentsController.post('/fulfill', async (req, res) => {
 		const user = await reddit.getUserById(userId)
 		const subredditName = context.subredditName
 		const flairProduct = (order.products ?? []).find((p) => p.metadata?.category === 'flair')
+		const livesResult = await fulfillLivesOrder(order)
 
 		if (flairProduct && user?.username && subredditName) {
 			await grantMembership(subredditName, user.username, user.id, flairProduct.sku)
 		}
 
-		res.status(200).json({ success: true })
+		if (!flairProduct && !livesResult.applied) {
+			res.status(200).json({ success: true, skipped: livesResult.reason })
+			return
+		}
+
+		res.status(200).json({ success: true, grantedLives: livesResult.grantedLives })
 	} catch (error) {
 		serverLogger.error(`Payments fulfill failed: ${error}`)
 		res.status(500).json({ success: false, error: String(error) })
 	}
 })
 
-// Refund: remove the Birb Club Member flair.
+// Refund: remove flair; lives purchases are instant and not clawed back here.
 paymentsController.post('/refund', async (req, res) => {
 	try {
-		const order = readOrder(req.body)
+		const order = readOrder(req.body) as PurchaseOrder
 		serverLogger.info(`Refunding order ${order.id}`)
 
 		const userId = context.userId
 		const flairProduct = (order.products ?? []).find((p) => p.metadata?.category === 'flair')
+		await handleLivesRefund(order)
+
 		if (!userId || !flairProduct) {
 			res.status(200).json({ success: true })
 			return

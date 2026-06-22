@@ -54,6 +54,10 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.atlas('birbs', 'birbs.png', 'birbs.json')
 
+		this.load.atlas('hearts', 'gui/hearts.png', 'gui/hearts.json')
+		this.load.atlas('sound_icon', 'gui/sound_icon.png', 'gui/sound_icon.json')
+		this.load.image('hearts_portrait', 'gui/hearts_portrait.png')
+
 		this.load.spritesheet('animated_items', 'objects/animated_items.png', { frameWidth: 32, frameHeight: 32 })
 		this.load.spritesheet('pipes', 'pipes.png', { frameWidth: 32, frameHeight: 80 })
 		this.load.spritesheet(
@@ -201,6 +205,23 @@ export class Preloader extends Phaser.Scene {
 				end: 2,
 			}),
 			frameRate: 12,
+		})
+
+		this.anims.create({
+			key: 'heart_still',
+			frames: [{ key: 'hearts', frame: 'hearts 0.png' }],
+		})
+
+		this.anims.create({
+			key: 'heart_die',
+			frames: this.anims.generateFrameNames('hearts', {
+				prefix: 'hearts ',
+				start: 0,
+				end: 4,
+				suffix: '.png',
+			}),
+			frameRate: 10,
+			repeat: 0,
 		})
 	}
 }

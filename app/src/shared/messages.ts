@@ -42,6 +42,14 @@ export type DailyLeaderboardEntry = {
 	taps: number
 }
 
+/** Server-authoritative lives pool for the calling user. */
+export type LivesData = {
+	count: number
+	/** Epoch ms when the next free +5 refill arrives; null when at/above the free cap. */
+	nextRefillAt: number | null
+	freeCap: number
+}
+
 /** The calling user's own stats for the current daily. */
 export type YouStats = {
 	highscore: number
@@ -76,6 +84,7 @@ export type AppData = {
 	leaderboard: DailyLeaderboardEntry[]
 	stats: CommunityStats
 	iap: AppIAP
+	lives: LivesData
 	subscribed: boolean
 }
 
@@ -93,6 +102,7 @@ export type SaveScoreResponse = {
 	isNewHighScore: boolean
 	highscore: number
 	attempts: number
+	lives: LivesData
 }
 
 /** Response of `GET /api/v1/app/latest-daily-url`. */

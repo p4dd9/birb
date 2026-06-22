@@ -58,6 +58,9 @@
 	"triggers": {
 		"onAppInstall": "/internal/triggers/app-install"
 	},
+	"forms": {
+		"manageLivesForm": "/internal/menu/manage-lives-submit"
+	},
 	"menu": {
 		"items": [
 			{
@@ -80,6 +83,13 @@
 				"location": "subreddit",
 				"forUserType": "moderator",
 				"endpoint": "/internal/menu/membership-sweep"
+			},
+			{
+				"label": "💗 [ADMIN] Manage Player Lives",
+				"description": "View, add, or remove a player's lives (hammertime dev only).",
+				"location": "subreddit",
+				"forUserType": "moderator",
+				"endpoint": "/internal/menu/manage-lives"
 			}
 		]
 	},
