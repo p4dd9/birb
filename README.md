@@ -73,6 +73,7 @@ Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 v1.0.6
 
 - Chore: improve perfomance
+- Chore: faster load times for archived dailies
 
 v1.0.5
 
