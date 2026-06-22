@@ -2,7 +2,7 @@ import { PLAYER_FRAME_COUNT } from '@birb/shared/keys'
 import Phaser from 'phaser'
 import { birbBridge } from '../api/birbBridge'
 import { getDailyNumber, isActiveDailyPost, isDailyPost } from '../api/birbClient'
-import { bindSceneCameraScale } from '../cameraScale'
+// import { bindSceneCameraScale } from '../cameraScale'
 import { birbFlapAnimKey, birbFlapFrameNames, birbFlapRepeatAnimKey } from '../config/birbs.config'
 import {
 	FIREWORK_VARIANTS,
@@ -30,7 +30,7 @@ export class Preloader extends Phaser.Scene {
 			frameHeight: 128,
 		})
 
-		this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.mp3')
+		// this.load.audio('Junkala_Select_2', 'audio/Junkala_Select_2.mp3')
 		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.mp3')
 
 		this.load.audio('death1', 'audio/death1.mp3')
@@ -78,14 +78,14 @@ export class Preloader extends Phaser.Scene {
 	}
 
 	create() {
-		bindSceneCameraScale(this)
+		// bindSceneCameraScale(this)
 
 		// Pixel HUD art — avoid linear filtering bleeding atlas gutters / AA fringes.
 		this.textures.get('sound_icon').setFilter(Phaser.Textures.FilterMode.NEAREST)
 		this.textures.get('fireworks').setFilter(Phaser.Textures.FilterMode.NEAREST)
 
 		this.sound.add('Junkala_Stake_2')
-		this.sound.add('Junkala_Select_2')
+		// this.sound.add('Junkala_Select_2')
 
 		this.createAnimations()
 

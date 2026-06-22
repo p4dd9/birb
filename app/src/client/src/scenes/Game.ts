@@ -83,7 +83,7 @@ export class Game extends Phaser.Scene {
 		this.isFirstDailyRun = (you?.attempts ?? 0) === 0
 		this.hasBeatenPersonalHighscore = false
 
-		this.sound.stopByKey('Junkala_Select_2')
+		// this.sound.stopByKey('Junkala_Select_2')
 		this.sound.stopByKey('Junkala_Stake_2')
 
 		if (shouldAutoplayMusic()) {

@@ -23,7 +23,7 @@ export class Menu extends Phaser.Scene {
 		this.cameras.main.filters.internal.clear()
 
 		this.sound.stopByKey('Junkala_Stake_2')
-		this.sound.stopByKey('Junkala_Select_2')
+		// this.sound.stopByKey('Junkala_Select_2')
 
 		birbBridge.onceStartGame(() => {
 			if (!isActiveDailyPost(birbBridge.getAppData())) return

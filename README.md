@@ -70,6 +70,10 @@ Moderators can change the city background, birb and pipes to match their communi
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
+v1.0.4
+
+- Feature: two new tracks
+
 v1.0.3
 
 - Chore: new mute icon logic
