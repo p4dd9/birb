@@ -70,12 +70,9 @@ Moderators can change the city background, birb and pipes to match their communi
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
-v1.0.4
-
-- Chore: tracking IAP
-
 v1.0.3
 
+- Chore: tracking IAP
 - Chore: new mute icon logic
 - Feature: payments claimable after time
 - Feature: payments for lives
