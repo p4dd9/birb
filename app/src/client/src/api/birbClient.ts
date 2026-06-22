@@ -198,6 +198,11 @@ export const initBirbClient = async (): Promise<void> => {
 		clientLogger.error('Initial app data fetch failed', error)
 	}
 
+	// Archived dailies are frozen and unplayable — nothing to refresh, and we
+	// don't want them stamping the online-presence heartbeat. Checked after the
+	// initial fetch so isActiveDailyPost can read the just-published appData.
+	if (isDailyPost() && !isActiveDailyPost()) return
+
 	if (pollHandle) clearInterval(pollHandle)
 	pollHandle = setInterval(() => {
 		void refreshAppData()
