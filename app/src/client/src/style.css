@@ -10,7 +10,7 @@ body {
 	touch-action: manipulation;
 	-webkit-text-size-adjust: 100%;
 	text-size-adjust: 100%;
-	overscroll-behavior: none;
+	/* Keep default overscroll-behavior (auto). `none` blocks wheel scroll chaining to Reddit. */
 }
 
 body {
