@@ -104,6 +104,9 @@
 			}
 		]
 	},
+	"marketingAssets": {
+		"icon": "logo_1024x1024.png"
+	},
 	"dev": {
 		"subreddit": "hammertime_dev"
 	}
