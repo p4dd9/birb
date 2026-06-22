@@ -9,11 +9,11 @@ export const fireworkFrameName = (variant: FireworkVariant, frame: number): stri
 /** Behind the earth strip (`Game` earth depth is 50). */
 export const FIREWORK_DEPTH = 49
 
-export const FIREWORK_BURST_COUNT = 3
-export const FIREWORK_MIN_ACTIVE = 1
-export const FIREWORK_MAX_ACTIVE = 2
+export const FIREWORK_BURST_COUNT = 6
+export const FIREWORK_MIN_ACTIVE = 2
+export const FIREWORK_MAX_ACTIVE = 4
 export const FIREWORK_EXPLODE_SOUNDS = ['explo1', 'explo2'] as const
-export const FIREWORK_EXPLODE_VOLUME = 0.03
+export const FIREWORK_EXPLODE_VOLUME = 0.06
 export const FIREWORK_EXPLODE_PITCH_MIN = 1.0
 export const FIREWORK_EXPLODE_PITCH_MAX = 1.12
 

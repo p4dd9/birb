@@ -34,6 +34,7 @@ export class Preloader extends Phaser.Scene {
 		this.load.audio('Junkala_Stake_2', 'audio/Junkala_Stake_2.mp3')
 
 		this.load.audio('death1', 'audio/death1.mp3')
+		this.load.audio('indiana_punch', 'audio/indiana_punch.mp3')
 
 		this.load.audio('flap1', 'audio/flap1.mp3')
 		this.load.audio('flap2', 'audio/flap2.mp3')
