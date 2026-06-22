@@ -139,8 +139,10 @@ export class GameOver extends Phaser.Scene {
 			return
 		}
 
+		;(this.scene.get('Game') as Game).fireworks.stop()
 		this.unsubscribeAppData?.()
 		this.scale.off('resize', this.resize, this)
+		this.scene.stop('GameOver')
 		this.scene.start('Game')
 	}
 

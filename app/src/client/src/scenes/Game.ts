@@ -144,6 +144,12 @@ export class Game extends Phaser.Scene {
 		this.resize()
 	}
 
+	shutdown() {
+		this.fireworks?.stop()
+		this.unsubscribeAppData?.()
+		this.scale.off('resize', this.resize, this)
+	}
+
 	createIntroHint(scaleX: number, scaleY: number) {
 		const cursorRestX = 100 * scaleX
 		const cursorRestY = 80 * scaleY
