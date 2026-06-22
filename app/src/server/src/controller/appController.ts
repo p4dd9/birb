@@ -6,7 +6,6 @@ import { requireAuth } from '../middleware/requireAuth'
 import { getCommunityStats, touchOnlinePlayers } from '../service/communityService'
 import { getDailyDateKey, getDailyLeaderboard, getDailySeed, getLatestDailyNumber, getLatestDailyPostUrl, getYouStats } from '../service/dailyService'
 import { syncPlayerLives } from '../service/livesService'
-import { getIapData } from '../service/purchaseService'
 
 export const appController = Router()
 
@@ -31,7 +30,6 @@ appController.get('/data', requireAuth, async (req, res) => {
 				online: 0,
 				leaderboard: [],
 				stats: { communityScore: 0, communityAttempts: 0, communityPlayers: 0 },
-				iap: { membershipActiveUntil: null },
 				lives,
 				subscribed: false,
 			}
@@ -39,14 +37,13 @@ appController.get('/data', requireAuth, async (req, res) => {
 			return
 		}
 
-		const [seed, you, online, leaderboard, stats, iap, subscribedFlag, storedDateKey, latestDailyPostUrl, lives] =
+		const [seed, you, online, leaderboard, stats, subscribedFlag, storedDateKey, latestDailyPostUrl, lives] =
 			await Promise.all([
 			getDailySeed(dailyNumber),
 			getYouStats(userId, dailyNumber),
 			touchOnlinePlayers(userId),
 			getDailyLeaderboard(dailyNumber),
 			getCommunityStats(),
-			getIapData(userId),
 			redis.get(subscribedKey(userId)),
 			getDailyDateKey(dailyNumber),
 			getLatestDailyPostUrl(),
@@ -64,7 +61,6 @@ appController.get('/data', requireAuth, async (req, res) => {
 			online,
 			leaderboard,
 			stats,
-			iap,
 			lives,
 			subscribed: subscribedFlag === 'true',
 		}

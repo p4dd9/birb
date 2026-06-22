@@ -32,11 +32,5 @@ Devvit.addTrigger({
 			cron: '0 0 * * *',
 			runAt: new Date(),
 		})
-
-		await context.scheduler.runJob({
-			name: 'MANAGE_MEMBERSHIP_FLAIRS',
-			cron: '0 0 * * *',
-			runAt: new Date(),
-		})
 	},
 })

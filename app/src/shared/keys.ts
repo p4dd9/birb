@@ -46,9 +46,6 @@ export const dailyTapsKey = (dailyNumber: number) => `daily:${dailyNumber}:taps`
 export const ACTIVE_PLAYERS_HASH = 'active_players'
 export const ACTIVE_PLAYER_TTL = 30 * 1000
 
-export const PURCHASE_KEY = 'user_purchases'
-export const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000
-
 export const subscribedKey = (userId: string) => `subscribed:${userId}`
 
 /** Per-player lives pool (hash: count, lastRefillAt). */

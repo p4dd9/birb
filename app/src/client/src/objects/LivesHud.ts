@@ -1,11 +1,14 @@
 import { LIVES_REFILL_AMOUNT, type LivesData } from '@birb/shared'
 import Phaser from 'phaser'
 import { isActiveDailyPost, refreshAppData } from '../api/birbClient'
+import { layoutHeight, layoutWidth } from '../cameraScale'
+import { getEarthTopY } from '../config/gameplayLayout'
 import { HUD_EDGE, HUD_HEART_DISPLAY_W, HUD_ROW_CENTER_Y, HUD_SPRITE_SCALE } from '../config/hudLayout'
 import { MagoText, MagoTextStyle } from './MagoText'
 
-const REFILL_COUNTDOWN_TOP_Y = 22
-const REFILL_LINE_HEIGHT = 44
+const REFILL_ABOVE_EARTH_GAP = 8
+const REFILL_ROW_GAP = 4
+const REFILL_ICON_GAP = 4
 
 const formatRefillCountdown = (ms: number): string => {
 	const totalSec = Math.max(0, Math.ceil(ms / 1000))
@@ -16,6 +19,8 @@ const formatRefillCountdown = (ms: number): string => {
 }
 
 export class LivesHud extends Phaser.GameObjects.Container {
+	private header: Phaser.GameObjects.Container
+	private refillColumn?: Phaser.GameObjects.Container
 	private heart: Phaser.GameObjects.Sprite
 	private countText: MagoText
 	private timerText?: MagoText
@@ -31,12 +36,15 @@ export class LivesHud extends Phaser.GameObjects.Container {
 		this.setDepth(200)
 		this.setScrollFactor(0)
 
+		this.header = scene.add.container(0, 0)
 		this.heart = scene.add.sprite(0, 0, 'hearts', 'hearts 0.png').setOrigin(0, 0.5).setScale(HUD_SPRITE_SCALE)
 		this.countText = new MagoText(scene, HUD_HEART_DISPLAY_W + 4, 0, String(initial.count), MagoTextStyle.small).setOrigin(0, 0.5)
+		this.header.add([this.heart, this.countText])
+		this.add(this.header)
 
-		this.add([this.heart, this.countText])
 		this.setHeartFrame(initial.count)
 		this.setLives(initial)
+		this.layout()
 	}
 
 	setLives = (lives: LivesData): void => {
@@ -66,13 +74,11 @@ export class LivesHud extends Phaser.GameObjects.Container {
 	}
 
 	private clearRefillCountdown = (): void => {
-		this.timerText?.destroy()
+		this.refillColumn?.destroy(true)
+		this.refillColumn = undefined
 		this.timerText = undefined
-		this.refillPlusText?.destroy()
 		this.refillPlusText = undefined
-		this.refillHeart?.destroy()
 		this.refillHeart = undefined
-		this.refillTimeText?.destroy()
 		this.refillTimeText = undefined
 	}
 
@@ -83,36 +89,17 @@ export class LivesHud extends Phaser.GameObjects.Container {
 
 		if (count > 0 || !this.nextRefillAt) return
 
-		const textX = HUD_HEART_DISPLAY_W + 4
+		this.refillColumn = this.scene.add.container(0, 0)
+		this.add(this.refillColumn)
 
 		if (isActiveDailyPost()) {
-			this.refillPlusText = new MagoText(
-				this.scene,
-				textX,
-				REFILL_COUNTDOWN_TOP_Y,
-				`+${LIVES_REFILL_AMOUNT}`,
-				MagoTextStyle.small
-			).setOrigin(0, 0)
-			this.refillHeart = this.scene.add
-				.sprite(
-					textX + this.refillPlusText.width + 4,
-					REFILL_COUNTDOWN_TOP_Y + MagoTextStyle.small / 2,
-					'hearts',
-					'hearts 0.png'
-				)
-				.setOrigin(0, 0.5)
-				.setScale(HUD_SPRITE_SCALE)
-			this.refillTimeText = new MagoText(
-				this.scene,
-				textX,
-				REFILL_COUNTDOWN_TOP_Y + REFILL_LINE_HEIGHT,
-				'',
-				MagoTextStyle.small
-			).setOrigin(0, 0)
-			this.add([this.refillPlusText, this.refillHeart, this.refillTimeText])
+			this.refillPlusText = new MagoText(this.scene, 0, 0, `+${LIVES_REFILL_AMOUNT}`, MagoTextStyle.small)
+			this.refillHeart = this.scene.add.sprite(0, 0, 'hearts', 'hearts 0.png').setOrigin(0, 0.5).setScale(HUD_SPRITE_SCALE)
+			this.refillTimeText = new MagoText(this.scene, 0, 0, '', MagoTextStyle.small)
+			this.refillColumn.add([this.refillPlusText, this.refillHeart, this.refillTimeText])
 		} else {
-			this.timerText = new MagoText(this.scene, textX, REFILL_COUNTDOWN_TOP_Y, '', MagoTextStyle.small).setOrigin(0, 0)
-			this.add(this.timerText)
+			this.timerText = new MagoText(this.scene, 0, 0, '', MagoTextStyle.small)
+			this.refillColumn.add(this.timerText)
 		}
 
 		const tick = (): void => {
@@ -121,6 +108,7 @@ export class LivesHud extends Phaser.GameObjects.Container {
 			if (remaining <= 0) {
 				if (this.refillTimeText) this.refillTimeText.setText('Refilling…')
 				else this.timerText?.setText('Refilling…')
+				this.layoutRefillColumnContent()
 				void refreshAppData().then((appData) => {
 					if (appData?.lives) this.setLives(appData.lives)
 				})
@@ -132,11 +120,50 @@ export class LivesHud extends Phaser.GameObjects.Container {
 		}
 
 		tick()
+		this.layoutRefillColumn()
 		this.countdownTimer = this.scene.time.addEvent({ delay: 1000, loop: true, callback: tick })
 	}
 
+	private layoutRefillColumnContent = (): void => {
+		if (!this.refillColumn) return
+
+		const lineH = MagoTextStyle.small
+
+		if (this.refillPlusText && this.refillHeart && this.refillTimeText) {
+			const row1W = this.refillPlusText.width + REFILL_ICON_GAP + HUD_HEART_DISPLAY_W
+			const blockH = lineH * 2 + REFILL_ROW_GAP
+			const row1Y = -blockH / 2 + lineH / 2
+			const row2Y = blockH / 2 - lineH / 2
+
+			this.refillPlusText.setPosition(-row1W / 2, row1Y).setOrigin(0, 0.5)
+			this.refillHeart.setPosition(-row1W / 2 + this.refillPlusText.width + REFILL_ICON_GAP, row1Y)
+			this.refillTimeText.setPosition(0, row2Y).setOrigin(0.5, 0.5)
+			return
+		}
+
+		if (this.timerText) {
+			this.timerText.setPosition(0, 0).setOrigin(0.5, 0.5)
+		}
+	}
+
+	private layoutRefillColumn = (): void => {
+		if (!this.refillColumn) return
+
+		const width = layoutWidth(this.scene)
+		const height = layoutHeight(this.scene)
+		const earthTopY = getEarthTopY(height)
+		const lineH = MagoTextStyle.small
+		const blockH =
+			this.refillPlusText && this.refillTimeText ? lineH * 2 + REFILL_ROW_GAP : lineH
+		const blockBottom = earthTopY - REFILL_ABOVE_EARTH_GAP
+
+		this.layoutRefillColumnContent()
+		this.refillColumn.setPosition(width / 2, blockBottom - blockH / 2)
+	}
+
 	layout = (): void => {
-		this.setPosition(HUD_EDGE, HUD_ROW_CENTER_Y)
+		this.header.setPosition(HUD_EDGE, HUD_ROW_CENTER_Y)
+		this.layoutRefillColumn()
 	}
 
 	getCount = (): number => Number(this.countText.text) || 0

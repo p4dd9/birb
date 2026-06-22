@@ -64,10 +64,6 @@ export type CommunityStats = {
 	communityPlayers: number
 }
 
-export type AppIAP = {
-	membershipActiveUntil: string | null
-}
-
 /** Response of `GET /api/v1/app-data`, scoped to the post's daily. */
 export type AppData = {
 	config: AppConfiguration
@@ -83,7 +79,6 @@ export type AppData = {
 	online: number
 	leaderboard: DailyLeaderboardEntry[]
 	stats: CommunityStats
-	iap: AppIAP
 	lives: LivesData
 	subscribed: boolean
 }
@@ -113,11 +108,6 @@ export type LatestDailyUrlResponse = {
 /** Response of `POST /api/v1/subscribe`. */
 export type SubscribeResponse = {
 	subscribed: boolean
-}
-
-/** Body of `POST /api/v1/purchase`. */
-export type PurchaseRequest = {
-	sku: string
 }
 
 /** Body of `POST /api/v1/score/share`. */

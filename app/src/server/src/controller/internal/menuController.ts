@@ -9,7 +9,6 @@ import {
 	resolveUserIdByUsername,
 } from '../../service/livesService'
 import { createLauncherPost } from '../../service/postService'
-import { sweepExpiredMemberships } from '../../service/purchaseService'
 import { requireAuthAdmin } from '../../middleware/requireAuthAdmin'
 
 export const menuController = Router()
@@ -50,17 +49,6 @@ menuController.post('/create-daily', async (_req, res) => {
 	} catch (error) {
 		serverLogger.error(`Menu create-daily failed: ${error}`)
 		res.status(500).json({ showToast: `Failed to create daily post: ${error}` })
-	}
-})
-
-// [ADMIN] Run Membership Flair Check — manual membership expiry sweep.
-menuController.post('/membership-sweep', async (_req, res) => {
-	try {
-		const { checked, expired } = await sweepExpiredMemberships()
-		res.status(200).json({ showToast: `Membership sweep: ${expired} expired of ${checked} checked.` })
-	} catch (error) {
-		serverLogger.error(`Menu membership-sweep failed: ${error}`)
-		res.status(500).json({ showToast: `Membership sweep failed: ${error}` })
 	}
 })
 

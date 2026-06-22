@@ -2,18 +2,6 @@
 	"$schema": "https://developers.reddit.com/schema/products.json",
 	"products": [
 		{
-			"sku": "birb-club-member-flair-30d",
-			"displayName": "Birb Club Member",
-			"description": "Unlocks a unique Birb Club Member Flair that shows up for 30 days.",
-			"price": 100,
-			"metadata": {
-				"category": "flair",
-				"orderNumber": "0",
-				"days": "30"
-			},
-			"accountingType": "VALID_FOR_30D"
-		},
-		{
 			"sku": "birb-lives-25",
 			"displayName": "25 Lives",
 			"description": "Instantly add 25 lives to keep flapping.",

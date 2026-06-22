@@ -8,15 +8,12 @@ import './app/blocks/addAppSettings'
 import './app/blocks/addMenuItem'
 import './app/jobs/dailyJob'
 import './app/jobs/firstFlapperComment'
-import './app/jobs/handleBirbClubMembership'
 import './app/jobs/newHighscoreComment'
-import './app/jobs/setBirbClubMemberFlair'
 import './app/jobs/welcomeUser'
 import './app/triggers/appInstall'
 
 import './paymentsHandler'
 
-import { OrderResultStatus, usePayments, type OnPurchaseResult } from '@devvit/payments'
 import { SplashScreen } from './app/SplashScreen'
 import { RedisService } from './app/services/RedisService'
 import { devvitLogger } from './shared/logger'
@@ -28,21 +25,6 @@ Devvit.addCustomPostType({
 	render: (context: Devvit.Context) => {
 		// TODO: errrww ...
 		const redisService = new RedisService(context)
-
-		const payments = usePayments(async (result: OnPurchaseResult) => {
-			if (result.status === OrderResultStatus.Success) {
-				context.ui.showToast('Welcome to the Birb Club!❤️')
-
-				window.setTimeout(() => {
-					postMessage({
-						type: 'purchaseSuccess',
-						data: {},
-					})
-				}, 1000)
-			} else if (result.status === OrderResultStatus.Error) {
-				context.ui.showToast('Whoops, something went wrong. Please try again.')
-			}
-		})
 
 		const tickUpdateAppData = async () => {
 			const appData = await redisService.getAppData()
@@ -110,16 +92,6 @@ Devvit.addCustomPostType({
 						data: appData,
 					} as UpdateAppDataMessage)
 
-					break
-				}
-
-				case 'purchase': {
-					console.log(ev.data.sku)
-					try {
-						payments.purchase(ev.data.sku)
-					} catch (e) {
-						devvitLogger.error(`Error starting purchase. ${e}`)
-					}
 					break
 				}
 

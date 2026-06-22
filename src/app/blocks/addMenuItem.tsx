@@ -21,27 +21,3 @@ Devvit.addMenuItem({
 	forUserType: 'moderator',
 	onPress: addMenuItem,
 })
-
-Devvit.addMenuItem({
-	label: 'Run Membership Flair Check Manually',
-	location: 'subreddit',
-	forUserType: 'moderator',
-	onPress: (_e, context) => {
-		context.scheduler.runJob({
-			name: 'MANAGE_MEMBERSHIP_FLAIRS',
-			runAt: new Date(Date.now() + 1000),
-		})
-	},
-})
-
-Devvit.addMenuItem({
-	label: 'Start Membership Flair 30d Job',
-	location: 'subreddit',
-	forUserType: 'moderator',
-	onPress: (_e, context) => {
-		context.scheduler.runJob({
-			name: 'MANAGE_MEMBERSHIP_FLAIRS',
-			cron: '0 0 * * *',
-		})
-	},
-})

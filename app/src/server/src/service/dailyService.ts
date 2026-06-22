@@ -291,7 +291,7 @@ export const saveDailyScore = async (
 	if (isHighScoreRun) {
 		await Promise.all([
 			redis.zAdd(scoresKey, { member: userId, score }),
-			redis.hSet(dailyTapsKey(dailyNumber), userId, String(taps)),
+			redis.hSet(dailyTapsKey(dailyNumber), { [userId]: String(taps) }),
 		])
 	}
 

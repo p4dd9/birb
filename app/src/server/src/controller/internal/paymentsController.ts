@@ -1,20 +1,19 @@
 import { serverLogger } from '@birb/shared'
-import { context, reddit } from '@devvit/web/server'
+import { context } from '@devvit/web/server'
 import { Router } from 'express'
 import { fulfillLivesOrder, handleLivesRefund, type PurchaseOrder } from '../../service/livesPurchaseService'
-import { grantMembership, revokeMembership } from '../../service/purchaseService'
+import { trackPurchase } from '../../service/redditcoreService'
 
 export const paymentsController = Router()
 
-type OrderProduct = { sku: string; metadata?: { category?: string } }
-type Order = { id?: string; status?: string; products?: OrderProduct[] }
+type Order = { id?: string; status?: string; products?: { sku: string; metadata?: { category?: string } }[] }
 
 const readOrder = (body: unknown): Order => {
 	const b = (body ?? {}) as Record<string, unknown>
 	return (b.order ?? b) as Order
 }
 
-// Fulfillment: grant flair or lives depending on product category.
+// Fulfillment: grant lives from order products.
 paymentsController.post('/fulfill', async (req, res) => {
 	try {
 		const order = readOrder(req.body) as PurchaseOrder
@@ -25,25 +24,21 @@ paymentsController.post('/fulfill', async (req, res) => {
 			return
 		}
 
-		const userId = context.userId
-		if (!userId) {
+		if (!context.userId) {
 			res.status(200).json({ success: true })
 			return
 		}
 
-		const user = await reddit.getUserById(userId)
-		const subredditName = context.subredditName
-		const flairProduct = (order.products ?? []).find((p) => p.metadata?.category === 'flair')
 		const livesResult = await fulfillLivesOrder(order)
 
-		if (flairProduct && user?.username && subredditName) {
-			await grantMembership(subredditName, user.username, user.id, flairProduct.sku)
-		}
-
-		if (!flairProduct && !livesResult.applied) {
+		if (!livesResult.applied) {
 			res.status(200).json({ success: true, skipped: livesResult.reason })
 			return
 		}
+
+		trackPurchase(order, { grantedLives: String(livesResult.grantedLives) }).catch((error) => {
+			serverLogger.warn(`Error tracking purchase for order ${order.id}: ${error}`)
+		})
 
 		res.status(200).json({ success: true, grantedLives: livesResult.grantedLives })
 	} catch (error) {
@@ -52,27 +47,12 @@ paymentsController.post('/fulfill', async (req, res) => {
 	}
 })
 
-// Refund: remove flair; lives purchases are instant and not clawed back here.
+// Refund: lives purchases are instant and not clawed back here.
 paymentsController.post('/refund', async (req, res) => {
 	try {
 		const order = readOrder(req.body) as PurchaseOrder
 		serverLogger.info(`Refunding order ${order.id}`)
-
-		const userId = context.userId
-		const flairProduct = (order.products ?? []).find((p) => p.metadata?.category === 'flair')
 		await handleLivesRefund(order)
-
-		if (!userId || !flairProduct) {
-			res.status(200).json({ success: true })
-			return
-		}
-
-		const user = await reddit.getUserById(userId)
-		const subredditName = context.subredditName
-		if (user?.username && subredditName) {
-			await revokeMembership(subredditName, user.username)
-		}
-
 		res.status(200).json({ success: true })
 	} catch (error) {
 		serverLogger.error(`Payments refund failed: ${error}`)

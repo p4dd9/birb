@@ -24,7 +24,7 @@ const REF_PIPE_WOBBLE = 100
 const REF_PLAY_HEIGHT = REF_HEIGHT - REF_EARTH - REF_SCORE_TOP
 
 /** Top edge of the scrolling ground strip (earth TileSprite is center-anchored). */
-const getEarthTopY = (height: number, scaleY: number): number => {
+export const getEarthTopY = (height: number, scaleY = 1): number => {
 	const earthH = REF_EARTH * scaleY
 	const earthCenterY = height - earthH
 	return earthCenterY - (earthH * REF_EARTH_DISPLAY_SCALE) / 2

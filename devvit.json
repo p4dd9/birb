@@ -34,6 +34,9 @@
 			"enable": true,
 			"asUser": ["SUBMIT_COMMENT", "SUBMIT_POST", "SUBSCRIBE_TO_SUBREDDIT"]
 		},
+		"http": {
+			"enable": true
+		},
 		"payments": true
 	},
 	"payments": {
@@ -43,14 +46,29 @@
 			"refundOrder": "/internal/payments/refund"
 		}
 	},
+	"settings": {
+		"global": {
+			"api-key": {
+				"type": "string",
+				"label": "Redditcore API Key",
+				"isSecret": true
+			},
+			"api-base-url": {
+				"type": "string",
+				"label": "Redditcore API Base URL",
+				"isSecret": true
+			},
+			"api-version": {
+				"type": "string",
+				"label": "Redditcore API Version",
+				"isSecret": true
+			}
+		}
+	},
 	"scheduler": {
 		"tasks": {
 			"daily-level": {
 				"endpoint": "/internal/scheduler/daily-level",
-				"cron": "0 0 * * *"
-			},
-			"membership-flairs": {
-				"endpoint": "/internal/scheduler/membership-flairs",
 				"cron": "0 0 * * *"
 			}
 		}
@@ -76,13 +94,6 @@
 				"location": "subreddit",
 				"forUserType": "moderator",
 				"endpoint": "/internal/menu/create-daily"
-			},
-			{
-				"label": "[ADMIN] Run Membership Flair Check",
-				"description": "Sweep and expire 30-day Birb Club memberships now.",
-				"location": "subreddit",
-				"forUserType": "moderator",
-				"endpoint": "/internal/menu/membership-sweep"
 			},
 			{
 				"label": "💗 [ADMIN] Manage Player Lives",
