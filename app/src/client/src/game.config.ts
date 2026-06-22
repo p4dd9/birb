@@ -46,9 +46,9 @@ export const gameConfig: Types.Core.GameConfig = {
 		},
 	},
 	fps: {
-		target: 100,
-		limit: 100,
-		min: 40,
+		target: 60,
+		limit: 60,
+		min: 30,
 	},
 	transparent: true,
 	scene: [Boot, Preloader, Menu, Game, GameOver, LivesPurchaseMenu],
