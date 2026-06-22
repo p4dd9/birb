@@ -72,7 +72,7 @@ Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
 v1.0.4
 
-- Feature: two new tracks
+- Chore: tracking IAP
 
 v1.0.3
 
