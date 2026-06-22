@@ -72,7 +72,10 @@ Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
 v1.0.3
 
-- Feature:
+- Chore: new mute icon logic
+- Feature: payments claimable after time
+- Feature: payments for lives
+- Feature: fireworks on new personal highscore
 - Fix: ui alignment
 - Fix: out of sync mute button
 
