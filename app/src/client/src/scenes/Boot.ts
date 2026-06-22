@@ -1,7 +1,7 @@
 import type { AppData } from '@birb/shared'
 import { birbBridge } from '../api/birbBridge'
 import { applyAppDataToRegistry, applyPostDataToRegistry } from '../api/birbClient'
-import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { layoutHeight, layoutWidth } from '../cameraScale'
 import { MagoText } from '../objects/MagoText'
 import { changeBackgroundStyle } from '../util/dom'
 
@@ -17,7 +17,12 @@ export class Boot extends Phaser.Scene {
 	}
 
 	create() {
-		bindSceneCameraScale(this)
+		// touch.capture:false keeps iOS scroll working, but Safari then emits synthetic
+		// mouse events — disable mouse input on touch devices to avoid double-taps.
+		if (this.game.device.input.touch && this.input.mouse) {
+			this.input.mouse.enabled = false
+		}
+
 		applyPostDataToRegistry(this.game)
 
 		const cached = birbBridge.getAppData()

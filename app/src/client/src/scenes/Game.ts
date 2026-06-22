@@ -1,11 +1,12 @@
 import { clientLogger } from '@birb/shared'
-import { getDailyNumber, saveScore, shouldAutoplayMusic } from '../api/birbClient'
 import { birbBridge } from '../api/birbBridge'
-import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { getDailyNumber, saveScore, shouldAutoplayMusic } from '../api/birbClient'
+import { layoutHeight, layoutWidth } from '../cameraScale'
 import { BIRB_DISPLAY_SCALE } from '../config/birbs.config'
 import { FIREWORK_BURST_COUNT } from '../config/fireworks.config'
 import { getGameplayLayout, type GameplayLayout } from '../config/gameplayLayout'
 import { PipeGaps } from '../config/pipe.config'
+import { FireworksManager } from '../effects/FireworksManager'
 import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
 import { MagoText } from '../objects/MagoText'
 import { MuteToggle } from '../objects/MuteToggle'
@@ -13,7 +14,6 @@ import { PipePair } from '../objects/PipePair'
 import { Player } from '../objects/Player'
 import { openLivesPurchaseMenu } from '../scenes/LivesPurchaseMenu'
 import { changeBackgroundStyle } from '../util/dom'
-import { FireworksManager } from '../effects/FireworksManager'
 import { Rain } from '../weather/Rain'
 
 const speedEarth = 0.26 * 3.5
@@ -63,8 +63,6 @@ export class Game extends Phaser.Scene {
 	}
 
 	create() {
-		bindSceneCameraScale(this)
-
 		this.gameplayLayout = getGameplayLayout(this)
 
 		this.isGameStarted = false

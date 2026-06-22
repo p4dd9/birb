@@ -2,7 +2,6 @@ import { PLAYER_FRAME_COUNT } from '@birb/shared/keys'
 import Phaser from 'phaser'
 import { birbBridge } from '../api/birbBridge'
 import { getDailyNumber, isActiveDailyPost, isDailyPost } from '../api/birbClient'
-// import { bindSceneCameraScale } from '../cameraScale'
 import { birbFlapAnimKey, birbFlapFrameNames, birbFlapRepeatAnimKey } from '../config/birbs.config'
 import {
 	FIREWORK_VARIANTS,

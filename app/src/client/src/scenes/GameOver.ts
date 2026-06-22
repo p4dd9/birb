@@ -1,16 +1,16 @@
 import type { LivesData } from '@birb/shared'
 import { clientLogger } from '@birb/shared'
 import { showForm, showToast } from '@devvit/web/client'
-import { shareScoreComment } from '../api/birbClient'
 import { birbBridge } from '../api/birbBridge'
-import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
-import { applyMuteToGame, loadMutedPref } from '../util/audioPrefs'
-import { BIRB_CURSOR } from '../util/dom'
+import { shareScoreComment } from '../api/birbClient'
+import { layoutHeight, layoutWidth } from '../cameraScale'
 import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
 import { MagoText } from '../objects/MagoText'
 import { MuteToggle } from '../objects/MuteToggle'
-import { openLivesPurchaseMenu } from './LivesPurchaseMenu'
+import { applyMuteToGame, loadMutedPref } from '../util/audioPrefs'
+import { BIRB_CURSOR } from '../util/dom'
 import type { Game } from './Game'
+import { openLivesPurchaseMenu } from './LivesPurchaseMenu'
 
 const BUTTON_TEXT_PADDING_RATIO = 0.35
 const BUTTON_HEIGHT = 100
@@ -50,7 +50,6 @@ export class GameOver extends Phaser.Scene {
 	}
 
 	create(data: GameOverData) {
-		bindSceneCameraScale(this)
 
 		const centerX = layoutWidth(this) / 2
 		const centerY = layoutHeight(this) / 2
@@ -63,7 +62,7 @@ export class GameOver extends Phaser.Scene {
 
 		if (isNewHighScore) {
 			this.sound.play('victory', { volume: 0.2 })
-			;(this.scene.get('Game') as Game).fireworks.startLoop()
+				; (this.scene.get('Game') as Game).fireworks.startLoop()
 		}
 
 		applyMuteToGame(this.game, loadMutedPref())
@@ -139,7 +138,7 @@ export class GameOver extends Phaser.Scene {
 			return
 		}
 
-		;(this.scene.get('Game') as Game).fireworks.stop()
+		; (this.scene.get('Game') as Game).fireworks.stop()
 		this.unsubscribeAppData?.()
 		this.scale.off('resize', this.resize, this)
 		this.scene.stop('GameOver')

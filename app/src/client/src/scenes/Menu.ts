@@ -1,7 +1,7 @@
 import type { AppData, DailyLeaderboardEntry } from '@birb/shared'
 import { birbBridge } from '../api/birbBridge'
 import { applyAppDataToRegistry, isActiveDailyPost } from '../api/birbClient'
-import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { layoutWidth } from '../cameraScale'
 import { BREAKING_NEWS } from '../config/breakingnews.config'
 import { MagoText } from '../objects/MagoText'
 import { MenuContent } from '../objects/MenuContent'
@@ -16,8 +16,6 @@ export class Menu extends Phaser.Scene {
 	}
 
 	create() {
-		bindSceneCameraScale(this)
-
 		this.scene.remove('Boot')
 
 		this.cameras.main.filters.internal.clear()

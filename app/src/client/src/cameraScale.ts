@@ -54,5 +54,3 @@ export const bootPhaserGame = (config: Phaser.Types.Core.GameConfig): Promise<Ph
 		window.visualViewport?.addEventListener('scroll', onLayoutChange)
 	})
 
-/** @deprecated Fixed-resolution FIT mode — no per-scene camera zoom needed. */
-export const bindSceneCameraScale = (_scene: Phaser.Scene): void => {}

@@ -1,7 +1,7 @@
 import { LIVES_PRODUCT_OFFERS, clientLogger } from '@birb/shared'
 import { OrderResultStatus, purchase, showToast } from '@devvit/web/client'
 import { refreshAppData } from '../api/birbClient'
-import { bindSceneCameraScale, layoutHeight, layoutWidth } from '../cameraScale'
+import { layoutHeight, layoutWidth } from '../cameraScale'
 import { MagoText, MagoTextStyle } from '../objects/MagoText'
 import { BIRB_CURSOR } from '../util/dom'
 
@@ -28,8 +28,6 @@ export class LivesPurchaseMenu extends Phaser.Scene {
 	}
 
 	create() {
-		bindSceneCameraScale(this)
-
 		const width = layoutWidth(this)
 		const height = layoutHeight(this)
 		const centerX = width / 2
