@@ -70,6 +70,10 @@ Moderators can change the city background, birb and pipes to match their communi
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
+v1.0.5
+
+- Fix: scrolltrap ios scroll
+
 v1.0.4
 
 - Chore: adjust volume of punch
