@@ -48,6 +48,18 @@ export const ACTIVE_PLAYER_TTL = 30 * 1000
 
 export const subscribedKey = (userId: string) => `subscribed:${userId}`
 
+/** Set when the user has opted in to push notifications. */
+export const pushOptInKey = (userId: string) => `push:optin:${userId}`
+
+/** Server-saved audio mute preference ('true' = muted). */
+export const audioMutedKey = (userId: string) => `audio:muted:${userId}`
+
+/** Idempotency lock: set once the player has claimed the one-time join reward. */
+export const joinRewardClaimedKey = (userId: string) => `join:reward:claimed:${userId}`
+
+/** Highest attempt tier the join prompt has already been shown at (so it only re-shows at the next tier). */
+export const joinRewardOfferedKey = (userId: string) => `join:reward:offered:${userId}`
+
 /** Per-player lives pool (hash: count, lastRefillAt). */
 export const playerLivesKey = (userId: string) => `player:${userId}:lives`
 
@@ -104,7 +116,7 @@ export const resolveDailySeed = (dailyNumber: number, postSeed?: number): number
 
 /** Resolve cosmetics from baked postData (instant) or derive from seed / daily number. */
 export const resolveConfigFromPostData = (
-	postData?: Pick<BirbPostData, 'config' | 'seed' | 'dailyNumber'>,
+	postData?: Pick<BirbPostData, 'config' | 'seed' | 'dailyNumber'>
 ): AppConfiguration | undefined => {
 	if (postData?.config) return postData.config
 	if (postData?.seed !== undefined) return configFromSeed(postData.seed)

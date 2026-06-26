@@ -5,9 +5,11 @@ import './phaser-global'
 import { Boot } from './scenes/Boot'
 import { Game } from './scenes/Game'
 import { GameOver } from './scenes/GameOver'
+import { JoinRewardMenu } from './scenes/JoinRewardMenu'
 import { LivesPurchaseMenu } from './scenes/LivesPurchaseMenu'
 import { Menu } from './scenes/Menu'
 import { Preloader } from './scenes/Preloader'
+import { SettingsMenu } from './scenes/SettingsMenu'
 
 export const gameConfig: Types.Core.GameConfig = {
 	type: Phaser.AUTO,
@@ -47,9 +49,9 @@ export const gameConfig: Types.Core.GameConfig = {
 	},
 	fps: {
 		target: 60,
-		limit: 0,
+		limit: 50,
 		min: 30,
 	},
 	transparent: true,
-	scene: [Boot, Preloader, Menu, Game, GameOver, LivesPurchaseMenu],
+	scene: [Boot, Preloader, Menu, Game, GameOver, LivesPurchaseMenu, SettingsMenu, JoinRewardMenu],
 }

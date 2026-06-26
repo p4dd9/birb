@@ -16,8 +16,8 @@ export const HUD_SPRITE_H = HUD_HEART_SRC_H * HUD_SPRITE_SCALE
 export const HUD_SOUND_SRC_W = 16
 export const HUD_SOUND_SRC_H = 16
 
-/** Scale sound icon to the same HUD row height as hearts (16→48). */
-export const HUD_SOUND_SCALE = HUD_SPRITE_H / HUD_SOUND_SRC_H
+/** Scale sound icon to the HUD row height as hearts (16→48), trimmed 10% smaller. */
+export const HUD_SOUND_SCALE = (HUD_SPRITE_H / HUD_SOUND_SRC_H) * 0.9
 
 /** On-screen sound icon (16×16 at ×3). */
 export const HUD_SOUND_DISPLAY_W = HUD_SOUND_SRC_W * HUD_SOUND_SCALE

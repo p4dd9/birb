@@ -1,13 +1,17 @@
 import type {
 	AppConfiguration,
 	AppData,
+	AudioPrefResponse,
 	BirbPostData,
 	BirbPostType,
+	ClaimJoinRewardResponse,
 	LatestDailyUrlResponse,
+	PushOptInResponse,
 	SaveScoreRequest,
 	SaveScoreResponse,
 	ShareScoreCommentRequest,
 	ShareScoreCommentResponse,
+	SubscribeResponse,
 } from '@birb/shared'
 import {
 	clientLogger,
@@ -116,6 +120,40 @@ export const shareScoreComment = async (body: ShareScoreCommentRequest): Promise
 		throw new Error(`POST /api/v1/score/share failed (${res.status}): ${await res.text()}`)
 	}
 	return res.json() as Promise<ShareScoreCommentResponse>
+}
+
+const postJson = async <T>(path: string, body?: unknown): Promise<T> => {
+	const res = await fetch(path, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(body ?? {}),
+	})
+	if (!res.ok) {
+		throw new Error(`POST ${path} failed (${res.status}): ${await res.text()}`)
+	}
+	return res.json() as Promise<T>
+}
+
+/** Follow/unfollow the subreddit (subscribes the current user on Reddit + mirrors the flag). */
+export const subscribe = (): Promise<SubscribeResponse> => postJson('/api/v1/app/subscribe')
+export const unsubscribe = (): Promise<SubscribeResponse> => postJson('/api/v1/app/unsubscribe')
+
+/** Opt the current user in/out of push notifications. */
+export const optInPush = (): Promise<PushOptInResponse> => postJson('/api/v1/app/push/opt-in')
+export const optOutPush = (): Promise<PushOptInResponse> => postJson('/api/v1/app/push/opt-out')
+
+/** Persist the user's audio mute preference server-side. */
+export const saveAudioPref = (muted: boolean): Promise<AudioPrefResponse> => postJson('/api/v1/app/audio', { muted })
+
+/** Record that the join-reward prompt was shown at a tier (so it won't re-show there). */
+export const markJoinRewardSeen = (tier: number): Promise<{ ok: true }> =>
+	postJson('/api/v1/reward/join/seen', { tier })
+
+/** Accept the join reward: subscribe + push opt-in + one-time lives grant. Refreshes app data. */
+export const claimJoinReward = async (): Promise<ClaimJoinRewardResponse> => {
+	const result = await postJson<ClaimJoinRewardResponse>('/api/v1/reward/join/claim')
+	await refreshAppData()
+	return result
 }
 
 /** Cosmetics from postData (sync) or app data fetch (async fallback). */

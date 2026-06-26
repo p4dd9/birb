@@ -1,8 +1,9 @@
 import { serverLogger } from '@birb/shared'
-import { createServer, getServerPort } from '@devvit/server'
+import { createServer, getServerPort } from '@devvit/web/server'
 import express from 'express'
 import { appController } from './controller/appController'
 import { internalController } from './controller/internal/internalController'
+import { rewardController } from './controller/rewardController'
 import { scoreController } from './controller/scoreController'
 
 const app = express()
@@ -17,6 +18,7 @@ app.use('/internal', internalController)
 // Public game API.
 app.use('/api/v1/app', appController)
 app.use('/api/v1/score', scoreController)
+app.use('/api/v1/reward', rewardController)
 
 const server = createServer(app)
 server.listen(getServerPort(), () => {

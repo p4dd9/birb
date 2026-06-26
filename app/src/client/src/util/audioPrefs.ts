@@ -1,5 +1,8 @@
 const MUTE_PREF_KEY = 'birb:muted'
 
+/** Game-level event broadcast whenever the mute pref changes, so all HUD mute toggles stay in sync. */
+export const AUDIO_MUTE_EVENT = 'birb:audio-muted'
+
 /** First-time players start muted; returns persisted preference after that. */
 export const loadMutedPref = (): boolean => {
 	try {

@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 import { layoutWidth } from '../cameraScale'
 import { HUD_EDGE, HUD_SOUND_SCALE } from '../config/hudLayout'
-import { applyMuteToGame, loadMutedPref, saveMutedPref } from '../util/audioPrefs'
+import { applyMuteToGame, AUDIO_MUTE_EVENT, loadMutedPref, saveMutedPref } from '../util/audioPrefs'
 import { BIRB_CURSOR } from '../util/dom'
 
 const SOUND_ICON_FRAME_ON = 'musicOff 1.png'
@@ -31,6 +31,16 @@ export class MuteToggle extends Phaser.GameObjects.Container {
 		applyMuteToGame(scene.game, muted)
 		this.syncOnUnlock()
 		this.layout()
+
+		// Keep this icon in sync when the mute pref is changed elsewhere (e.g. the settings modal).
+		scene.game.events.on(AUDIO_MUTE_EVENT, this.onMutePrefChanged, this)
+		this.once(Phaser.GameObjects.Events.DESTROY, () => {
+			scene.game.events.off(AUDIO_MUTE_EVENT, this.onMutePrefChanged, this)
+		})
+	}
+
+	private onMutePrefChanged = (muted: boolean): void => {
+		this.setMutedVisual(muted)
 	}
 
 	private setMutedVisual = (muted: boolean): void => {
@@ -52,6 +62,7 @@ export class MuteToggle extends Phaser.GameObjects.Container {
 		applyMuteToGame(this.scene.game, nextMuted)
 		saveMutedPref(nextMuted)
 		this.setMutedVisual(nextMuted)
+		this.scene.game.events.emit(AUDIO_MUTE_EVENT, nextMuted)
 
 		if (!this.scene.sound.locked && !nextMuted) {
 			this.scene.sound.play('buttonclick1', { volume: 0.5 })

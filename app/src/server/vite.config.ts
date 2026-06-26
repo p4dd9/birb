@@ -2,6 +2,9 @@ import { builtinModules } from 'module'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+	resolve: {
+		dedupe: ['@devvit/server'],
+	},
 	ssr: {
 		noExternal: true, // Bundle all dependencies
 	},

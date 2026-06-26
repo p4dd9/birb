@@ -79,6 +79,8 @@ export class Preloader extends Phaser.Scene {
 
 		this.load.atlas('hearts', 'gui/hearts.png', 'gui/hearts.json')
 		this.load.atlas('sound_icon', 'gui/sound_icon.png', 'gui/sound_icon.json')
+		// Flat UI theme — backs the settings & join-reward modals (frames + toggle switches).
+		this.load.atlas('gui_theme', 'gui/theme.png', 'gui/theme.json')
 		this.load.atlas('fireworks', 'objects/fireworks.png', 'objects/fireworks.json')
 		this.load.image('hearts_portrait', 'gui/hearts_portrait.png')
 
@@ -104,6 +106,7 @@ export class Preloader extends Phaser.Scene {
 		// Pixel HUD art — avoid linear filtering bleeding atlas gutters / AA fringes.
 		this.textures.get('sound_icon').setFilter(Phaser.Textures.FilterMode.NEAREST)
 		this.textures.get('fireworks').setFilter(Phaser.Textures.FilterMode.NEAREST)
+		this.textures.get('gui_theme').setFilter(Phaser.Textures.FilterMode.NEAREST)
 
 		this.sound.add('Junkala_Stake_2')
 		// this.sound.add('Junkala_Select_2')

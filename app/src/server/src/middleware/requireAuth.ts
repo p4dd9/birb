@@ -1,5 +1,5 @@
 import { serverLogger } from '@birb/shared'
-import { context } from '@devvit/server'
+import { context } from '@devvit/web/server'
 import type { NextFunction, Request, Response } from 'express'
 
 /**

@@ -64,6 +64,14 @@ export type CommunityStats = {
 	communityPlayers: number
 }
 
+/** Drives the one-time "join & subscribe" reward popup. */
+export type JoinRewardState = {
+	/** Attempt tier to prompt at right now, or null when there's nothing to show. */
+	promptTier: number | null
+	/** True once the player has claimed the one-time reward. */
+	claimed: boolean
+}
+
 /** Response of `GET /api/v1/app-data`, scoped to the post's daily. */
 export type AppData = {
 	config: AppConfiguration
@@ -81,6 +89,12 @@ export type AppData = {
 	stats: CommunityStats
 	lives: LivesData
 	subscribed: boolean
+	/** Whether the caller has opted in to push notifications. */
+	pushNotifications: boolean
+	/** Server-saved audio mute preference (true = muted). */
+	audioMuted: boolean
+	/** State of the one-time join-and-subscribe reward prompt. */
+	joinReward: JoinRewardState
 	/** True when the caller already claimed the one-time share-highscore life bonus for this daily. */
 	shareRewardClaimed: boolean
 }
@@ -107,9 +121,29 @@ export type LatestDailyUrlResponse = {
 	url: string | null
 }
 
-/** Response of `POST /api/v1/subscribe`. */
+/** Response of `POST /api/v1/app/subscribe` and `/unsubscribe`. */
 export type SubscribeResponse = {
 	subscribed: boolean
+}
+
+/** Response of `POST /api/v1/app/push/opt-in` and `/opt-out`. */
+export type PushOptInResponse = {
+	pushNotifications: boolean
+}
+
+/** Response of `POST /api/v1/app/audio`. */
+export type AudioPrefResponse = {
+	muted: boolean
+}
+
+/** Response of `POST /api/v1/reward/join/claim`. */
+export type ClaimJoinRewardResponse = {
+	/** Lives granted by this call (0 when already claimed). */
+	granted: number
+	/** Player's lives pool after the grant. */
+	lives: LivesData
+	/** True when the reward had already been claimed (no double-grant). */
+	alreadyClaimed?: boolean
 }
 
 /** Body of `POST /api/v1/score/share`. */

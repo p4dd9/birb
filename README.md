@@ -70,8 +70,12 @@ Moderators can change the city background, birb and pipes to match their communi
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
-v1.0.8
+v1.0.8 (REQUIRES SUBSCRIBE_TO_SUBREDDIT PERMS, ADDS PUSHNOFICATIONS)
 
+Note: no feature implemented yet for push notifications
+
+- Feature: add push notification and subscribe as user incentive (after 25 palyers, re-occuring in a few steps)
+- Feature: add settings menu on endscreen for subscription management and audio
 - Feature: add lives reward on one time share per daily
 - Feature: tweak formatting of shared score comment
 

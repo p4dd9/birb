@@ -77,6 +77,13 @@ const closePreviousDaily = async (dailyNumber: number): Promise<void> => {
 
 	const [leader] = await getDailyLeaderboard(dailyNumber, 1)
 	await postDailyWrapUpComment(postId, dailyNumber, leader ?? null)
+
+	try {
+		const post = await reddit.getPostById(postId as `t3_${string}`)
+		await post.unsticky()
+	} catch (e) {
+		serverLogger.error(`Failed unpinning daily #${dailyNumber} post ${postId}: ${e}`)
+	}
 }
 
 const findDailyPostByNumber = async (dailyNumber: number): Promise<string | null> => {
@@ -142,6 +149,8 @@ export const createDailyPost = async (): Promise<{ postId: string; url: string; 
 			...postFlairStyleForFrame(config.pipeFrame),
 		})
 		.catch((e) => serverLogger.error(`Failed setting daily post flair: ${e}`))
+
+	post.sticky(1).catch((e) => serverLogger.error(`Failed pinning daily #${dailyNumber}: ${e}`))
 
 	try {
 		await postDailyIntroComment(post.id, dailyNumber)
