@@ -70,6 +70,11 @@ Moderators can change the city background, birb and pipes to match their communi
 
 Test-Subreddit: https://www.reddit.com/r/hammertime_dev/
 
+v1.0.8
+
+- Feature: add lives reward on one time share per daily
+- Feature: tweak formatting of shared score comment
+
 v1.0.7
 
 - Chore: add marketing asset

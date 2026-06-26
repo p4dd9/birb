@@ -1,0 +1,2078 @@
+{
+	"textures": [
+		{
+			"image": "theme.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 128,
+				"h": 520
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "UI_Flat_Banner01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 20
+					},
+					"frame": {
+						"x": 64,
+						"y": 256,
+						"w": 64,
+						"h": 20
+					}
+				},
+				{
+					"filename": "UI_Flat_Banner02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 20
+					},
+					"frame": {
+						"x": 64,
+						"y": 276,
+						"w": 64,
+						"h": 20
+					}
+				},
+				{
+					"filename": "UI_Flat_Banner03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 20
+					},
+					"frame": {
+						"x": 0,
+						"y": 288,
+						"w": 64,
+						"h": 20
+					}
+				},
+				{
+					"filename": "UI_Flat_Banner04a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 20
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 20
+					},
+					"frame": {
+						"x": 64,
+						"y": 296,
+						"w": 64,
+						"h": 20
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 8
+					},
+					"frame": {
+						"x": 32,
+						"y": 443,
+						"w": 32,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 8
+					},
+					"frame": {
+						"x": 94,
+						"y": 452,
+						"w": 29,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 8
+					},
+					"frame": {
+						"x": 94,
+						"y": 460,
+						"w": 29,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar04a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 8
+					},
+					"frame": {
+						"x": 94,
+						"y": 468,
+						"w": 29,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar05a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 10
+					},
+					"frame": {
+						"x": 32,
+						"y": 433,
+						"w": 32,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar06a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 8
+					},
+					"frame": {
+						"x": 0,
+						"y": 445,
+						"w": 32,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar07a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 12
+					},
+					"frame": {
+						"x": 64,
+						"y": 412,
+						"w": 32,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar08a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 12
+					},
+					"frame": {
+						"x": 64,
+						"y": 424,
+						"w": 32,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar09a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 31,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 31,
+						"h": 12
+					},
+					"frame": {
+						"x": 0,
+						"y": 453,
+						"w": 31,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar10a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 12
+					},
+					"frame": {
+						"x": 0,
+						"y": 433,
+						"w": 32,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar11a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 10
+					},
+					"frame": {
+						"x": 0,
+						"y": 465,
+						"w": 30,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar12a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 10
+					},
+					"frame": {
+						"x": 0,
+						"y": 475,
+						"w": 29,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_Bar13a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 9
+					},
+					"frame": {
+						"x": 64,
+						"y": 436,
+						"w": 32,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 96,
+						"y": 440,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 96,
+						"y": 443,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 64,
+						"y": 445,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01d.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 96,
+						"y": 446,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01e.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 64,
+						"y": 448,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01f.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 96,
+						"y": 449,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_BarFill01g.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 3
+					},
+					"frame": {
+						"x": 32,
+						"y": 451,
+						"w": 32,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_Button01a_1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 404,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "UI_Flat_Button01a_2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 32,
+						"h": 30
+					},
+					"frame": {
+						"x": 96,
+						"y": 380,
+						"w": 32,
+						"h": 30
+					}
+				},
+				{
+					"filename": "UI_Flat_Button01a_3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Button01a_4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 32,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Button02a_1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 3,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 32,
+						"y": 404,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "UI_Flat_Button02a_2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 32,
+						"h": 30
+					},
+					"frame": {
+						"x": 96,
+						"y": 410,
+						"w": 32,
+						"h": 30
+					}
+				},
+				{
+					"filename": "UI_Flat_Button02a_3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 64,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Button02a_4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 96,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonArrow01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 94,
+						"y": 476,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonCheck01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 111,
+						"y": 476,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonCross01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 0,
+						"y": 492,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonMinus01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 24,
+						"y": 508,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonPlay01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 17,
+						"y": 492,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "UI_Flat_ButtonPlus01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 34,
+						"y": 507,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_Frame01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 64
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 64
+					}
+				},
+				{
+					"filename": "UI_Flat_Frame02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 64
+					},
+					"frame": {
+						"x": 0,
+						"y": 64,
+						"w": 96,
+						"h": 64
+					}
+				},
+				{
+					"filename": "UI_Flat_Frame03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 64
+					},
+					"frame": {
+						"x": 0,
+						"y": 128,
+						"w": 96,
+						"h": 64
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameMarker01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 192,
+						"w": 64,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameMarker02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 192,
+						"w": 64,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameMarker03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 224,
+						"w": 64,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 128,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 160,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 308,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 32,
+						"y": 308,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot02b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 316,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot02c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 316,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 340,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot03b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 32,
+						"y": 340,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_FrameSlot03c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 348,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 5,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 5,
+						"h": 5
+					},
+					"frame": {
+						"x": 123,
+						"y": 452,
+						"w": 5,
+						"h": 5
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 8,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 8,
+						"h": 8
+					},
+					"frame": {
+						"x": 58,
+						"y": 484,
+						"w": 8,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 8,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 8,
+						"h": 10
+					},
+					"frame": {
+						"x": 66,
+						"y": 481,
+						"w": 8,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle04a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 9,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 9,
+						"h": 8
+					},
+					"frame": {
+						"x": 49,
+						"y": 484,
+						"w": 9,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle05a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 8
+					},
+					"frame": {
+						"x": 29,
+						"y": 484,
+						"w": 10,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_Handle06a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 4,
+						"h": 7
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 4,
+						"h": 7
+					},
+					"frame": {
+						"x": 123,
+						"y": 461,
+						"w": 4,
+						"h": 7
+					}
+				},
+				{
+					"filename": "UI_Flat_IconArrow01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 16,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 12
+					},
+					"frame": {
+						"x": 0,
+						"y": 508,
+						"w": 16,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_IconArrow01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 13,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 13,
+						"h": 9
+					},
+					"frame": {
+						"x": 104,
+						"y": 492,
+						"w": 13,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_IconArrow01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 8
+					},
+					"frame": {
+						"x": 39,
+						"y": 484,
+						"w": 10,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCheck01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 17,
+						"h": 14
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 17,
+						"h": 14
+					},
+					"frame": {
+						"x": 49,
+						"y": 492,
+						"w": 17,
+						"h": 14
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCheck01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 11,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 11,
+						"h": 9
+					},
+					"frame": {
+						"x": 117,
+						"y": 492,
+						"w": 11,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCheck01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 9,
+						"h": 7
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 9,
+						"h": 7
+					},
+					"frame": {
+						"x": 0,
+						"y": 485,
+						"w": 9,
+						"h": 7
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCross01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 15,
+						"h": 15
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 15,
+						"h": 15
+					},
+					"frame": {
+						"x": 34,
+						"y": 492,
+						"w": 15,
+						"h": 15
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCross01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 9,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 9,
+						"h": 9
+					},
+					"frame": {
+						"x": 104,
+						"y": 511,
+						"w": 9,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_IconCross01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 7
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 7
+					},
+					"frame": {
+						"x": 9,
+						"y": 485,
+						"w": 7,
+						"h": 7
+					}
+				},
+				{
+					"filename": "UI_Flat_IconDropdown01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 5
+					},
+					"frame": {
+						"x": 66,
+						"y": 501,
+						"w": 7,
+						"h": 5
+					}
+				},
+				{
+					"filename": "UI_Flat_IconLine01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 3
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 3
+					},
+					"frame": {
+						"x": 34,
+						"y": 517,
+						"w": 7,
+						"h": 3
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPlay01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 14
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 14
+					},
+					"frame": {
+						"x": 54,
+						"y": 506,
+						"w": 10,
+						"h": 14
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPlay01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 8,
+						"h": 12
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 8,
+						"h": 12
+					},
+					"frame": {
+						"x": 16,
+						"y": 508,
+						"w": 8,
+						"h": 12
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPlay01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 10
+					},
+					"frame": {
+						"x": 66,
+						"y": 491,
+						"w": 7,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPlay01d.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 6,
+						"h": 8
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 6,
+						"h": 8
+					},
+					"frame": {
+						"x": 94,
+						"y": 512,
+						"w": 6,
+						"h": 8
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPoint01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 5
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 5
+					},
+					"frame": {
+						"x": 73,
+						"y": 499,
+						"w": 7,
+						"h": 5
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPoint01b.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 6,
+						"h": 4
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 6,
+						"h": 4
+					},
+					"frame": {
+						"x": 23,
+						"y": 485,
+						"w": 6,
+						"h": 4
+					}
+				},
+				{
+					"filename": "UI_Flat_IconPoint01c.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 5,
+						"h": 4
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 5,
+						"h": 4
+					},
+					"frame": {
+						"x": 123,
+						"y": 457,
+						"w": 5,
+						"h": 4
+					}
+				},
+				{
+					"filename": "UI_Flat_IconStripe01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 7,
+						"h": 7
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 7,
+						"h": 7
+					},
+					"frame": {
+						"x": 16,
+						"y": 485,
+						"w": 7,
+						"h": 7
+					}
+				},
+				{
+					"filename": "UI_Flat_InputField01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 224,
+						"w": 64,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_InputField02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 64,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 256,
+						"w": 64,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select01a_1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 96,
+						"y": 348,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select01a_2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 372,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select01a_3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 64,
+						"y": 451,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "UI_Flat_Select01a_4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 372,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select02a_1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 32,
+						"y": 372,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select02a_2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 380,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_Select02a_3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 31,
+						"y": 454,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "UI_Flat_Select02a_4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 64,
+						"y": 380,
+						"w": 32,
+						"h": 32
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleLeftOff01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 44,
+						"y": 507,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleLeftOn01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 64,
+						"y": 506,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOff01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 74,
+						"y": 504,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOff02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 84,
+						"y": 499,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOff03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 16,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 9
+					},
+					"frame": {
+						"x": 74,
+						"y": 481,
+						"w": 16,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOn01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 84,
+						"y": 509,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOn02a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 94,
+						"y": 492,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleOn03a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 16,
+						"h": 9
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 16,
+						"h": 9
+					},
+					"frame": {
+						"x": 74,
+						"y": 490,
+						"w": 16,
+						"h": 9
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleRightOff01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 94,
+						"y": 502,
+						"w": 10,
+						"h": 10
+					}
+				},
+				{
+					"filename": "UI_Flat_ToggleRightOn01a.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 10,
+						"h": 10
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 10,
+						"h": 10
+					},
+					"frame": {
+						"x": 104,
+						"y": 501,
+						"w": 10,
+						"h": 10
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:d323e5caec1a77d0eb3cdc87e4154cb4:8884624d632fee55372424a9aa3e21d9:37c4706c1f3fdc5cd9d3e1183a6af365$"
+	}
+}
