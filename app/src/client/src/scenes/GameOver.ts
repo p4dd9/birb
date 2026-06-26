@@ -1,11 +1,11 @@
 import type { LivesData } from '@birb/shared'
-import { clientLogger } from '@birb/shared'
+import { clientLogger, LIVES_SHARE_REWARD } from '@birb/shared'
 import { showForm, showToast } from '@devvit/web/client'
 import { birbBridge } from '../api/birbBridge'
-import { shareScoreComment } from '../api/birbClient'
+import { getDailyNumber, shareScoreComment } from '../api/birbClient'
 import { layoutHeight, layoutWidth } from '../cameraScale'
 import { LivesHud, readLivesFromRegistry } from '../objects/LivesHud'
-import { MagoText } from '../objects/MagoText'
+import { MagoText, MagoTextStyle } from '../objects/MagoText'
 import { MuteToggle } from '../objects/MuteToggle'
 import { applyMuteToGame, loadMutedPref } from '../util/audioPrefs'
 import { BIRB_CURSOR } from '../util/dom'
@@ -15,6 +15,11 @@ import { openLivesPurchaseMenu } from './LivesPurchaseMenu'
 const BUTTON_TEXT_PADDING_RATIO = 0.35
 const BUTTON_HEIGHT = 100
 const BUTTON_STACK_GAP = 24
+
+/** "+N <heart>" reward badge sitting beside the Share label, smaller than it. */
+const SHARE_BADGE_HEART_SCALE = 2
+const SHARE_BADGE_GAP = 18
+const SHARE_BADGE_ICON_GAP = 6
 
 type GameOverData = {
 	isNewHighScore: boolean
@@ -32,6 +37,9 @@ export class GameOver extends Phaser.Scene {
 	replayButtonText: MagoText
 	shareButton?: Phaser.GameObjects.Image
 	shareButtonText?: MagoText
+	shareBadge?: Phaser.GameObjects.Container
+	shareBadgeText?: MagoText
+	shareBadgeHeart?: Phaser.GameObjects.Sprite
 	getLivesButton?: Phaser.GameObjects.Image
 	getLivesButtonText?: MagoText
 
@@ -42,6 +50,7 @@ export class GameOver extends Phaser.Scene {
 	private newScore = 0
 	private runTaps = 0
 	private showShareButton = false
+	private shareRewardClaimed = false
 	private outOfLives = false
 	private unsubscribeAppData?: () => void
 
@@ -58,6 +67,7 @@ export class GameOver extends Phaser.Scene {
 		this.newScore = newScore
 		this.runTaps = taps
 		this.showShareButton = isNewHighScore && newScore > 0
+		this.shareRewardClaimed = birbBridge.getAppData()?.shareRewardClaimed ?? false
 		this.outOfLives = livesAfter <= 0
 
 		if (isNewHighScore) {
@@ -92,6 +102,16 @@ export class GameOver extends Phaser.Scene {
 				})
 
 			this.shareButtonText = new MagoText(this, centerX, centerY, 'Share', 72)
+
+			// Smaller "+N ❤" reward hint next to the Share label — only while the
+			// one-time bonus is still claimable for this daily.
+			if (!this.shareRewardClaimed) {
+				this.shareBadgeText = new MagoText(this, 0, 0, `+${LIVES_SHARE_REWARD}`, MagoTextStyle.small)
+				this.shareBadgeHeart = this.add
+					.sprite(0, 0, 'hearts', 'hearts 0.png')
+					.setScale(SHARE_BADGE_HEART_SCALE)
+				this.shareBadge = this.add.container(0, 0, [this.shareBadgeText, this.shareBadgeHeart])
+			}
 		}
 
 		if (this.outOfLives) {
@@ -119,15 +139,43 @@ export class GameOver extends Phaser.Scene {
 		this.unsubscribeAppData = birbBridge.onAppData((appData) => {
 			this.registry.set('lives', appData.lives)
 			this.livesHud?.setLives(appData.lives)
-			if (appData.lives.count > 0 && this.outOfLives) {
-				this.outOfLives = false
-				this.getLivesButton?.destroy()
-				this.getLivesButtonText?.destroy()
-				this.getLivesButton = undefined
-				this.getLivesButtonText = undefined
-				this.resize()
-			}
+			if (appData.lives.count > 0) this.clearOutOfLivesUi()
 		})
+		this.resize()
+	}
+
+	/** Mark the one-time share bonus as claimed for this daily, locally and on the cached app data. */
+	private markShareRewardClaimed = (): void => {
+		this.shareRewardClaimed = true
+		const appData = birbBridge.getAppData()
+		if (appData && !appData.shareRewardClaimed) {
+			birbBridge.setAppData({ ...appData, shareRewardClaimed: true })
+		}
+	}
+
+	/** Remove the Share button and its reward badge once the score has been shared. */
+	private clearShareUi = (): void => {
+		if (!this.showShareButton) return
+		this.showShareButton = false
+		this.shareButton?.destroy()
+		this.shareButtonText?.destroy()
+		this.shareBadge?.destroy()
+		this.shareButton = undefined
+		this.shareButtonText = undefined
+		this.shareBadge = undefined
+		this.shareBadgeText = undefined
+		this.shareBadgeHeart = undefined
+		this.resize()
+	}
+
+	/** Drop the "Get Lives" button once the player has lives again. */
+	private clearOutOfLivesUi = (): void => {
+		if (!this.outOfLives) return
+		this.outOfLives = false
+		this.getLivesButton?.destroy()
+		this.getLivesButtonText?.destroy()
+		this.getLivesButton = undefined
+		this.getLivesButtonText = undefined
 		this.resize()
 	}
 
@@ -148,9 +196,20 @@ export class GameOver extends Phaser.Scene {
 	handleSharePress = async () => {
 		this.sound.play('buttonclick1', { volume: 0.5 })
 
+		const dailyNumber = getDailyNumber()
+		if (dailyNumber === undefined) {
+			clientLogger.error('Cannot share score: missing dailyNumber')
+			showToast('Failed to share score.')
+			return
+		}
+
+		const rewardHint = this.shareRewardClaimed
+			? ''
+			: `\n\n❤️ Share your highscore to earn +${LIVES_SHARE_REWARD} lives!`
+
 		const result = await showForm({
 			title: 'Share Comment',
-			description: 'Shares your score and comment in the thread below.',
+			description: `Shares your score and comment in the thread below.${rewardHint}`,
 			fields: [
 				{
 					type: 'paragraph',
@@ -165,12 +224,18 @@ export class GameOver extends Phaser.Scene {
 		if (result.action !== 'SUBMITTED') return
 
 		try {
-			await shareScoreComment({
+			const { lives, rewarded } = await shareScoreComment({
 				comment: result.values.comment,
 				score: this.newScore,
 				taps: this.runTaps,
+				dailyNumber,
 			})
-			showToast('Score shared in the thread.')
+			this.registry.set('lives', lives)
+			this.livesHud?.setLives(lives)
+			if (lives.count > 0) this.clearOutOfLivesUi()
+			this.markShareRewardClaimed()
+			this.clearShareUi()
+			showToast(rewarded ? `Score shared! +${LIVES_SHARE_REWARD} lives added.` : 'Score shared in the thread.')
 		} catch (error) {
 			clientLogger.error('Failed to share score comment', error)
 			showToast('Failed to share score.')
@@ -202,7 +267,8 @@ export class GameOver extends Phaser.Scene {
 
 		if (this.showShareButton && this.shareButton && this.shareButtonText) {
 			y += BUTTON_STACK_GAP + BUTTON_HEIGHT / 2
-			this.layoutButton(this.shareButton, this.shareButtonText, centerX, y)
+			if (this.shareBadge) this.layoutShareButton(centerX, y)
+			else this.layoutButton(this.shareButton, this.shareButtonText, centerX, y)
 			y += BUTTON_HEIGHT / 2
 		}
 
@@ -210,6 +276,32 @@ export class GameOver extends Phaser.Scene {
 			y += BUTTON_STACK_GAP + BUTTON_HEIGHT / 2
 			this.layoutButton(this.getLivesButton, this.getLivesButtonText, centerX, y)
 		}
+	}
+
+	/** Share button: "Share" label plus a smaller "+N <heart>" reward badge, both centered in the frame. */
+	layoutShareButton = (x: number, y: number) => {
+		if (!this.shareButton || !this.shareButtonText || !this.shareBadge || !this.shareBadgeText || !this.shareBadgeHeart)
+			return
+
+		// Lay out the badge content ("+N" then heart) left-aligned within its container.
+		const heartWidth = this.shareBadgeHeart.displayWidth
+		const badgeWidth = this.shareBadgeText.width + SHARE_BADGE_ICON_GAP + heartWidth
+		this.shareBadgeText.setOrigin(0, 0.5).setPosition(-badgeWidth / 2, 0)
+		this.shareBadgeHeart
+			.setOrigin(0, 0.5)
+			.setPosition(-badgeWidth / 2 + this.shareBadgeText.width + SHARE_BADGE_ICON_GAP, 0)
+
+		const labelWidth = this.shareButtonText.width
+		const contentWidth = labelWidth + SHARE_BADGE_GAP + badgeWidth
+		const horizontalPadding = labelWidth * BUTTON_TEXT_PADDING_RATIO
+		const buttonWidth = contentWidth + horizontalPadding * 2
+
+		this.shareButton.setPosition(x, y)
+		this.shareButton.setDisplaySize(buttonWidth, BUTTON_HEIGHT)
+
+		const leftEdge = x - contentWidth / 2
+		this.shareButtonText.setOrigin(0.5, 0.5).setPosition(leftEdge + labelWidth / 2, y)
+		this.shareBadge.setPosition(leftEdge + labelWidth + SHARE_BADGE_GAP + badgeWidth / 2, y)
 	}
 
 	layoutButton = (button: Phaser.GameObjects.Image, label: MagoText, x: number, y: number) => {

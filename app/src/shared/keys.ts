@@ -51,6 +51,9 @@ export const subscribedKey = (userId: string) => `subscribed:${userId}`
 /** Per-player lives pool (hash: count, lastRefillAt). */
 export const playerLivesKey = (userId: string) => `player:${userId}:lives`
 
+/** Idempotency lock: set once a player has claimed the share-highscore life bonus for a daily. */
+export const shareRewardKey = (dailyNumber: number, userId: string) => `share:reward:${dailyNumber}:${userId}`
+
 /** Idempotency lock for fulfilled payment orders. */
 export const processedOrderKey = (orderId: string) => `payment:order:processed:${orderId}`
 

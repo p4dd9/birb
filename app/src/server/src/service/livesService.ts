@@ -2,11 +2,12 @@ import {
 	LIVES_FREE_CAP,
 	LIVES_REFILL_AMOUNT,
 	LIVES_REFILL_INTERVAL_MS,
+	LIVES_SHARE_REWARD,
 	LIVES_START,
 	type LivesData,
 	serverLogger,
 } from '@birb/shared'
-import { playerLivesKey } from '@birb/shared/keys'
+import { playerLivesKey, shareRewardKey } from '@birb/shared/keys'
 import { reddit, redis } from '@devvit/web/server'
 
 type LivesHash = {
@@ -102,6 +103,26 @@ export const addPlayerLives = async (userId: string, amount: number): Promise<Li
 	const nextCount = synced.count + Math.floor(amount)
 	await writeLivesHash(userId, nextCount, lastRefillAt)
 	return buildLivesData(nextCount, lastRefillAt)
+}
+
+/**
+ * Grant the one-time +5 life bonus for sharing a new highscore on a daily.
+ * Idempotent per (daily, user) — re-shares return the current pool unchanged.
+ * The bonus is granted outside the free cap, like purchased lives.
+ */
+export const grantShareReward = async (
+	userId: string,
+	dailyNumber: number
+): Promise<{ lives: LivesData; rewarded: boolean }> => {
+	const lockKey = shareRewardKey(dailyNumber, userId)
+	if (await redis.get(lockKey)) {
+		return { lives: await syncPlayerLives(userId), rewarded: false }
+	}
+
+	const lives = await addPlayerLives(userId, LIVES_SHARE_REWARD)
+	await redis.set(lockKey, '1')
+	serverLogger.info(`Granted share reward to ${userId} for daily #${dailyNumber}: +${LIVES_SHARE_REWARD} lives`)
+	return { lives, rewarded: true }
 }
 
 /** Remove lives for admin tools; never below zero. */

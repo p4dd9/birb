@@ -127,7 +127,6 @@ export class LivesPurchaseMenu extends Phaser.Scene {
 		try {
 			const result = await purchase(sku)
 			if (result.status === OrderResultStatus.STATUS_CANCELLED) {
-				showToast('Purchase canceled.')
 				return
 			}
 			if (result.status !== OrderResultStatus.STATUS_SUCCESS) {

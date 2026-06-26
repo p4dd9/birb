@@ -7,6 +7,9 @@ export const LIVES_FREE_CAP = 25
 /** Lives restored each 6-hour window while below the free cap. */
 export const LIVES_REFILL_AMOUNT = 5
 
+/** Bonus lives granted the first time a player shares a new highscore on a daily. */
+export const LIVES_SHARE_REWARD = 10
+
 /** Milliseconds between free life refills. */
 export const LIVES_REFILL_INTERVAL_MS = 6 * 60 * 60 * 1000
 

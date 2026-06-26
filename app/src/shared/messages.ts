@@ -81,6 +81,8 @@ export type AppData = {
 	stats: CommunityStats
 	lives: LivesData
 	subscribed: boolean
+	/** True when the caller already claimed the one-time share-highscore life bonus for this daily. */
+	shareRewardClaimed: boolean
 }
 
 /** Body of `POST /api/v1/score`. */
@@ -116,9 +118,15 @@ export type ShareScoreCommentRequest = {
 	score: number
 	/** Flaps/taps in the run being shared. */
 	taps: number
+	/** Daily the shared highscore belongs to — scopes the one-time life bonus. */
+	dailyNumber: number
 }
 
 /** Response of `POST /api/v1/score/share`. */
 export type ShareScoreCommentResponse = {
 	ok: true
+	/** Player's lives pool after any share bonus was applied. */
+	lives: LivesData
+	/** True when this share granted the one-time +5 life bonus for the daily. */
+	rewarded: boolean
 }

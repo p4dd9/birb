@@ -27,8 +27,8 @@
 		"logs": "devvit logs r/BirbGame"
 	},
 	"dependencies": {
-		"@devvit/web": "0.13.3",
-		"devvit": "0.13.3"
+		"@devvit/web": "0.13.5",
+		"devvit": "0.13.5"
 	},
 	"devDependencies": {
 		"@types/node": "^25.3.3",

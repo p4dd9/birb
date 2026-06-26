@@ -1,5 +1,5 @@
 import type { AppData, LatestDailyUrlResponse, SubscribeResponse } from '@birb/shared'
-import { configFromSeed, serverLogger, subscribedKey, toDateKey } from '@birb/shared'
+import { configFromSeed, serverLogger, shareRewardKey, subscribedKey, toDateKey } from '@birb/shared'
 import { context, redis } from '@devvit/web/server'
 import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
@@ -32,13 +32,24 @@ appController.get('/data', requireAuth, async (req, res) => {
 				stats: { communityScore: 0, communityAttempts: 0, communityPlayers: 0 },
 				lives,
 				subscribed: false,
+				shareRewardClaimed: false,
 			}
 			res.json(empty)
 			return
 		}
 
-		const [seed, you, online, leaderboard, stats, subscribedFlag, storedDateKey, latestDailyPostUrl, lives] =
-			await Promise.all([
+		const [
+			seed,
+			you,
+			online,
+			leaderboard,
+			stats,
+			subscribedFlag,
+			storedDateKey,
+			latestDailyPostUrl,
+			lives,
+			shareRewardFlag,
+		] = await Promise.all([
 			getDailySeed(dailyNumber),
 			getYouStats(userId, dailyNumber),
 			touchOnlinePlayers(userId),
@@ -48,6 +59,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			getDailyDateKey(dailyNumber),
 			getLatestDailyPostUrl(),
 			syncPlayerLives(userId),
+			redis.get(shareRewardKey(dailyNumber, userId)),
 		])
 
 		const appData: AppData = {
@@ -63,6 +75,7 @@ appController.get('/data', requireAuth, async (req, res) => {
 			stats,
 			lives,
 			subscribed: subscribedFlag === 'true',
+			shareRewardClaimed: Boolean(shareRewardFlag),
 		}
 		res.json(appData)
 	} catch (error) {

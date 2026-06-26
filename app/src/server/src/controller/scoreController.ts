@@ -5,7 +5,7 @@ import { Router } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import { shareScoreComment } from '../service/commentService'
 import { getLatestDailyNumber, saveDailyScore } from '../service/dailyService'
-import { consumePlayerLife } from '../service/livesService'
+import { consumePlayerLife, grantShareReward } from '../service/livesService'
 
 export const scoreController = Router()
 
@@ -51,10 +51,16 @@ scoreController.post('/', requireAuth, async (req, res) => {
 // POST /api/v1/score/share — comment the player's score on the current post.
 scoreController.post('/share', requireAuth, async (req, res) => {
 	try {
-		const { comment, score, taps } = (req.body ?? {}) as Partial<ShareScoreCommentRequest>
+		const userId = context.userId!
+		const { comment, score, taps, dailyNumber } = (req.body ?? {}) as Partial<ShareScoreCommentRequest>
 
-		if (typeof comment !== 'string' || typeof score !== 'number' || typeof taps !== 'number') {
-			res.status(400).json({ error: 'comment, score and taps are required' })
+		if (
+			typeof comment !== 'string' ||
+			typeof score !== 'number' ||
+			typeof taps !== 'number' ||
+			typeof dailyNumber !== 'number'
+		) {
+			res.status(400).json({ error: 'comment, score, taps and dailyNumber are required' })
 			return
 		}
 
@@ -63,7 +69,10 @@ scoreController.post('/share', requireAuth, async (req, res) => {
 			Math.max(0, Math.floor(score)),
 			Math.max(0, Math.floor(taps))
 		)
-		res.json({ ok: true })
+
+		// Only award the share bonus once the comment has actually posted.
+		const { lives, rewarded } = await grantShareReward(userId, dailyNumber)
+		res.json({ ok: true, lives, rewarded })
 	} catch (error) {
 		serverLogger.error(`POST /score/share failed: ${error}`)
 		res.status(500).json({ error: String(error) })

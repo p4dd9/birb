@@ -2,6 +2,18 @@ import type { DailyLeaderboardEntry } from '@birb/shared'
 import { dailyClosedCommentKey, dailyIntroCommentKey, serverLogger } from '@birb/shared'
 import { context, reddit, redis } from '@devvit/web/server'
 
+/** Playful bragging score lines; one is picked at random per share. All superscript-wrapped. */
+const SHARE_SCORE_LINES: ((score: number, taps: number) => string)[] = [
+	(score, taps) => `^(🏆 New highscore! ${score} points in just ${taps} flaps 🐦)`,
+	(score, taps) => `^(🐦💨 Birbed my way to ${score} points in ${taps} flaps — top that!)`,
+	(score, taps) => `^(🔥 ${score} points, ${taps} flaps... I'm basically a pro birb now 😎)`,
+	(score, taps) => `^(🪽 ${taps} flaps of pure skill = ${score} points 🏆 beat it if you can!)`,
+	(score, taps) => `^(😤 Flapped ${taps} times and bagged ${score} points. New record, no big deal 🐦🏆)`,
+]
+
+const pickShareScoreLine = (score: number, taps: number): string =>
+	SHARE_SCORE_LINES[Math.floor(Math.random() * SHARE_SCORE_LINES.length)](score, taps)
+
 /** Post the player's share comment on the current post thread. */
 export const shareScoreComment = async (comment: string, score: number, taps: number) => {
 	const postId = context.postId
@@ -14,7 +26,7 @@ export const shareScoreComment = async (comment: string, score: number, taps: nu
 		throw new Error('Comment is required')
 	}
 
-	const text = `${trimmed}\n\nHighscore: ${score} points in ${taps} flaps`
+	const text = `${trimmed}\n\n${pickShareScoreLine(score, taps)}`
 
 	await reddit.submitComment({
 		id: postId,
